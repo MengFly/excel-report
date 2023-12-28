@@ -745,10 +745,17 @@
         </xs:sequence>
 
         <xs:attributeGroup ref="AttrStyle"/>
-        <xs:attribute name="dataList" type="xs:string">
+        <xs:attribute name="dataList" type="xs:string" use="required">
             <xs:annotation>
                 <xs:documentation source="description">
                     表格数据
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="headerVisible" default="true" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否显示表头
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>

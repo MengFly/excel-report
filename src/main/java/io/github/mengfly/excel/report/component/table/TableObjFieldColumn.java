@@ -1,9 +1,7 @@
 package io.github.mengfly.excel.report.component.table;
 
-import cn.hutool.core.util.ReflectUtil;
+import io.github.mengfly.excel.report.util.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.Map;
 
 @Slf4j
 public class TableObjFieldColumn extends TableColumn {
@@ -22,17 +20,8 @@ public class TableObjFieldColumn extends TableColumn {
 
     @Override
     public Object getValue(Object object) {
-        if (object == null) {
-            return null;
-        }
-        try {
-            if (object instanceof Map) {
-                return ((Map<?, ?>) object).get(getId());
-            }
-            return ReflectUtil.getFieldValue(object, getId());
-        } catch (Exception e) {
-            log.error("Error getting column value on column {}", this, e);
-        }
-        return null;
+        return BeanUtil.getBeanObj(object, getId());
     }
+
+
 }

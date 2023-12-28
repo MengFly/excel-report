@@ -1,8 +1,6 @@
 package io.github.mengfly.excel.report.excel;
 
-import lombok.Getter;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import cn.hutool.core.util.StrUtil;
 import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.style.CellStyles;
@@ -10,6 +8,9 @@ import io.github.mengfly.excel.report.style.SheetStyles;
 import io.github.mengfly.excel.report.style.StyleMap;
 import io.github.mengfly.excel.report.template.DataContext;
 import io.github.mengfly.excel.report.template.ReportTemplate;
+import lombok.Getter;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,7 +49,12 @@ public class ExcelReport {
     }
 
     private XSSFSheet getSheet(String name) {
-        String sheetName = name;
+        String sheetName;
+        if (StrUtil.isEmpty(name)) {
+            sheetName = "sheet";
+        } else {
+            sheetName = name;
+        }
         final int seq = sheetNameSequence.computeIfAbsent(name, s -> 0);
         if (seq > 0) {
             sheetName = name + "_" + seq;

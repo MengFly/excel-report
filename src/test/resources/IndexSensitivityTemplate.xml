@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <template xmlns="http://mengfly.github.io/excel-report/1.0.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://mengfly.github.io/excel-report/1.0.0  excel-report-1.0.0.xsd"
+          xsi:schemaLocation="http://mengfly.github.io/excel-report/1.0.0 https://mengfly.github.io/xsd/excel-report-1.0.0.xsd"
           name="IndexSensitivityTemplate"
           version="1.0"
           author="MengFly"

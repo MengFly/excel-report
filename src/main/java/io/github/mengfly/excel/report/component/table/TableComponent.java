@@ -11,7 +11,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 import java.util.List;
 
 @Setter
@@ -21,6 +20,7 @@ public class TableComponent extends AbstractComponent {
     private List<?> dataList;
     private List<TableColumn> columns;
     private int headerHeight = 1;
+    private boolean headerVisible = true;
 
     public TableComponent(List<?> dataList, List<TableColumn> columns) {
         this.dataList = dataList;
@@ -30,7 +30,10 @@ public class TableComponent extends AbstractComponent {
     @Override
     public Size getSize() {
         int width = 0;
-        int height = headerHeight;
+        int height = 0;
+        if (headerVisible) {
+            height += headerHeight;
+        }
 
         if (columns != null) {
             for (TableColumn column : columns) {
@@ -51,17 +54,22 @@ public class TableComponent extends AbstractComponent {
             StyleMap style = context.getCurrentChildStyle(column.getStyle());
 
             // draw header
-            final ExcelCellSpan headerCellSpan = context.getCellSpan(
-                    point.add(curColumn, 0),
-                    Size.of(column.getColumnSpan(), getHeaderHeight()),
-                    style
-            );
-            headerCellSpan.merge().setValue(column.getName());
+            if (headerVisible) {
+                final ExcelCellSpan headerCellSpan = context.getCellSpan(
+                        point.add(curColumn, 0),
+                        Size.of(column.getColumnSpan(), getHeaderHeight()),
+                        style
+                );
+                headerCellSpan.merge().setValue(column.getName());
+            }
             if (dataList == null) {
                 continue;
             }
             // draw data
-            int curRow = getHeaderHeight();
+            int curRow = 0;
+            if (headerVisible) {
+                curRow += getHeaderHeight();
+            }
             for (Object d : dataList) {
                 final ExcelCellSpan dataCellSpan = context.getCellSpan(
                         point.add(curColumn, curRow),

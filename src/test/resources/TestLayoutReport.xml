@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<template
-        name="testReport"
-        description="测试报表"
-        version="1.0"
-        author="MengFly"
-        createAt="2019-07-11">
+<template xmlns="http://mengfly.github.io/excel-report/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://mengfly.github.io/excel-report/1.0.0  https://mengfly.github.io/xsd/excel-report-1.0.0.xsd"
+          name="testReport"
+          description="测试报表"
+          version="1.0"
+          author="MengFly"
+          createAt="2019-07-11">
 
     <container>
-        <VLayout alignPolicy="CENTER">
+        <VLayout alignPolicy="center">
             <Text size="10,5" text="Test(width=10,height=5)" style="{width:auto}"/>
             <HLayout>
                 <Text size="3,1" text="Test(width=3)" style="{fontColor:RED,fontBold:true,fontName:楷体}"/>

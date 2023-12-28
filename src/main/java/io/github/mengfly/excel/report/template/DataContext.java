@@ -1,7 +1,7 @@
 package io.github.mengfly.excel.report.template;
 
-import lombok.NonNull;
 import io.github.mengfly.excel.report.template.exepression.ExpressionHelper;
+import lombok.NonNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,5 +35,35 @@ public class DataContext extends HashMap<String, Object> {
         return expressionHelper.doExpression(expression, this, clazz);
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
 
+    public static class Builder {
+        private final Map<String, Object> data = new HashMap<>();
+
+        public Builder put(String key, Object value) {
+            data.put(key, value);
+            return this;
+        }
+
+        public Builder putAll(Map<String, Object> data) {
+            this.data.putAll(data);
+            return this;
+        }
+
+        public Builder putAll(DataContext data) {
+            this.data.putAll(data);
+            return this;
+        }
+
+
+        public DataContext build() {
+            return build(new ExpressionHelper());
+        }
+
+        public DataContext build(ExpressionHelper expressionHelper) {
+            return new DataContext(data, expressionHelper);
+        }
+    }
 }

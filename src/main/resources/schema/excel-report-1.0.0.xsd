@@ -816,6 +816,13 @@
     </xs:complexType>
 
     <xs:attributeGroup name="AttrStyle">
+        <xs:attribute name="id" type="xs:string">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    组件ID，可以不设置，该组件Id将会作为该组件的唯一标识，主要用于组件之间相互引用的场景，不设置不影响使用
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
         <xs:attribute name="style" type="xs:string">
             <xs:annotation>
                 <xs:documentation source="description">

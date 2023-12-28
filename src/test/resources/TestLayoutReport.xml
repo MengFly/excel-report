@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<template
+        name="testReport"
+        description="测试报表"
+        version="1.0"
+        author="MengFly"
+        createAt="2019-07-11">
+
+    <container>
+        <VLayout alignPolicy="CENTER">
+            <Text size="10,5" text="Test(width=10,height=5)" style="{width:auto}"/>
+            <HLayout>
+                <Text size="3,1" text="Test(width=3)" style="{fontColor:RED,fontBold:true,fontName:楷体}"/>
+                <Text size="5,1" text="Test(width=5)"/>
+            </HLayout>
+        </VLayout>
+    </container>
+</template>

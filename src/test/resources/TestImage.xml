@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<template
+        xmlns="http://mengfly.github.io/excel-report/1.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://mengfly.github.io/excel-report/1.0.0  excel-report-1.0.0.xsd"
+        name="testImage"
+        description="测试图片"
+        version="1.0"
+        author="MengFly"
+        createAt="2023-12-26">
+
+    <styles>
+        <style id="tableDataStyle">
+            <alignHorizontal>center</alignHorizontal>
+        </style>
+        <style id="tableHeaderStyle">
+            <fontColor>white</fontColor>
+            <fillForegroundColor>green</fillForegroundColor>
+        </style>
+    </styles>
+
+    <parameters>
+        <parameter id="tableData" name="表格数据"/>
+        <parameter id="image" name="图片数据"/>
+        <parameter id="listData" name="列表数据"/>
+    </parameters>
+
+    <container>
+        <VLayout alignPolicy="center">
+            <Text size="10,5" text="Test(width=10,height=5)"/>
+            <HLayout>
+                <Table dataList="${tableData}">
+                    <column id="seq" name="序号" style="tableHeaderStyle" dataStyle="tableDataStyle"/>
+                    <column id="name" name="姓名" style="tableHeaderStyle" dataStyle="tableDataStyle"/>
+                    <column id="age" name="年龄" style="tableHeaderStyle" dataStyle="tableDataStyle"/>
+                </Table>
+                <Image size="7,11" src="${image}"/>
+            </HLayout>
+
+            <List span="2" orientation="horizontal" title="Horizontal" dataList="${listData}"/>
+
+            <HLayout>
+                <Text size="3,10" text="Test(width=3, height=10)"/>
+                <Text size="5,10" text="Test(width=5, height=10)"/>
+                <List span="2" orientation="vertical" dataList="${listData}" title="Vertical List"/>
+            </HLayout>
+
+            <HLayout>
+                <VLayout/>
+                <VLayout/>
+                <Table dataList="${tableData}">
+                    <column id="seq" name="序号" dataStyle="tableDataStyle"/>
+                    <column id="name" name="姓名" dataStyle="tableDataStyle"/>
+                    <column id="age" name="年龄" dataStyle="tableDataStyle"/>
+                </Table>
+                <Image size="7,11" src="${image}"/>
+            </HLayout>
+
+
+        </VLayout>
+    </container>
+</template>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<template xmlns="http://mengfly.github.io/excel-report/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://mengfly.github.io/excel-report/1.0.0  excel-report-1.0.0.xsd"
+          name="IndexSensitivityTemplate"
+          version="1.0"
+          author="MengFly"
+          createAt="2023-12-27 18:31:25"
+          description="指标敏感度统计表">
+
+    <parameters>
+        <parameter id="areaName" name="工作面名称" type="string"/>
+        <parameter id="dataList" name="敏感度统计数据" type="object"/>
+    </parameters>
+
+    <sheetStyle>
+        <defaultRowHeight>24</defaultRowHeight>
+    </sheetStyle>
+
+    <styles>
+        <style id="headerStyle">
+            <height>60</height>
+            <fontBold>true</fontBold>
+            <fontHeight>20</fontHeight>
+            <alignHorizontal>center</alignHorizontal>
+            <fillForegroundColor>green</fillForegroundColor>
+            <fontColor>white</fontColor>
+        </style>
+
+        <style id="tableHeaderStyle">
+            <fontColor>white</fontColor>
+            <height>26</height>
+            <fillForegroundColor>grey_50_percent</fillForegroundColor>
+            <width>auto</width>
+        </style>
+
+        <style id="tableDataStyle">
+            <alignHorizontal>center</alignHorizontal>
+            <alignVertical>center</alignVertical>
+        </style>
+
+        <style id="tableDataStyleIndexName">
+            <alignVertical>center</alignVertical>
+            <width>auto</width>
+        </style>
+
+    </styles>
+
+    <container>
+        <VLayout>
+            <Text size="8,1" style="headerStyle" text="${areaName}指标敏感度统计表"/>
+            <Table dataList="${dataList}">
+                <column id="seq" name="序号" style="tableHeaderStyle" dataStyle="tableDataStyle"/>
+
+                <column id="indexName" name="指标" style="tableHeaderStyle" dataStyle="tableDataStyleIndexName"/>
+
+                <column id="totalDayCount" name="总天数" style="tableHeaderStyle" dataStyle="tableDataStyle"/>
+
+                <column id="availableDayCount" name="有效天数" style="tableHeaderStyle" dataStyle="tableDataStyle"/>
+
+                <column id="minDayIndex" name="最小事件排序天数" style="tableHeaderStyle" dataStyle="tableDataStyle"/>
+
+                <column id="maxDayIndex" name="最大事件排序天数" style="tableHeaderStyle" dataStyle="tableDataStyle"/>
+
+                <column id="avgDayCount" name="全部时间平均排序天数" style="tableHeaderStyle"
+                        dataStyle="tableDataStyle"/>
+
+                <column id="sensitivity" name="敏感度" style="tableHeaderStyle" dataStyle="tableDataStyle"/>
+            </Table>
+        </VLayout>
+    </container>
+</template>

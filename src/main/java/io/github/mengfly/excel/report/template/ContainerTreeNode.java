@@ -3,15 +3,15 @@ package io.github.mengfly.excel.report.template;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import org.w3c.dom.Element;
 import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.style.CellStyles;
 import io.github.mengfly.excel.report.style.StyleMap;
 import io.github.mengfly.excel.report.style.key.StyleKey;
 import io.github.mengfly.excel.report.template.parse.ParserFactory;
 import io.github.mengfly.excel.report.util.XmlUtil;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.w3c.dom.Element;
 
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +54,12 @@ public class ContainerTreeNode {
         if (attribute.startsWith("{")) {
             return parseJsonStyle(attribute, context);
         } else {
-            return getStyleById(attribute);
+            final List<String> ids = StrUtil.splitTrim(attribute, " ");
+            StyleMap map = new StyleMap();
+            for (String id : ids) {
+                map.addStyle(getStyleById(id));
+            }
+            return map;
         }
     }
 

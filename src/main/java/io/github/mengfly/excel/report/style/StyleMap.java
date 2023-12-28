@@ -24,7 +24,9 @@ public class StyleMap {
     }
 
     public void addStyle(StyleMap styleMap) {
-        this.styleMap.putAll(styleMap.toMap());
+        if (styleMap != null) {
+            this.styleMap.putAll(styleMap.toMap());
+        }
     }
 
     private Map<String, String> toMap() {

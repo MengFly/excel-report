@@ -3,17 +3,15 @@ package io.github.mengfly.excel.report.excel;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.cell.CellUtil;
-import lombok.Setter;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.util.SheetUtil;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.style.CellStyles;
 import io.github.mengfly.excel.report.style.StyleMap;
 import io.github.mengfly.excel.report.util.ExcelUtil;
+import lombok.Setter;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.SheetUtil;
+import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 
 import java.util.Map;
 import java.util.Optional;
@@ -108,6 +106,12 @@ public class ExcelCellSpan {
             }
         }
         this.styleMap = styleMap;
+    }
+
+    public ClientAnchor getFillAnchor() {
+        return new XSSFClientAnchor(
+                0, 0, 0, 0,
+                point.getX(), point.getY(), point.getX() + size.width, point.getY() + size.height);
     }
 
 }

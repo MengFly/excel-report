@@ -48,7 +48,7 @@
             <HLayout>
                 <VLayout/>
                 <VLayout/>
-                <Table dataList="${tableData}">
+                <Table  dataList="${tableData}">
                     <column id="seq" name="序号" dataStyle="tableDataStyle"/>
                     <column id="name" name="姓名" dataStyle="tableDataStyle"/>
                     <column id="age" name="年龄" dataStyle="tableDataStyle"/>

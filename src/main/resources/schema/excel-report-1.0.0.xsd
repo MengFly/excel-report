@@ -90,7 +90,7 @@
     </xs:complexType>
 
     <xs:complexType name="Parameter">
-        <xs:attribute name="id" type="xs:string" use="required">
+        <xs:attribute name="id" type="xs:ID" use="required">
             <xs:annotation>
                 <xs:documentation source="description">参数ID</xs:documentation>
             </xs:annotation>
@@ -436,12 +436,18 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element minOccurs="0" name="rotation" type="xs:short">
+            <xs:element minOccurs="0" name="rotation">
                 <xs:annotation>
                     <xs:documentation source="description">
                         旋转角度（0-180）
                     </xs:documentation>
                 </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:short">
+                        <xs:minInclusive value="0"/>
+                        <xs:maxInclusive value="180"/>
+                    </xs:restriction>
+                </xs:simpleType>
             </xs:element>
             <xs:element minOccurs="0" name="indention" type="xs:short">
                 <xs:annotation>
@@ -553,7 +559,7 @@
 
         </xs:all>
 
-        <xs:attribute name="id" use="required" type="xs:string">
+        <xs:attribute name="id" use="required" type="xs:ID">
             <xs:annotation>
                 <xs:documentation source="description">
                     样式ID,样式组不可重复
@@ -587,7 +593,7 @@
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="HorizontalAlignment">
-        <xs:restriction>
+        <xs:restriction base="xs:string">
             <xs:enumeration value="left"/>
             <xs:enumeration value="center"/>
             <xs:enumeration value="right"/>
@@ -599,7 +605,7 @@
 
     </xs:simpleType>
     <xs:simpleType name="VerticalAlignment">
-        <xs:restriction>
+        <xs:restriction base="xs:string">
             <xs:enumeration value="top"/>
             <xs:enumeration value="center"/>
             <xs:enumeration value="bottom"/>
@@ -759,6 +765,7 @@
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
+
     </xs:complexType>
     <xs:complexType name="TableColumn">
         <xs:attribute name="id" type="xs:string" use="required">
@@ -772,6 +779,13 @@
             <xs:annotation>
                 <xs:documentation source="description">
                     列名称
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="style" type="xs:string">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    Table Header 数据样式
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
@@ -789,10 +803,9 @@
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
-        <xs:attributeGroup ref="AttrStyle"/>
     </xs:complexType>
     <xs:simpleType name="AlignPolicy">
-        <xs:restriction>
+        <xs:restriction base="xs:string">
             <xs:enumeration value="start"/>
             <xs:enumeration value="center"/>
             <xs:enumeration value="end"/>
@@ -816,7 +829,7 @@
     </xs:complexType>
 
     <xs:attributeGroup name="AttrStyle">
-        <xs:attribute name="id" type="xs:string">
+        <xs:attribute name="id" type="xs:ID">
             <xs:annotation>
                 <xs:documentation source="description">
                     组件ID，可以不设置，该组件Id将会作为该组件的唯一标识，主要用于组件之间相互引用的场景，不设置不影响使用
@@ -829,6 +842,7 @@
                     样式信息，可以为样式ID，也可以为样式内容
                 </xs:documentation>
             </xs:annotation>
+
         </xs:attribute>
     </xs:attributeGroup>
 

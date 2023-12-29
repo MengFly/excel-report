@@ -1,10 +1,6 @@
 package io.github.mengfly.excel.report.excel;
 
 import cn.hutool.core.io.IoUtil;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFDrawing;
 import io.github.mengfly.excel.report.component.image.Image;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.entity.Size;
@@ -12,6 +8,14 @@ import io.github.mengfly.excel.report.style.CellStyles;
 import io.github.mengfly.excel.report.style.SheetStyles;
 import io.github.mengfly.excel.report.style.StyleChain;
 import io.github.mengfly.excel.report.style.StyleMap;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFDrawing;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +27,8 @@ import java.util.Map;
 public class ReportContext {
 
     private final Workbook workbook;
-    private final Sheet sheet;
+    @Getter
+    private final XSSFSheet sheet;
     private final Map<StyleMap, CellStyle> cellStylePool = new HashMap<>();
     private final Map<StyleMap, Font> fontPool = new HashMap<>();
     @Getter

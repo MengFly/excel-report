@@ -42,6 +42,14 @@ public class TestDataUtil {
         );
     }
 
+    public static List<? extends Number> getRandomValueData() {
+        List<Double> doubles = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            doubles.add(RandomUtil.randomDouble(0, 10));
+        }
+        return doubles;
+    }
+
 
     @Data
     @AllArgsConstructor

@@ -27,6 +27,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ReportContext {
 
+    @Getter
     private final Workbook workbook;
     @Getter
     private final XSSFSheet sheet;

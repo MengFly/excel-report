@@ -19,8 +19,16 @@
         </style>
 
         <style id="scoreStyle">
-            <dataFormat>0.00分</dataFormat>
+            <dataFormat>0.00 分</dataFormat>
         </style>
+
+        <style id="HeaderLinkStyle">
+            <fontBold>true</fontBold>
+            <fontHeight>20</fontHeight>
+            <alignHorizontal>center</alignHorizontal>
+            <alignVertical>center</alignVertical>
+        </style>
+
     </styles>
 
     <parameters>
@@ -31,7 +39,9 @@
 
     <container>
         <VLayout alignPolicy="center">
-            <Text size="10,5" text="Test(width=10,height=5)"/>
+            <Link link="https://gitee.com/mengfly_p/excel-report" size="10,3" text="Excel Report Framework"
+                  label="点击访问项目开源地址" style="HeaderLinkStyle"/>
+            <Text size="10,3" text="Test(width=10,height=3)"/>
             <HLayout>
                 <Table dataList="${tableData}">
                     <column id="seq" name="序号" style="tableHeaderStyle" dataStyle="tableDataStyle"/>
@@ -52,7 +62,7 @@
             <HLayout>
                 <VLayout/>
                 <VLayout/>
-                <Table  dataList="${tableData}">
+                <Table dataList="${tableData}">
                     <column id="seq" name="序号" dataStyle="tableDataStyle"/>
                     <column id="name" name="姓名" dataStyle="tableDataStyle"/>
                     <column id="age" name="年龄" dataStyle="tableDataStyle"/>

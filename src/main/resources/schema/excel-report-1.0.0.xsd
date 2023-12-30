@@ -726,6 +726,7 @@
             <xs:element minOccurs="0" maxOccurs="unbounded" name="Image" type="Image"/>
             <xs:element minOccurs="0" maxOccurs="unbounded" name="List" type="List"/>
             <xs:element minOccurs="0" maxOccurs="unbounded" name="Span" type="Span"/>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Link" type="Link"/>
         </xs:choice>
 
     </xs:group>
@@ -740,12 +741,48 @@
                 <xs:element minOccurs="0" maxOccurs="unbounded" name="Image" type="Image"/>
                 <xs:element minOccurs="0" maxOccurs="unbounded" name="List" type="List"/>
                 <xs:element minOccurs="0" maxOccurs="unbounded" name="Span" type="Span"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="Link" type="Link"/>
             </xs:choice>
         </xs:sequence>
     </xs:group>
 
     <xs:element name="VLayout" type="VLayout"/>
     <xs:element name="HLayout" type="HLayout"/>
+
+    <xs:complexType name="Link">
+        <xs:annotation>
+            <xs:documentation source="description">
+                超链接组件
+            </xs:documentation>
+        </xs:annotation>
+
+        <xs:attributeGroup ref="AttrSize"/>
+        <xs:attributeGroup ref="AttrStyle"/>
+
+        <xs:attribute name="text" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    Cell的文本信息
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="link" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    超链接地址
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="label" type="xs:string">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    超链接显示的文本
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
 
     <xs:complexType name="Table">
         <xs:annotation>

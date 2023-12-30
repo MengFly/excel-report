@@ -64,6 +64,11 @@ public class ExcelCellSpan {
 
     }
 
+    public void setHyperLink(Hyperlink hyperlink) {
+        final Cell orGetCell = ExcelUtil.createOrGetCell(ExcelUtil.getRow(sheet, point.getY()), point.getX());
+        orGetCell.setHyperlink(hyperlink);
+    }
+
     private void calculateAndRecordCellWidthHeight() {
         if (styleMap != null) {
             final Optional<String> widthStyle = styleMap.getStyle(CellStyles.width);
@@ -113,5 +118,6 @@ public class ExcelCellSpan {
                 0, 0, 0, 0,
                 point.getX(), point.getY(), point.getX() + size.width, point.getY() + size.height);
     }
+
 
 }

@@ -14,6 +14,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFDataFormat;
 import org.apache.poi.xssf.usermodel.XSSFDrawing;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
@@ -35,6 +36,7 @@ public class ReportContext {
     private final StyleChain styleChain = new StyleChain();
     private final Map<Integer, Double> autoWidthColumn = new HashMap<>();
     private final Map<Integer, Double> autoHeightRow = new HashMap<>();
+    private XSSFDataFormat format;
 
     public ExcelCellSpan getCellSpan(Point point, Size size, StyleMap cellStyle) {
         final ExcelCellSpan cellSpan = new ExcelCellSpan(sheet, point, size);
@@ -61,6 +63,13 @@ public class ReportContext {
             if (font != null) {
                 cellStyle.setFont(font);
             }
+            map.getStyle(CellStyles.dataFormat).ifPresent(dataFormat -> {
+                if (format == null) {
+                    format = ((XSSFDataFormat) workbook.createDataFormat());
+                }
+                final short index = format.getFormat(dataFormat);
+                cellStyle.setDataFormat(index);
+            });
             cellStylePool.put(map, cellStyle);
             return cellStyle;
         }

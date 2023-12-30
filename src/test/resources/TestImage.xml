@@ -17,6 +17,10 @@
             <fontColor>white</fontColor>
             <fillForegroundColor>green</fillForegroundColor>
         </style>
+
+        <style id="scoreStyle">
+            <dataFormat>0.00分</dataFormat>
+        </style>
     </styles>
 
     <parameters>
@@ -52,8 +56,9 @@
                     <column id="seq" name="序号" dataStyle="tableDataStyle"/>
                     <column id="name" name="姓名" dataStyle="tableDataStyle"/>
                     <column id="age" name="年龄" dataStyle="tableDataStyle"/>
+                    <column id="score" name="平均分" dataStyle="tableDataStyle scoreStyle"/>
                 </Table>
-                <Image size="7,11" src="${image}"/>
+                <Image size="6,11" src="${image}"/>
             </HLayout>
 
 

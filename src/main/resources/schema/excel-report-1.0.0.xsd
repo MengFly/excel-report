@@ -479,6 +479,13 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
+            <xs:element minOccurs="0" name="dataFormat" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation source="description">
+                        数据格式, 参考Excel单元格格式中数字类型格式
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
             <xs:element minOccurs="0" name="shrinkToFit" type="xs:boolean">
                 <xs:annotation>
                     <xs:documentation source="description">

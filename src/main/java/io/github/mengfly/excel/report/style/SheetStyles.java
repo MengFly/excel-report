@@ -10,9 +10,15 @@ import io.github.mengfly.excel.report.style.key.StyleKey;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 工作表样式定义类
+ */
 public class SheetStyles {
 
     private static final Map<String, StyleKey<?>> styleMap = new HashMap<>();
+    /**
+     * 默认的工作表样式
+     */
     public static final StyleMap DEFAULT_STYLE = new StyleMap();
 
     /**

@@ -44,6 +44,10 @@
             <width>auto</width>
         </style>
 
+        <style id="number4Scale">
+            <dataFormat>0.0000</dataFormat>
+        </style>
+
     </styles>
 
     <container>
@@ -65,7 +69,7 @@
                 <column id="avgDayCount" name="全部时间平均排序天数" style="tableHeaderStyle"
                         dataStyle="tableDataStyle"/>
 
-                <column id="sensitivity" name="敏感度" style="tableHeaderStyle" dataStyle="tableDataStyle"/>
+                <column id="sensitivity" name="敏感度" style="tableHeaderStyle" dataStyle="tableDataStyle number4Scale"/>
             </Table>
         </VLayout>
     </container>

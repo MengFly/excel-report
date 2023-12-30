@@ -29,7 +29,7 @@ public class TestDataUtil {
     public static List<Object> getData(int size) {
         List<Object> testData = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            testData.add(new TestData(i + 1, RandomUtil.randomString(5), 10 + i));
+            testData.add(new TestData(i + 1, RandomUtil.randomString(5), 10 + i, RandomUtil.randomDouble(60, 100)));
         }
         return testData;
     }
@@ -57,5 +57,6 @@ public class TestDataUtil {
         private Integer seq;
         private String name;
         private Integer age;
+        private Double score;
     }
 }

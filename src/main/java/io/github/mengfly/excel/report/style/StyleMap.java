@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-
+/**
+ * 样式字典
+ */
 public class StyleMap {
     private final Map<String, String> styleMap = new HashMap<>();
 

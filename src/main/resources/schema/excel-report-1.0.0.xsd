@@ -674,47 +674,20 @@
             <xs:enumeration value="decorative"/>
         </xs:restriction>
     </xs:simpleType>
+    <xs:simpleType name="AlignPolicy">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="start"/>
+            <xs:enumeration value="center"/>
+            <xs:enumeration value="end"/>
+        </xs:restriction>
+    </xs:simpleType>
 
-    <xs:complexType id="VLayout" name="VLayout">
-        <xs:annotation>
-            <xs:documentation source="description">
-                垂直布局组件
-            </xs:documentation>
-        </xs:annotation>
-        <xs:group ref="LayoutGroupContainer"/>
-        <xs:attribute name="alignPolicy" type="AlignPolicy"/>
-        <xs:attributeGroup ref="AttrStyle"/>
-    </xs:complexType>
-
-    <xs:complexType name="HLayout">
-        <xs:annotation>
-            <xs:documentation source="description">
-                水平布局组件
-            </xs:documentation>
-        </xs:annotation>
-        <xs:group ref="LayoutGroupContainer"/>
-        <xs:attribute name="alignPolicy" type="AlignPolicy"/>
-        <xs:attributeGroup ref="AttrStyle"/>
-    </xs:complexType>
-
-    <xs:complexType name="Text">
-        <xs:annotation>
-            <xs:documentation source="description">
-                文本组件
-            </xs:documentation>
-        </xs:annotation>
-
-        <xs:attributeGroup ref="AttrSize"/>
-        <xs:attributeGroup ref="AttrStyle"/>
-
-        <xs:attribute name="text" type="xs:string" use="required">
-            <xs:annotation>
-                <xs:documentation source="description">
-                    Text的文本信息
-                </xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-    </xs:complexType>
+    <xs:simpleType name="Orientation">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="horizontal"/>
+            <xs:enumeration value="vertical"/>
+        </xs:restriction>
+    </xs:simpleType>
 
     <xs:group name="ContainerGroupContainer">
 
@@ -746,9 +719,48 @@
         </xs:sequence>
     </xs:group>
 
-    <xs:element name="VLayout" type="VLayout"/>
-    <xs:element name="HLayout" type="HLayout"/>
+    <!--  Containers  -->
 
+    <xs:complexType name="VLayout">
+        <xs:annotation>
+            <xs:documentation source="description">
+                垂直布局组件
+            </xs:documentation>
+        </xs:annotation>
+        <xs:group ref="LayoutGroupContainer"/>
+        <xs:attribute name="alignPolicy" type="AlignPolicy"/>
+        <xs:attributeGroup ref="AttrContainerDefault"/>
+        <xs:attributeGroup ref="AttrLayoutDefault"/>
+    </xs:complexType>
+    <xs:complexType name="HLayout">
+        <xs:annotation>
+            <xs:documentation source="description">
+                水平布局组件
+            </xs:documentation>
+        </xs:annotation>
+        <xs:group ref="LayoutGroupContainer"/>
+        <xs:attribute name="alignPolicy" type="AlignPolicy"/>
+        <xs:attributeGroup ref="AttrContainerDefault"/>
+        <xs:attributeGroup ref="AttrLayoutDefault"/>
+    </xs:complexType>
+    <xs:complexType name="Text">
+        <xs:annotation>
+            <xs:documentation source="description">
+                文本组件
+            </xs:documentation>
+        </xs:annotation>
+
+        <xs:attributeGroup ref="AttrSize"/>
+        <xs:attributeGroup ref="AttrContainerDefault"/>
+
+        <xs:attribute name="text" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    Text的文本信息
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
     <xs:complexType name="Link">
         <xs:annotation>
             <xs:documentation source="description">
@@ -757,7 +769,7 @@
         </xs:annotation>
 
         <xs:attributeGroup ref="AttrSize"/>
-        <xs:attributeGroup ref="AttrStyle"/>
+        <xs:attributeGroup ref="AttrContainerDefault"/>
 
         <xs:attribute name="text" type="xs:string" use="required">
             <xs:annotation>
@@ -783,7 +795,6 @@
             </xs:annotation>
         </xs:attribute>
     </xs:complexType>
-
     <xs:complexType name="Table">
         <xs:annotation>
             <xs:documentation source="description">
@@ -794,7 +805,7 @@
             <xs:element name="column" type="TableColumn"/>
         </xs:sequence>
 
-        <xs:attributeGroup ref="AttrStyle"/>
+        <xs:attributeGroup ref="AttrContainerDefault"/>
         <xs:attribute name="dataList" type="xs:string" use="required">
             <xs:annotation>
                 <xs:documentation source="description">
@@ -848,13 +859,6 @@
             </xs:annotation>
         </xs:attribute>
     </xs:complexType>
-    <xs:simpleType name="AlignPolicy">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="start"/>
-            <xs:enumeration value="center"/>
-            <xs:enumeration value="end"/>
-        </xs:restriction>
-    </xs:simpleType>
     <xs:complexType name="Image">
         <xs:annotation>
             <xs:documentation source="description">
@@ -868,38 +872,9 @@
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
-        <xs:attributeGroup ref="AttrStyle"/>
+        <xs:attributeGroup ref="AttrContainerDefault"/>
         <xs:attributeGroup ref="AttrSize"/>
     </xs:complexType>
-
-    <xs:attributeGroup name="AttrStyle">
-        <xs:attribute name="id" type="xs:ID">
-            <xs:annotation>
-                <xs:documentation source="description">
-                    组件ID，可以不设置，该组件Id将会作为该组件的唯一标识，主要用于组件之间相互引用的场景，不设置不影响使用
-                </xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="style" type="xs:string">
-            <xs:annotation>
-                <xs:documentation source="description">
-                    样式信息，可以为样式ID，也可以为样式内容
-                </xs:documentation>
-            </xs:annotation>
-
-        </xs:attribute>
-    </xs:attributeGroup>
-
-    <xs:attributeGroup name="AttrSize">
-        <xs:attribute name="size" type="xs:string">
-            <xs:annotation>
-                <xs:documentation source="description">
-                    所占Cell个数，以逗号隔开，如 3,4
-                </xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-    </xs:attributeGroup>
-
     <xs:complexType name="List">
         <xs:annotation>
             <xs:documentation source="description">
@@ -939,16 +914,8 @@
             </xs:annotation>
         </xs:attribute>
 
-        <xs:attributeGroup ref="AttrStyle"/>
+        <xs:attributeGroup ref="AttrContainerDefault"/>
     </xs:complexType>
-    <xs:simpleType name="Orientation">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="horizontal"/>
-            <xs:enumeration value="vertical"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-
     <xs:complexType name="Span">
         <xs:annotation>
             <xs:documentation source="description">
@@ -957,4 +924,51 @@
         </xs:annotation>
         <xs:attributeGroup ref="AttrSize"/>
     </xs:complexType>
+    <xs:attributeGroup name="AttrContainerDefault">
+        <xs:attribute name="id" type="xs:ID">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    组件ID，可以不设置，该组件Id将会作为该组件的唯一标识，主要用于组件之间相互引用的场景，不设置不影响使用
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="style" type="xs:string">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    样式信息，可以为样式ID，也可以为样式内容
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="if" type="xs:string">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    条件表达式，如果为true，则显示该组件，否则不显示
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="AttrLayoutDefault">
+        <xs:attribute name="for" type="xs:string">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    For 循环对应的变量表达式
+                    如果变量数据为 List 类型：
+                    如 ${data : dataList} 或 ${data, index : dataList}
+
+                    如果变量类型为map类型：
+                    如 ${karg, varg : dataMap}
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="AttrSize">
+        <xs:attribute name="size" type="xs:string">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    所占Cell个数，以逗号隔开，如 3,4
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+
 </xs:schema>

@@ -1,13 +1,14 @@
 package io.github.mengfly.excel.report.template.parse;
 
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.component.table.TableColumn;
 import io.github.mengfly.excel.report.component.table.TableComponent;
 import io.github.mengfly.excel.report.component.table.TableObjFieldColumn;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
+import io.github.mengfly.excel.report.util.BeanUtil;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,7 +54,7 @@ public class TableParser extends ContainerParser {
 
         try {
             Object dataList = context.doExpression(containerTreeNode.getElement().getAttribute("dataList"));
-            return objectToList(dataList);
+            return BeanUtil.objectToList(dataList);
         } catch (Exception e) {
             log.error("无法解析数据", e);
             return Collections.emptyList();

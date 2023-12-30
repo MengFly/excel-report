@@ -1,5 +1,6 @@
 package io.github.mengfly.excel.report.template.parse;
 
+import io.github.mengfly.excel.report.util.BeanUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import io.github.mengfly.excel.report.Container;
@@ -33,7 +34,7 @@ public class ListParser extends ContainerParser {
 
         try {
             Object dataList = context.doExpression(element.getElement().getAttribute("dataList"));
-            return objectToList(dataList);
+            return BeanUtil.objectToList(dataList);
         } catch (Exception e) {
             log.error("无法解析数据", e);
             return Collections.emptyList();

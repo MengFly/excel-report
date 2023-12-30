@@ -27,6 +27,9 @@
             <fontHeight>20</fontHeight>
             <alignHorizontal>center</alignHorizontal>
             <alignVertical>center</alignVertical>
+            <borderBottom>medium_dashed</borderBottom>
+            <borderLeft>medium</borderLeft>
+            <borderRight>medium</borderRight>
         </style>
 
     </styles>
@@ -41,6 +44,7 @@
         <VLayout alignPolicy="center">
             <Link link="https://gitee.com/mengfly_p/excel-report" size="10,3" text="Excel Report Framework"
                   label="点击访问项目开源地址" style="HeaderLinkStyle"/>
+
             <Text size="10,3" text="Test(width=10,height=3)"/>
             <HLayout>
                 <Table dataList="${tableData}">
@@ -51,7 +55,13 @@
                 <Image size="7,11" src="${image}"/>
             </HLayout>
 
-            <List span="2" orientation="horizontal" title="Horizontal" dataList="${listData}"/>
+            <VLayout for="header,index : ${{'h1', 'h2', 'h3', 'h4'}}">
+                <List if="${index != 1}" span="2"
+                      orientation="horizontal"
+                      style="{width:auto}"
+                      title="Horizontal-${header}-${index}" dataList="${listData}"/>
+            </VLayout>
+
 
             <HLayout>
                 <Text size="3,10" text="Test(width=3, height=10)"/>
@@ -60,8 +70,6 @@
             </HLayout>
 
             <HLayout>
-                <VLayout/>
-                <VLayout/>
                 <Table dataList="${tableData}">
                     <column id="seq" name="序号" dataStyle="tableDataStyle"/>
                     <column id="name" name="姓名" dataStyle="tableDataStyle"/>

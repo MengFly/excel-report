@@ -1,14 +1,12 @@
 package io.github.mengfly.excel.report.template.parse;
 
-import cn.hutool.core.bean.copier.CopyOptions;
-import cn.hutool.core.collection.ListUtil;
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
+import io.github.mengfly.excel.report.template.exepression.process.ProcessControl;
 import io.github.mengfly.excel.report.util.BeanUtil;
 import io.github.mengfly.excel.report.util.XmlUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -17,14 +15,18 @@ import java.util.*;
 
 @Slf4j
 public abstract class ContainerParser {
-    private static final List<String> IGNORE_PROPERTIES = Arrays.asList("style", "size");
+    private static final List<String> IGNORE_PROPERTIES = Arrays.asList("style", "size", "for", "if");
 
     public final Container doParse(ContainerTreeNode containerTreeNode, DataContext context) {
-        final Container container = parse(containerTreeNode, context);
 
-        initProperties(container, containerTreeNode, context);
-        container.addStyle(containerTreeNode.getStyle("style", context));
+        ProcessControl control = containerTreeNode.getProcessControl(context, "if");
 
+        final Container container = control.fetchOne((processContext) -> parse(containerTreeNode, processContext));
+
+        if (container != null) {
+            initProperties(container, containerTreeNode, context);
+            container.addStyle(containerTreeNode.getStyle("style", context));
+        }
         return container;
     }
 
@@ -75,22 +77,4 @@ public abstract class ContainerParser {
 
     }
 
-    protected List<?> objectToList(Object dataList) {
-
-        if (dataList == null) {
-            return Collections.emptyList();
-        }
-        if (dataList instanceof List) {
-            return ((List<?>) dataList);
-        }
-        if (dataList instanceof Iterator) {
-            return ListUtil.toList(((Iterator<?>) dataList));
-        }
-        if (ArrayUtil.isArray(dataList)) {
-            final Object[] cast = ArrayUtil.cast(ArrayUtil.getComponentType(dataList), dataList);
-            return ListUtil.toList(cast);
-        }
-        log.error("该类型数据不是列表数据 : {}", dataList.getClass());
-        return Collections.emptyList();
-    }
 }

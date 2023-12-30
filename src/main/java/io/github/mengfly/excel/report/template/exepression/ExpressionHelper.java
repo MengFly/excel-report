@@ -3,9 +3,9 @@ package io.github.mengfly.excel.report.template.exepression;
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.impl.LRUCache;
 import cn.hutool.core.convert.Convert;
+import io.github.mengfly.excel.report.template.DataContext;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
-import io.github.mengfly.excel.report.template.DataContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +43,9 @@ public class ExpressionHelper {
                 expressions.add(new NotExpression(subExpression));
                 startSearch = expressionStart;
             }
+
             // 查询结束位置
-            final int end = expression.indexOf(expressionSuffix, expressionStart);
+            final int end = searchEnd(expression, expressionStart);
             if (end > 0) {
                 final String subExpression = expression.substring(expressionStart + expressionPrefix.length(), end);
                 expressions.add(new StandardExpression(parser.parseExpression(subExpression)));
@@ -61,5 +62,20 @@ public class ExpressionHelper {
         }
 
         return new ComposeExpression(expressions);
+    }
+
+    private static int searchEnd(String expression, int expressionStart) {
+        int nextStart = expression.indexOf(expressionPrefix, expressionStart + 1);
+        if (nextStart == -1) {
+            nextStart = expression.length();
+        }
+        int end = expression.indexOf(expressionSuffix, expressionStart);
+        while (true) {
+            int next = expression.indexOf(expressionSuffix, end + 1);
+            if (next > nextStart || next == -1) {
+                return end;
+            }
+            end = next;
+        }
     }
 }

@@ -7,6 +7,7 @@ import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.style.CellStyles;
 import io.github.mengfly.excel.report.style.StyleMap;
 import io.github.mengfly.excel.report.style.key.StyleKey;
+import io.github.mengfly.excel.report.template.exepression.process.ProcessControl;
 import io.github.mengfly.excel.report.template.parse.ParserFactory;
 import io.github.mengfly.excel.report.util.XmlUtil;
 import lombok.Data;
@@ -104,5 +105,9 @@ public class ContainerTreeNode {
             log.error("解析 {} Style 失败", getTagName(), e);
         }
         return styleMap;
+    }
+
+    public ProcessControl getProcessControl(DataContext context, String tagName) {
+        return ProcessControl.create(tagName, getElement().getAttribute(tagName), context);
     }
 }

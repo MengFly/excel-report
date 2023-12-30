@@ -1,13 +1,14 @@
 package io.github.mengfly.excel.report.util;
 
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.beans.PropertyDescriptor;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 public class BeanUtil extends cn.hutool.core.bean.BeanUtil {
@@ -101,5 +102,40 @@ public class BeanUtil extends cn.hutool.core.bean.BeanUtil {
             log.error("Error getting bean value {} for {}", field, bean.getClass().getSimpleName(), e);
         }
         return null;
+    }
+
+    public static boolean isList(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj instanceof Iterable) {
+            return true;
+        }
+        if (obj instanceof Iterator) {
+            return true;
+        }
+        return ArrayUtil.isArray(obj);
+    }
+
+    public static List<?> objectToList(Object dataList) {
+
+        if (dataList == null) {
+            return Collections.emptyList();
+        }
+        if (dataList instanceof List) {
+            return ((List<?>) dataList);
+        }
+        if (dataList instanceof Iterable) {
+            return ListUtil.toList(((Iterable<?>) dataList).iterator());
+        }
+        if (dataList instanceof Iterator) {
+            return ListUtil.toList(((Iterator<?>) dataList));
+        }
+        if (ArrayUtil.isArray(dataList)) {
+            final Object[] cast = ArrayUtil.cast(ArrayUtil.getComponentType(dataList), dataList);
+            return ListUtil.toList(cast);
+        }
+        log.error("该类型数据不是列表数据 : {}", dataList.getClass());
+        return Collections.emptyList();
     }
 }

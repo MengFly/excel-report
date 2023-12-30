@@ -9,6 +9,7 @@ import io.github.mengfly.excel.report.style.StyleMap;
 import io.github.mengfly.excel.report.template.DataContext;
 import io.github.mengfly.excel.report.template.ReportTemplate;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -19,7 +20,7 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
-
+@Slf4j
 @Getter
 public class ExcelReport {
     private final XSSFWorkbook workbook = new XSSFWorkbook();
@@ -45,6 +46,10 @@ public class ExcelReport {
 
     public void exportTemplate(ReportTemplate template, String name, DataContext context) {
         Container container = template.render(context);
+        if (container == null) {
+            log.warn("This template has not found any container.");
+            return;
+        }
         exportSheet(name, container, template.getSheetStyle());
     }
 

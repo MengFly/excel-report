@@ -79,6 +79,21 @@
                 <Image size="6,11" src="${image}"/>
             </HLayout>
 
+            <Chart size="10,15"
+                   floor="1" backWall="1" sideWall="1" autoTitleDelete="false"
+                   displayBlankAs="gap" titleOverlay="true" titleText="图表标题">
+                <Legend position="topRight" overlay="true"/>
+
+                <ChartData>
+
+                </ChartData>
+
+                <PipData>
+
+                </PipData>
+
+
+            </Chart>
 
         </VLayout>
     </container>

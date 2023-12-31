@@ -16,7 +16,6 @@ import io.github.mengfly.excel.report.entity.Orientation;
 import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.layout.HLayout;
 import io.github.mengfly.excel.report.layout.VLayout;
-import org.apache.poi.xddf.usermodel.chart.AxisPosition;
 import org.apache.poi.xddf.usermodel.chart.ChartTypes;
 
 import java.util.Arrays;
@@ -106,17 +105,16 @@ public class TestChart extends VLayout {
         chartComponent.setSize(Size.of(10, 15));
 
         ChartValueAxis axisLeft = new ChartValueAxis();
-        axisLeft.setPosition(AxisPosition.LEFT);
         axisLeft.setName("Test");
         axisLeft.addData(TestDataUtil.getRandomValueData()).setType(ChartTypes.BAR).setName("test");
 
         ChartValueAxis axisRight = new ChartValueAxis();
         axisRight.setName("温度℃");
-        axisRight.setPosition(AxisPosition.RIGHT);
         axisRight.addData(TestDataUtil.getRandomValueData()).setType(ChartTypes.LINE).setName("北京温度");
-        axisRight.addData(TestDataUtil.getRandomValueData()).setType(ChartTypes.LINE).setName("河北温度");
+        axisRight.addData(TestDataUtil.getRandomValueData()).setType(ChartTypes.AREA).setName("河北温度");
 
-        chartComponent.setValueAxisList(Arrays.asList(axisLeft, axisRight));
+        chartComponent.setLeftAxis(axisLeft);
+        chartComponent.setRightAxis(axisRight);
         return chartComponent;
     }
 

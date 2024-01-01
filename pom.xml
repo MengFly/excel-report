@@ -4,12 +4,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
-
+    <name>ExcelReport</name>
     <groupId>io.github.mengfly</groupId>
     <artifactId>excel-report</artifactId>
     <version>1.0.0</version>
     <description>A framework for generating excel reports. easily export report with Excel.</description>
     <url>https://github.com/MengFly/excel-report</url>
+
+    <scm>
+        <url>https://github.com/MengFly/excel-report</url>
+        <connection>https://github.com/MengFly/excel-report.git</connection>
+        <developerConnection>https://github.com/MengFly/excel-report.git</developerConnection>
+    </scm>
 
     <licenses>
         <license>

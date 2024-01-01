@@ -39,7 +39,7 @@
     </developers>
 
     <properties>
-        <gpg.keyname>0xBCDC53A0</gpg.keyname>
+        <gpg.keyname>0x4939143E</gpg.keyname>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

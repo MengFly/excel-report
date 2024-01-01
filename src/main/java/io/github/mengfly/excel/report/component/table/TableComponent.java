@@ -1,6 +1,5 @@
 package io.github.mengfly.excel.report.component.table;
 
-import cn.hutool.core.collection.CollectionUtil;
 import io.github.mengfly.excel.report.component.AbstractComponent;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.entity.Size;
@@ -40,7 +39,7 @@ public class TableComponent extends AbstractComponent {
                 width += column.getColumnSpan();
             }
         }
-        height += CollectionUtil.size(this.dataList);
+        height += this.dataList == null ? 0 : this.dataList.size();
         return new Size(width, height);
     }
 

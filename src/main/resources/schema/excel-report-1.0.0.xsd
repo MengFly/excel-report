@@ -939,6 +939,33 @@
                 横向/纵向 列表组件
             </xs:documentation>
         </xs:annotation>
+        <xs:all>
+            <xs:element minOccurs="0" name="header">
+                <xs:complexType>
+                    <xs:attribute name="style" type="xs:string">
+                        <xs:annotation>
+                            <xs:documentation source="description">
+                                样式信息，可以为样式ID，也可以为样式内容
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="title" use="required" type="xs:string">
+                        <xs:annotation>
+                            <xs:documentation source="description">
+                                标题
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="span" default="1" type="xs:integer">
+                        <xs:annotation>
+                            <xs:documentation source="description">
+                                占据的列数
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
 
         <xs:attribute name="span" type="xs:int">
             <xs:annotation>
@@ -960,14 +987,6 @@
             <xs:annotation>
                 <xs:documentation source="description">
                     列表数据对齐方式
-                </xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-
-        <xs:attribute name="title" type="xs:string">
-            <xs:annotation>
-                <xs:documentation source="description">
-                    列表title
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>

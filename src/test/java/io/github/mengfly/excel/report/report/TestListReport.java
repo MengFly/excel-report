@@ -1,8 +1,9 @@
 package io.github.mengfly.excel.report.report;
 
 
-import io.github.mengfly.excel.report.component.ListComponent;
 import io.github.mengfly.excel.report.component.TextComponent;
+import io.github.mengfly.excel.report.component.list.ListComponent;
+import io.github.mengfly.excel.report.component.list.ListHeader;
 import io.github.mengfly.excel.report.component.table.TableComponent;
 import io.github.mengfly.excel.report.entity.AlignPolicy;
 import io.github.mengfly.excel.report.entity.Orientation;
@@ -45,7 +46,7 @@ public class TestListReport extends VLayout {
         ListComponent component = new ListComponent();
         component.setOrientation(Orientation.HORIZONTAL);
         component.setSpan(2);
-        component.setTitle("Horizontal List");
+        component.setHeader(new ListHeader("Horizontal List", 1));
         component.setDataList(TestDataUtil.getRandomStringList(9));
         return component;
     }
@@ -53,7 +54,7 @@ public class TestListReport extends VLayout {
     private ListComponent getVerticalList() {
         ListComponent component = new ListComponent();
         component.setOrientation(Orientation.VERTICAL);
-        component.setTitle("Vertical List");
+        component.setHeader(new ListHeader("Vertical List", 1));
         component.setSpan(2);
         component.setDataList(TestDataUtil.getRandomStringList(9));
         return component;

@@ -58,15 +58,18 @@
             <VLayout for="header,index : ${{'h1', 'h2', 'h3', 'h4'}}">
                 <List if="${index != 1}" span="2"
                       orientation="horizontal"
-                      style="{width:auto}"
-                      title="Horizontal-${header}-${index}" dataList="${listData}"/>
+                      style="{width:auto}" dataList="${listData}">
+                    <header title="Horizontal-${header}-${index}" style="{fontBold:true}"/>
+                </List>
             </VLayout>
 
 
             <HLayout>
                 <Text size="3,10" text="Test(width=3, height=10)"/>
                 <Text size="5,10" text="Test(width=5, height=10)"/>
-                <List span="2" orientation="vertical" dataList="${listData}" title="Vertical List"/>
+                <List span="2" orientation="vertical" dataList="${listData}">
+                    <header title="Vertical List"/>
+                </List>
             </HLayout>
 
             <HLayout>
@@ -125,7 +128,8 @@
                     </labelAxis>
 
                     <valueAxis title="Value1">
-                        <data varyColors="true" title="Data ${index}" type="pie" valueType="value" dataList="${chartValueData[0]}"/>
+                        <data varyColors="true" title="Data ${index}" type="pie" valueType="value"
+                              dataList="${chartValueData[0]}"/>
                     </valueAxis>
 
                 </PieData>

@@ -1,12 +1,13 @@
 package io.github.mengfly.excel.report.template.parse;
 
+import io.github.mengfly.excel.report.Container;
+import io.github.mengfly.excel.report.component.list.ListComponent;
+import io.github.mengfly.excel.report.component.list.ListHeader;
+import io.github.mengfly.excel.report.template.ContainerTreeNode;
+import io.github.mengfly.excel.report.template.DataContext;
 import io.github.mengfly.excel.report.util.BeanUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import io.github.mengfly.excel.report.Container;
-import io.github.mengfly.excel.report.component.ListComponent;
-import io.github.mengfly.excel.report.template.ContainerTreeNode;
-import io.github.mengfly.excel.report.template.DataContext;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +21,14 @@ public class ListParser extends ContainerParser {
     public Container parse(ContainerTreeNode containerTreeNode, DataContext context) {
 
         final ListComponent component = new ListComponent();
+
+        final ContainerTreeNode headerNode = containerTreeNode.getChild("header");
+        if (headerNode != null) {
+            ListHeader header = new ListHeader();
+            headerNode.initProperties(header, context, getIgnoreProperties().toArray(new String[0]));
+            header.addStyle(headerNode.getStyle("style", context));
+            component.setHeader(header);
+        }
 
         component.setDataList(getDataList(containerTreeNode, context));
         return component;

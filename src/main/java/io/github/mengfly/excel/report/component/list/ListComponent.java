@@ -1,5 +1,6 @@
-package io.github.mengfly.excel.report.component;
+package io.github.mengfly.excel.report.component.list;
 
+import io.github.mengfly.excel.report.component.AbstractComponent;
 import io.github.mengfly.excel.report.entity.Orientation;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.entity.Size;
@@ -15,8 +16,8 @@ import java.util.List;
 @Setter
 public class ListComponent extends AbstractComponent {
 
-    private String title;
-    private int titleSpan = 1;
+
+    private ListHeader header;
 
     private List<?> dataList = new ArrayList<>();
     private int span = 1;
@@ -29,9 +30,9 @@ public class ListComponent extends AbstractComponent {
         int dataSize = dataList == null ? 0 : dataList.size();
 
         if (orientation == Orientation.VERTICAL) {
-            return Size.of(span, title == null ? dataSize : dataSize + titleSpan);
+            return Size.of(span, header == null ? dataSize : dataSize + header.getSpan());
         } else {
-            return Size.of(title == null ? dataSize : dataSize + titleSpan, span);
+            return Size.of(header == null ? dataSize : dataSize + header.getSpan(), span);
         }
     }
 
@@ -47,11 +48,13 @@ public class ListComponent extends AbstractComponent {
     private void exportHorizontalList(ReportContext context, Point point) {
         int startCol = 0;
         // export header
-        if (title != null) {
-            final ExcelCellSpan titleCellSpan = context.getCellSpan(point, Size.of(this.titleSpan, span));
-            titleCellSpan.merge().setValue(title);
+        if (header != null) {
 
-            startCol += this.titleSpan;
+            final ExcelCellSpan titleCellSpan = context.getCellSpan(
+                    point, Size.of(this.getHeader().getSpan(), span), context.getCurrentChildStyle(this.header.getStyle()));
+            titleCellSpan.merge().setValue(getHeader().getTitle());
+
+            startCol += this.header.getSpan();
         }
 
         // export data
@@ -70,11 +73,11 @@ public class ListComponent extends AbstractComponent {
         int startRow = 0;
 
         // export header
-        if (title != null) {
-            final ExcelCellSpan headerCellSpan = context.getCellSpan(point, Size.of(span, titleSpan));
-            headerCellSpan.merge().setValue(title);
+        if (header != null) {
+            final ExcelCellSpan headerCellSpan = context.getCellSpan(point, Size.of(span, header.getSpan()));
+            headerCellSpan.merge().setValue(header.getTitle());
 
-            startRow += titleSpan;
+            startRow += header.getSpan();
         }
 
         // export data

@@ -39,7 +39,7 @@ public class TableParser extends ContainerParser {
     private List<TableColumn> getColumns(ContainerTreeNode containerTreeNode, DataContext context) {
         List<TableColumn> columns = new ArrayList<>();
 
-        for (ContainerTreeNode columnNode : containerTreeNode.getChild("column")) {
+        for (ContainerTreeNode columnNode : containerTreeNode.listChild("column")) {
             TableColumn column = new TableObjFieldColumn();
             column.addStyle(columnNode.getStyle("style", context));
             column.getDataStyle().addStyle(columnNode.getStyle("dataStyle", context));

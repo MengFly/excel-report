@@ -4,8 +4,12 @@ package io.github.mengfly.excel.report.report;
 import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.component.ListComponent;
 import io.github.mengfly.excel.report.component.TextComponent;
+import io.github.mengfly.excel.report.component.chart.AxisType;
 import io.github.mengfly.excel.report.component.chart.ChartComponent;
+import io.github.mengfly.excel.report.component.chart.Legend;
+import io.github.mengfly.excel.report.component.chart.axis.ChartLabelAxis;
 import io.github.mengfly.excel.report.component.chart.axis.ChartValueAxis;
+import io.github.mengfly.excel.report.component.chart.type.DefaultChartDataType;
 import io.github.mengfly.excel.report.component.image.FileSystemImage;
 import io.github.mengfly.excel.report.component.image.ImageComponent;
 import io.github.mengfly.excel.report.component.table.TableColumn;
@@ -17,6 +21,7 @@ import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.layout.HLayout;
 import io.github.mengfly.excel.report.layout.VLayout;
 import org.apache.poi.xddf.usermodel.chart.ChartTypes;
+import org.apache.poi.xddf.usermodel.chart.LegendPosition;
 
 import java.util.Arrays;
 import java.util.List;
@@ -99,22 +104,34 @@ public class TestChart extends VLayout {
     }
 
     private Container getChartItem() {
-        ChartComponent chartComponent = new ChartComponent();
 
-        chartComponent.setTitle("测试图表");
-        chartComponent.setSize(Size.of(10, 15));
+        DefaultChartDataType type = new DefaultChartDataType();
+
+        ChartLabelAxis labelAxis = new ChartLabelAxis();
+        labelAxis.setType(AxisType.CATEGORY);
+        labelAxis.setData(TestDataUtil.getRandomStringList(20));
 
         ChartValueAxis axisLeft = new ChartValueAxis();
-        axisLeft.setName("Test");
-        axisLeft.addData(TestDataUtil.getRandomValueData()).setType(ChartTypes.BAR).setName("test");
+        axisLeft.setTitle("Test");
+
+        axisLeft.addData(TestDataUtil.getRandomValueData()).setType(ChartTypes.LINE).setTitle("test");
+        axisLeft.addData(TestDataUtil.getRandomValueData()).setType(ChartTypes.LINE).setTitle("test");
+        axisLeft.addData(TestDataUtil.getRandomValueData()).setType(ChartTypes.LINE).setTitle("test");
+        axisLeft.addData(TestDataUtil.getRandomValueData()).setType(ChartTypes.LINE).setTitle("test");
 
         ChartValueAxis axisRight = new ChartValueAxis();
-        axisRight.setName("温度℃");
-        axisRight.addData(TestDataUtil.getRandomValueData()).setType(ChartTypes.LINE).setName("北京温度");
-        axisRight.addData(TestDataUtil.getRandomValueData()).setType(ChartTypes.AREA).setName("河北温度");
+        axisRight.setTitle("温度℃");
+        axisRight.addData(TestDataUtil.getRandomValueData()).setType(ChartTypes.LINE).setTitle("北京温度");
+        axisRight.addData(TestDataUtil.getRandomValueData()).setType(ChartTypes.AREA).setTitle("河北温度");
+        type.setValueAxis1(axisLeft);
+        type.setLabelAxis(labelAxis);
+        type.setValueAxis2(axisRight);
 
-        chartComponent.setLeftAxis(axisLeft);
-        chartComponent.setRightAxis(axisRight);
+        ChartComponent chartComponent = new ChartComponent(type);
+        chartComponent.setTitle("测试图表");
+        chartComponent.setSize(Size.of(10, 15));
+        chartComponent.setLegend(new Legend(LegendPosition.TOP_RIGHT, false));
+
         return chartComponent;
     }
 

@@ -1,6 +1,7 @@
 package io.github.mengfly.excel.report.component.chart.axis;
 
 import io.github.mengfly.excel.report.component.chart.AxisType;
+import io.github.mengfly.excel.report.component.chart.data.AxisDataResolver;
 import io.github.mengfly.excel.report.component.chart.data.ChartValueAxisData;
 import io.github.mengfly.excel.report.component.chart.data.RelationAxisDataResolver;
 import io.github.mengfly.excel.report.component.chart.data.ValueAxisDataResolver;
@@ -28,11 +29,15 @@ public class ChartValueAxis extends ChartAxis {
         return data;
     }
 
+    public ChartValueAxisData addData(AxisDataResolver data) {
+        return addData(new ChartValueAxisData(data));
+    }
+
     public ChartValueAxisData addData(List<? extends Number> data) {
         return this.addData(new ChartValueAxisData(new ValueAxisDataResolver(data)));
     }
 
     public ChartValueAxisData addData(CellRangeAddress addresses) {
-       return this.addData(new ChartValueAxisData(new RelationAxisDataResolver(addresses)));
+        return this.addData(new ChartValueAxisData(new RelationAxisDataResolver(addresses)));
     }
 }

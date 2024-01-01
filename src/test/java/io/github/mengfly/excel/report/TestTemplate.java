@@ -10,7 +10,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,15 +36,25 @@ public class TestTemplate {
     public void testTemplate() throws IOException {
         exportTemplate(report, new DataContext(), "TestLayoutReport.xml");
         exportTemplate(report, createIndexSensitivityTemplateContext(), "IndexSensitivityTemplate.xml");
-        exportTemplate(report, createImageTemplateContext(), "TestImage.xml");
+        exportTemplate(report, createTemplateContext(), "TestTemplate.xml");
     }
 
-    private DataContext createImageTemplateContext() {
+    private DataContext createTemplateContext() {
         DataContext context = new DataContext();
         context.put("image", TestDataUtil.getTestImageFile());
         context.put("tableData", TestDataUtil.getData(10));
         context.put("listData", TestDataUtil.getRandomStringList(9));
+
+        List<String> label = TestDataUtil.getRandomStringList(10);
+        context.put("chartLabelData", label);
+
+        List<List<Integer>> testChartData = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            testChartData.add(TestDataUtil.getRandomIntegerList(10));
+        }
+        context.put("chartValueData", testChartData);
         return context;
+
     }
 
 

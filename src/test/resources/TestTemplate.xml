@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://mengfly.github.io/excel-report/1.0.0 https://mengfly.github.io/xsd/excel-report-1.0.0.xsd"
         name="testImage"
-        description="测试图片"
+        description="测试模板"
         version="1.0"
         author="MengFly"
         createAt="2023-12-26">
@@ -79,22 +79,57 @@
                 <Image size="6,11" src="${image}"/>
             </HLayout>
 
-            <Chart size="10,15"
-                   floor="1" backWall="1" sideWall="1" autoTitleDelete="false"
-                   displayBlankAs="gap" titleOverlay="true" titleText="图表标题">
-                <Legend position="topRight" overlay="true"/>
+            <Chart size="10,15" title="测试的二维曲线图">
+
+                <Legend position="top_right" overlay="true"/>
 
                 <ChartData>
+                    <labelAxis title="X" type="category">
+                        <data title="X" valueType="value" dataList="${chartLabelData}"/>
+                    </labelAxis>
+
+                    <valueAxis1 for="chartData, index: ${chartValueData}" title="Value1">
+                        <data title="Data ${index}" type="line" valueType="value" dataList="${chartData}"/>
+                        <data title="BarData ${index}" type="bar" valueType="value" dataList="${chartData}"/>
+                    </valueAxis1>
 
                 </ChartData>
+            </Chart>
+            <Chart size="10,15" title="测试的三维曲线图">
 
-                <PipData>
+                <Legend position="top_right" overlay="true"/>
 
-                </PipData>
+                <Chart3dData>
+                    <labelAxis title="X" type="category">
+                        <data title="X" valueType="value" dataList="${chartLabelData}"/>
+                    </labelAxis>
 
-
+                    <valueAxis1 for="chartData, index: ${chartValueData}" title="Value1">
+                        <data title="Data ${index}" type="line3d" valueType="value" dataList="${chartData}"/>
+                        <data title="BarData ${index}" type="bar3d" valueType="value" dataList="${chartData}"/>
+                    </valueAxis1>
+                    <valueAxis2 for="chartData, index: ${chartValueData}" title="Value1">
+                        <data title="Data ${index}" type="line3d" valueType="value" dataList="${chartData}"/>
+                        <data title="BarData ${index}" type="bar3d" valueType="value" dataList="${chartData}"/>
+                    </valueAxis2>
+                </Chart3dData>
             </Chart>
 
+            <Chart size="10,15" title="测试饼图">
+
+                <Legend position="top_right" overlay="true"/>
+
+                <PieData>
+                    <labelAxis title="X" type="category">
+                        <data title="X" valueType="value" dataList="${chartLabelData}"/>
+                    </labelAxis>
+
+                    <valueAxis title="Value1">
+                        <data varyColors="true" title="Data ${index}" type="pie" valueType="value" dataList="${chartValueData[0]}"/>
+                    </valueAxis>
+
+                </PieData>
+            </Chart>
         </VLayout>
     </container>
 </template>

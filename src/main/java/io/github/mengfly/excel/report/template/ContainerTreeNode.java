@@ -9,6 +9,7 @@ import io.github.mengfly.excel.report.style.StyleMap;
 import io.github.mengfly.excel.report.style.key.StyleKey;
 import io.github.mengfly.excel.report.template.exepression.process.ProcessControl;
 import io.github.mengfly.excel.report.template.parse.ParserFactory;
+import io.github.mengfly.excel.report.util.BeanUtil;
 import io.github.mengfly.excel.report.util.XmlUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -77,7 +78,7 @@ public class ContainerTreeNode {
     }
 
 
-    public List<ContainerTreeNode> getChild(String tagName) {
+    public List<ContainerTreeNode> listChild(String tagName) {
         final List<Element> elements = XmlUtil.getElements(element, tagName);
         return elements.stream().map(childElement -> {
             final ContainerTreeNode treeNode = new ContainerTreeNode();
@@ -85,6 +86,17 @@ public class ContainerTreeNode {
             treeNode.setElement(childElement);
             return treeNode;
         }).collect(Collectors.toList());
+    }
+
+    public ContainerTreeNode getChild(String tagName) {
+        final Element childElement = XmlUtil.getElement(element, tagName);
+        if (childElement == null) {
+            return null;
+        }
+        final ContainerTreeNode treeNode = new ContainerTreeNode();
+        treeNode.setParent(this);
+        treeNode.setElement(childElement);
+        return treeNode;
     }
 
     private StyleMap parseJsonStyle(String attribute, DataContext context) {
@@ -109,5 +121,20 @@ public class ContainerTreeNode {
 
     public ProcessControl getProcessControl(DataContext context, String tagName) {
         return ProcessControl.create(tagName, getElement().getAttribute(tagName), context);
+    }
+
+    public Map<String, String> getAttributeMap(String... ignoreProperties) {
+        return XmlUtil.getAttributeMap(getElement(), ignoreProperties);
+    }
+
+    public void initProperties(Object result, DataContext context, String... ignoreProperties) {
+        final Map<String, String> attributeMap = getAttributeMap(ignoreProperties);
+
+        if (attributeMap.isEmpty()) {
+            return;
+        }
+        attributeMap.replaceAll((k, v) -> context.doExpression(attributeMap.get(k), String.class));
+
+        BeanUtil.initBeanProperties(result, attributeMap);
     }
 }

@@ -50,6 +50,14 @@ public class TestDataUtil {
         return doubles;
     }
 
+    public static List<Integer> getRandomIntegerList(int i) {
+        List<Integer> integers = new ArrayList<>();
+        for (int j = 0; j < i; j++) {
+            integers.add(RandomUtil.randomInt(100));
+        }
+        return integers;
+    }
+
 
     @Data
     @AllArgsConstructor

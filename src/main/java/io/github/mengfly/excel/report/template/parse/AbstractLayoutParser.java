@@ -10,7 +10,7 @@ import java.util.List;
 public abstract class AbstractLayoutParser extends ContainerParser {
 
     protected void doParseChildContainer(Layout layout, ContainerTreeNode layoutNode, DataContext context) {
-        final List<ContainerTreeNode> childNodes = layoutNode.getChild(null);
+        final List<ContainerTreeNode> childNodes = layoutNode.listChild(null);
 
         layoutNode.getProcessControl(context, "for").onFetch(processContext -> {
             for (ContainerTreeNode treeNode : childNodes) {

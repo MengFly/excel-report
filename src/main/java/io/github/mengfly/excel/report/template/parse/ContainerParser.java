@@ -7,11 +7,12 @@ import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
 import io.github.mengfly.excel.report.template.exepression.process.ProcessControl;
-import io.github.mengfly.excel.report.util.BeanUtil;
-import io.github.mengfly.excel.report.util.XmlUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 public abstract class ContainerParser {
@@ -66,15 +67,7 @@ public abstract class ContainerParser {
         final ArrayList<String> ignoreProperties = new ArrayList<>(IGNORE_PROPERTIES);
         ignoreProperties.addAll(getIgnoreProperties());
 
-        final Map<String, String> attributeMap = XmlUtil.getAttributeMap(element.getElement(), ignoreProperties.toArray(new String[0]));
-        if (attributeMap.isEmpty()) {
-            return;
-        }
-
-        attributeMap.replaceAll((k, v) -> context.doExpression(attributeMap.get(k), String.class));
-
-        BeanUtil.initBeanProperties(container, attributeMap);
-
+        element.initProperties(container, context, ignoreProperties.toArray(new String[0]));
     }
 
 }

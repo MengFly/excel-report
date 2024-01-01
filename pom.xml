@@ -46,9 +46,10 @@
         <hutool-all.version>5.8.18</hutool-all.version>
         <junit.version>4.13.2</junit.version>
         <lombok.version>1.18.20</lombok.version>
-        <poi-ooxml.version>5.2.2</poi-ooxml.version>
+        <poi-ooxml.version>5.2.5</poi-ooxml.version>
         <slf4j-api.version>2.0.7</slf4j-api.version>
         <spring-framework.version>5.3.29</spring-framework.version>
+        <log4j2.version>2.13.3</log4j2.version>
     </properties>
 
 
@@ -92,6 +93,7 @@
             <optional>true</optional>
             <scope>provided</scope>
         </dependency>
+
     </dependencies>
 
     <profiles>

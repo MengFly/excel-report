@@ -19,6 +19,7 @@ public class ParserFactory {
         addParser(new HLayoutParser());
         addParser(new VLayoutParser());
         addParser(new LinkParser());
+        addParser(new ChartParser());
     }
 
     public static void addParser(ContainerParser parser) {

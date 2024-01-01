@@ -10,7 +10,7 @@ import org.apache.poi.xddf.usermodel.chart.XDDFDataSource;
 public abstract class ChartAxisData<T extends XDDFDataSource<?>> {
 
 
-    private String name;
+    private String title;
     private final AxisDataResolver resolver;
 
     public int dataCount() {
@@ -22,8 +22,5 @@ public abstract class ChartAxisData<T extends XDDFDataSource<?>> {
         return ((T) resolver.createDataSource(context));
     }
 
-    public void initSeriesStyle(XDDFChartData.Series series) {
-        // TODO  2023/12/29
-        series.setTitle(name, null);
-    }
+
 }

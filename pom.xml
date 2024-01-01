@@ -7,7 +7,7 @@
 
     <groupId>io.github.mengfly</groupId>
     <artifactId>excel-report</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <description>A framework for generating excel reports. easily export report with Excel.</description>
     <url>https://github.com/MengFly/excel-report</url>
 

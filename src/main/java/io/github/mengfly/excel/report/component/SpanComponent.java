@@ -6,9 +6,11 @@ import io.github.mengfly.excel.report.excel.ReportContext;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class SpanComponent extends AbstractComponent {

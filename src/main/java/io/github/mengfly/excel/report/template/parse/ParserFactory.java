@@ -20,6 +20,7 @@ public class ParserFactory {
         addParser(new VLayoutParser());
         addParser(new LinkParser());
         addParser(new ChartParser());
+        addParser(new SpanParser());
     }
 
     public static void addParser(ContainerParser parser) {

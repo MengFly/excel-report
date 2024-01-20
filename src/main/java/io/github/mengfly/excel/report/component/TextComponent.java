@@ -1,13 +1,13 @@
 package io.github.mengfly.excel.report.component;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.excel.ExcelCellSpan;
 import io.github.mengfly.excel.report.excel.ReportContext;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -16,7 +16,7 @@ import io.github.mengfly.excel.report.excel.ReportContext;
 public class TextComponent extends AbstractComponent {
 
     private Size size;
-    private String text;
+    private Object text;
 
     @Override
     public void onExport(ReportContext context, Point point) {

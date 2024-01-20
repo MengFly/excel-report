@@ -5,8 +5,19 @@ import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.excel.ReportContext;
 import io.github.mengfly.excel.report.style.StyleAble;
+import io.github.mengfly.excel.report.template.ContainerTreeNode;
 
 public interface Container extends StyleAble {
+
+    /**
+     * 获取该组件相关的模板信息
+     * <br>
+     * 该方法只有在通过模板方法创建的时候才会返回信息，否则返回null
+     * @return 模板信息
+     */
+    ContainerTreeNode getTemplateNode();
+
+    void setTemplateNode(ContainerTreeNode templateNode);
 
     /**
      * 获取容器的尺寸
@@ -34,4 +45,6 @@ public interface Container extends StyleAble {
     default String print() {
         return String.format("%s[%s]", getClass().getSimpleName(), getSize());
     }
+
+
 }

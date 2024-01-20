@@ -36,8 +36,17 @@ public class ContainerTreeNode {
         return element.getTagName();
     }
 
+    /**
+     * 渲染组件
+     * @param context 组件数据
+     * @return 组件
+     */
     public Container render(DataContext context) {
-        return ParserFactory.doParseElement(this, context);
+        final Container container = ParserFactory.doParseElement(this, context);
+        if (container != null) {
+            container.setTemplateNode(this);
+        }
+        return container;
     }
 
     public String getAttribute(String key) {

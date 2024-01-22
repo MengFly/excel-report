@@ -45,6 +45,8 @@
             <Link link="https://gitee.com/mengfly_p/excel-report" size="10,3" text="Excel Report Framework"
                   label="点击访问项目开源地址" style="HeaderLinkStyle"/>
 
+            <include ref="TestLayoutReport" include="${true}"/>
+
             <Text size="10,3" text="Test(width=10,height=3)"/>
             <HLayout>
                 <Table dataList="${tableData}">

@@ -31,6 +31,7 @@ public class ContainerTreeNode {
     private ContainerTreeNode parent;
     private Element element;
     private Map<String, StyleMap> syleMap = new HashMap<>();
+    private TemplateManager templateManager;
 
     public String getTagName() {
         return element.getTagName();
@@ -93,6 +94,7 @@ public class ContainerTreeNode {
             final ContainerTreeNode treeNode = new ContainerTreeNode();
             treeNode.setParent(this);
             treeNode.setElement(childElement);
+            treeNode.setTemplateManager(templateManager);
             return treeNode;
         }).collect(Collectors.toList());
     }

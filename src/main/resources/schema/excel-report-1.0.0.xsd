@@ -773,6 +773,7 @@
                 <xs:element minOccurs="0" maxOccurs="unbounded" name="Span" type="Span"/>
                 <xs:element minOccurs="0" maxOccurs="unbounded" name="Link" type="Link"/>
                 <xs:element minOccurs="0" maxOccurs="unbounded" name="Chart" type="Chart"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="include" type="include"/>
             </xs:choice>
         </xs:sequence>
     </xs:group>
@@ -1067,7 +1068,14 @@
         <xs:attributeGroup ref="AttrContainerDefault"/>
 
     </xs:complexType>
-
+    <xs:complexType name="include">
+        <xs:attribute name="ref" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>要引入的模板位置</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:anyAttribute processContents="lax"/>
+    </xs:complexType>
 
     <xs:complexType name="Legend">
         <xs:attribute name="position" type="LegendPosition">
@@ -1303,7 +1311,6 @@
 
         <xs:attributeGroup ref="AttrChartAxis"/>
     </xs:complexType>
-
 
     <xs:complexType name="ChartValueAxis">
 

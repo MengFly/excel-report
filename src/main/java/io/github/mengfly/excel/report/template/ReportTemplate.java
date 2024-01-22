@@ -2,17 +2,17 @@ package io.github.mengfly.excel.report.template;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.style.CellStyles;
 import io.github.mengfly.excel.report.style.SheetStyles;
 import io.github.mengfly.excel.report.style.StyleMap;
 import io.github.mengfly.excel.report.style.key.StyleKey;
 import io.github.mengfly.excel.report.util.XmlUtil;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.InputStream;
 import java.util.Date;
@@ -31,6 +31,8 @@ public class ReportTemplate {
     private Date createAt;
     private final ContainerTreeNode rootNode;
     private StyleMap sheetStyle;
+
+    private TemplateManager templateManager;
 
 
     public ReportTemplate(InputStream stream) {
@@ -105,6 +107,7 @@ public class ReportTemplate {
 
 
     public Container render(DataContext context) {
+        rootNode.setTemplateManager(templateManager);
         return rootNode.render(context);
     }
 
@@ -113,7 +116,6 @@ public class ReportTemplate {
         final Element rootContainer = XmlUtil.getElements(element, null).get(0);
         ContainerTreeNode root = new ContainerTreeNode();
         root.setElement(rootContainer);
-
         return root;
     }
 

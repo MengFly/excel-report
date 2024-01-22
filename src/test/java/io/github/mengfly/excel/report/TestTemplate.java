@@ -6,13 +6,13 @@ import io.github.mengfly.excel.report.excel.ExcelReport;
 import io.github.mengfly.excel.report.report.TestDataUtil;
 import io.github.mengfly.excel.report.template.DataContext;
 import io.github.mengfly.excel.report.template.ReportTemplate;
+import io.github.mengfly.excel.report.template.TemplateManager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +21,7 @@ import java.util.Map;
 public class TestTemplate {
 
     private static ExcelReport report;
+    private static final TemplateManager templateManager = new TemplateManager();
 
     @BeforeClass
     public static void before() {
@@ -33,7 +34,7 @@ public class TestTemplate {
     }
 
     @Test
-    public void testTemplate() throws IOException {
+    public void testTemplate() {
         exportTemplate(report, new DataContext(), "TestLayoutReport.xml");
         exportTemplate(report, createIndexSensitivityTemplateContext(), "IndexSensitivityTemplate.xml");
         exportTemplate(report, createTemplateContext(), "TestTemplate.xml");
@@ -58,11 +59,9 @@ public class TestTemplate {
     }
 
 
-    private void exportTemplate(ExcelReport report, DataContext context, String templatePath) throws IOException {
-        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(templatePath)) {
-            ReportTemplate template = new ReportTemplate(stream);
-            report.exportTemplate(template, FileUtil.mainName(templatePath), context);
-        }
+    private void exportTemplate(ExcelReport report, DataContext context, String templatePath) {
+        ReportTemplate template = templateManager.getTemplate(templatePath);
+        report.exportTemplate(template, FileUtil.mainName(templatePath), context);
     }
 
     private static DataContext createIndexSensitivityTemplateContext() {

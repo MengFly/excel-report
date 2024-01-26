@@ -10,6 +10,7 @@ import io.github.mengfly.excel.report.style.StyleChain;
 import io.github.mengfly.excel.report.style.StyleMap;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
@@ -20,10 +21,12 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-
+@Slf4j
 @RequiredArgsConstructor
 public class ReportContext {
 
@@ -38,12 +41,13 @@ public class ReportContext {
     private final Map<Integer, Double> autoWidthColumn = new HashMap<>();
     private final Map<Integer, Double> autoHeightRow = new HashMap<>();
     private XSSFDataFormat format;
+    private final List<Runnable> onExportFinalizer = new ArrayList<>();
 
     public ExcelCellSpan getCellSpan(Point point, Size size, StyleMap cellStyle) {
         final ExcelCellSpan cellSpan = new ExcelCellSpan(sheet, point, size);
-        cellSpan.setStyle(getCellStyle(cellStyle), cellStyle);
         cellSpan.setCellAutoWidth(autoWidthColumn);
         cellSpan.setCellAutoHeight(autoHeightRow);
+        cellSpan.setStyle(getCellStyle(cellStyle), cellStyle);
         return cellSpan;
     }
 
@@ -84,7 +88,7 @@ public class ReportContext {
     }
 
     public XSSFDrawing createDrawingPatriarch() {
-        return (XSSFDrawing) sheet.createDrawingPatriarch();
+        return sheet.createDrawingPatriarch();
     }
 
     public int addPicture(Image image) throws IOException {
@@ -102,19 +106,32 @@ public class ReportContext {
 
         autoHeightRow.forEach((row, height) -> sheet.getRow(row).setHeightInPoints(height.floatValue()));
 
-        if (autoHeightRow.isEmpty()) {
-            return;
-        }
-        sheetStyle.getStyle(SheetStyles.defaultRowHeight).ifPresent(height -> {
-            for (int i = sheet.getFirstRowNum(); i <= sheet.getLastRowNum(); i++) {
-                final Row row = sheet.getRow(i);
-                if (row != null) {
-                    if (!autoHeightRow.containsKey(i)) {
-                        row.setHeightInPoints(height);
+        if (!autoHeightRow.isEmpty()) {
+            // 调整大小
+            sheetStyle.getStyle(SheetStyles.defaultRowHeight).ifPresent(height -> {
+                for (int i = sheet.getFirstRowNum(); i <= sheet.getLastRowNum(); i++) {
+                    final Row row = sheet.getRow(i);
+                    if (row != null) {
+                        if (!autoHeightRow.containsKey(i)) {
+                            row.setHeightInPoints(height);
+                        }
                     }
                 }
+            });
+        }
+
+        onExportFinalizer.forEach(runnable -> {
+            try {
+                runnable.run();
+            } catch (Exception e) {
+                log.error("onExportFinalizer fail", e);
             }
         });
 
+
+    }
+
+    public void addOnExportFinalizer(Runnable runnable) {
+        onExportFinalizer.add(runnable);
     }
 }

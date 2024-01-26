@@ -676,6 +676,15 @@
             <xs:enumeration value="end"/>
         </xs:restriction>
     </xs:simpleType>
+
+    <xs:simpleType name="ImageAnchorType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="MOVE_AND_RESIZE"/>
+            <xs:enumeration value="DONT_MOVE_DO_RESIZE"/>
+            <xs:enumeration value="MOVE_DONT_RESIZE"/>
+            <xs:enumeration value="DONT_MOVE_AND_RESIZE"/>
+        </xs:restriction>
+    </xs:simpleType>
     <xs:simpleType name="Orientation">
         <xs:restriction base="xs:string">
             <xs:enumeration value="horizontal"/>
@@ -742,6 +751,16 @@
             <xs:enumeration value="center"/>
             <xs:enumeration value="left"/>
             <xs:enumeration value="right"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="ScaleType">
+
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="FIT_START"/>
+            <xs:enumeration value="FIT_END"/>
+            <xs:enumeration value="FIT_XY"/>
+            <xs:enumeration value="CENTER"/>
         </xs:restriction>
     </xs:simpleType>
 
@@ -931,8 +950,23 @@
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
+        <xs:attribute name="anchorType" type="ImageAnchorType">
+            <xs:annotation>
+                <xs:documentation>
+                    定位方式
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="scaleType" type="ScaleType" default="FIT_XY">
+            <xs:annotation>
+                <xs:documentation>
+                    图片的缩放方式
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
         <xs:attributeGroup ref="AttrContainerDefault"/>
         <xs:attributeGroup ref="AttrSize"/>
+
     </xs:complexType>
     <xs:complexType name="List">
         <xs:annotation>
@@ -1062,6 +1096,11 @@
         <xs:attribute name="titleOverlay" type="xs:boolean" default="false">
             <xs:annotation>
                 <xs:documentation>是否标题叠加</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="anchorType" type="ImageAnchorType">
+            <xs:annotation>
+                <xs:documentation>图表定位类型</xs:documentation>
             </xs:annotation>
         </xs:attribute>
         <xs:attributeGroup ref="AttrSize"/>
@@ -1433,5 +1472,6 @@
             </xs:element>
         </xs:all>
     </xs:complexType>
+
 
 </xs:schema>

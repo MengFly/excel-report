@@ -8,16 +8,20 @@ import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.style.CellStyles;
 import io.github.mengfly.excel.report.style.StyleMap;
 import io.github.mengfly.excel.report.util.ExcelUtil;
+import lombok.Getter;
 import lombok.Setter;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.SheetUtil;
+import org.apache.poi.util.Dimension2DDouble;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 
+import java.awt.geom.Dimension2D;
 import java.util.Map;
 import java.util.Optional;
 
 
 public class ExcelCellSpan {
+    @Getter
     private final Sheet sheet;
     private final Point point;
     private final Size size;
@@ -69,7 +73,7 @@ public class ExcelCellSpan {
         orGetCell.setHyperlink(hyperlink);
     }
 
-    private void calculateAndRecordCellWidthHeight() {
+    public void calculateAndRecordCellWidthHeight() {
         if (styleMap != null) {
             final Optional<String> widthStyle = styleMap.getStyle(CellStyles.width);
             if (widthStyle.isPresent() && cellAutoWidth != null) {
@@ -111,13 +115,38 @@ public class ExcelCellSpan {
             }
         }
         this.styleMap = styleMap;
+        calculateAndRecordCellWidthHeight();
     }
 
-    public ClientAnchor getFillAnchor() {
-        return new XSSFClientAnchor(
-                0, 0, 0, 0,
-                point.getX(), point.getY(), point.getX() + size.width, point.getY() + size.height);
+    public ClientAnchor getFillAnchor(ClientAnchor.AnchorType anchorType) {
+        final XSSFClientAnchor anchor = new XSSFClientAnchor(0, 0, 0, 0, point.getX(), point.getY(), point.getX() + size.width, point.getY() + size.height);
+        if (anchorType != null) {
+            anchor.setAnchorType(anchorType);
+        }
+        return anchor;
     }
 
+    public Dimension2D cellSpanDimension() {
+        double widthPixel = 0;
+        double heightPixel = 0;
+
+        for (int i = 0; i < size.width; i++) {
+            widthPixel += getColumnWidthInPixels(point.getX() + i);
+        }
+
+        for (int i = 0; i < size.height; i++) {
+            heightPixel += getRowHeightInPixels(point.getY() + i);
+        }
+        return new Dimension2DDouble(widthPixel, heightPixel);
+    }
+
+    public double getColumnWidthInPixels(int col) {
+
+        return sheet.getColumnWidthInPixels(col);
+    }
+
+    public double getRowHeightInPixels(int row) {
+        return sheet.getRow(row).getHeightInPoints();
+    }
 
 }

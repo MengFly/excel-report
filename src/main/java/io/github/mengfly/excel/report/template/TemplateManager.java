@@ -11,6 +11,16 @@ import lombok.Setter;
 @Setter
 public class TemplateManager {
 
+    private static TemplateManager instance;
+
+    public static TemplateManager getInstance() {
+        if (instance == null) {
+            instance = new TemplateManager();
+        }
+        return instance;
+    
+    }
+
     /**
      * 模板工厂
      */

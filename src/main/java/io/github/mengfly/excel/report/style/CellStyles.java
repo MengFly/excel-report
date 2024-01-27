@@ -258,7 +258,26 @@ public class CellStyles {
         return map.getStyleMap(fontStyleMap.values());
     }
 
+
     public static XSSFColor createColor(int rgb) {
         return new XSSFColor(new java.awt.Color(rgb), null);
+    }
+
+    public static StyleMap createStyle(Map<String, String> map) {
+        StyleMap styleMap = new StyleMap();
+        if (map == null || map.isEmpty()) {
+            return styleMap;
+        }
+        map.forEach((key, value) -> {
+            final StyleKey<Object> styleKey = getStyleKey(key);
+            if (styleKey != null) {
+                try {
+                    styleMap.addStyle(styleKey, styleKey.getStyle(value));
+                } catch (Exception ignore) {
+
+                }
+            }
+        });
+        return styleMap;
     }
 }

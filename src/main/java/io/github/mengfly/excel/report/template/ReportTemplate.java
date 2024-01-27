@@ -80,22 +80,9 @@ public class ReportTemplate {
                 if (StrUtil.isEmpty(id)) {
                     continue;
                 }
-                StyleMap styleMap = new StyleMap();
                 final List<Element> styleKeyElements = XmlUtil.getElements(styleElement, null);
-
-                for (Element styleKeyElement : styleKeyElements) {
-                    final String tagName = styleKeyElement.getTagName();
-                    final StyleKey<Object> styleKey = CellStyles.getStyleKey(tagName);
-                    if (styleKey != null) {
-                        final String styleValue = styleKeyElement.getTextContent();
-                        try {
-                            styleMap.addStyle(styleKey, styleKey.getStyle(styleValue));
-                        } catch (Exception e) {
-                            log.error("无法解析 Id 为 {} 的 Style: {} ({})", id, tagName, styleValue);
-                        }
-                    }
-                }
-                rootNode.getSyleMap().put(id, styleMap);
+                final StyleMap style = CellStyles.createStyle(XmlUtil.getElementNameValueMap(styleKeyElements));
+                rootNode.getSyleMap().put(id, style);
             }
         }
     }

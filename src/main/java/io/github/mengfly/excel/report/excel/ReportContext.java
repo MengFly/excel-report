@@ -44,7 +44,7 @@ public class ReportContext {
     private final List<Runnable> onExportFinalizer = new ArrayList<>();
 
     public ExcelCellSpan getCellSpan(Point point, Size size, StyleMap cellStyle) {
-        final ExcelCellSpan cellSpan = new ExcelCellSpan(sheet, point, size);
+        final ExcelCellSpan cellSpan = new ExcelCellSpan(this, point, size);
         cellSpan.setCellAutoWidth(autoWidthColumn);
         cellSpan.setCellAutoHeight(autoHeightRow);
         cellSpan.setStyle(getCellStyle(cellStyle), cellStyle);
@@ -55,6 +55,11 @@ public class ReportContext {
         return getCellSpan(point, size, styleChain.getStyle());
     }
 
+    /**
+     * 根据样式表获取Cell样式
+     * @param map 样式表
+     * @return Cell样式
+     */
     private CellStyle getCellStyle(StyleMap map) {
         if (map == null) {
             return null;
@@ -80,17 +85,32 @@ public class ReportContext {
         }
     }
 
-    private Font getFont(StyleMap map) {
+    /**
+     * 根据样式表获取字体
+     * @param map 样式表
+     * @return 字体
+     */
+    public Font getFont(StyleMap map) {
         if (map == null) {
             return null;
         }
-        return fontPool.computeIfAbsent(CellStyles.toFontStyle(map), styleMap -> CellStyles.createFont(workbook, styleMap));
+        final StyleMap fontStyle = CellStyles.toFontStyle(map);
+        if (fontStyle.isEmpty()) {
+            return null;
+        }
+        return fontPool.computeIfAbsent(fontStyle, styleMap -> CellStyles.createFont(workbook, styleMap));
     }
 
     public XSSFDrawing createDrawingPatriarch() {
         return sheet.createDrawingPatriarch();
     }
 
+    /**
+     * 添加图片
+     * @param image 图片
+     * @return 图片的索引
+     * @throws IOException 如果图片读取失败，抛出异常
+     */
     public int addPicture(Image image) throws IOException {
         try (InputStream stream = image.openStream()) {
             return workbook.addPicture(IoUtil.readBytes(stream), image.deduceExcelImageType());
@@ -131,6 +151,10 @@ public class ReportContext {
 
     }
 
+    /**
+     * 添加导出时的回调,该回调函数会在导出Excel的最后执行
+     * @param runnable 回调
+     */
     public void addOnExportFinalizer(Runnable runnable) {
         onExportFinalizer.add(runnable);
     }

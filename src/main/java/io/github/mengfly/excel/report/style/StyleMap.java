@@ -13,6 +13,12 @@ import java.util.Optional;
 public class StyleMap {
     private final Map<String, String> styleMap = new HashMap<>();
 
+    /**
+     * 添加样式
+     * @param key 样式Key
+     * @param value 样式值
+     * @param <T> 样式值类型
+     */
     public <T> void addStyle(StyleKey<T> key, T value) {
         styleMap.put(key.getId(), key.toString(value));
     }

@@ -57,7 +57,7 @@
                     <column id="name" name="姓名" style="tableHeaderStyle" dataStyle="tableDataStyle"/>
                     <column id="age" name="年龄" style="tableHeaderStyle" dataStyle="tableDataStyle"/>
                 </Table>
-                <Image size="7,11" src="${image}" scaleType="FIT_START"/>
+                <Image size="7,11" src="${image}" scaleType="CENTER"/>
             </HLayout>
 
             <VLayout for="header,index : ${{'h1', 'h2', 'h3', 'h4'}}">
@@ -84,7 +84,7 @@
                     <column id="age" name="年龄" dataStyle="tableDataStyle"/>
                     <column id="score" name="平均分" dataStyle="tableDataStyle scoreStyle"/>
                 </Table>
-                <Image size="6,11" src="${image}" scaleType="FIT_START"/>
+                <Image size="6,11" src="${image}" scaleType="CENTER"/>
             </HLayout>
 
             <Chart size="10,15" title="测试的二维曲线图">

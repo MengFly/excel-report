@@ -2,6 +2,8 @@
 
 > 极简化的复杂Excel报表导出框架，支持手动编码、模板文件两种方式导出Excel模板。
 
+版本更新日志: [version log](VERSION.md)
+
 ## 特点
 
 1. 几乎完全屏蔽POI操作，提供类UI框架的操作接口、定义报表极其简单
@@ -19,7 +21,7 @@
 <dependency>
     <groupId>io.github.mengfly</groupId>
     <artifactId>excel-report</artifactId>
-    <version>1.0.0</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 

@@ -57,7 +57,7 @@
                     <column id="name" name="姓名" style="tableHeaderStyle" dataStyle="tableDataStyle"/>
                     <column id="age" name="年龄" style="tableHeaderStyle" dataStyle="tableDataStyle"/>
                 </Table>
-                <Image size="7,11" src="${image}" scaleType="CENTER"/>
+                <Image size="7,11" src="${image}" scaleType="CENTER" anchorType="MOVE_AND_RESIZE"/>
             </HLayout>
 
             <VLayout for="header,index : ${{'h1', 'h2', 'h3', 'h4'}}">

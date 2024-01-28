@@ -21,6 +21,7 @@ public class ParserFactory {
         addParser(new LinkParser());
         addParser(new ChartParser());
         addParser(new SpanParser());
+        addParser(new IncludeParser());
     }
 
     public static void addParser(ContainerParser parser) {

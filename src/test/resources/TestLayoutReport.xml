@@ -10,6 +10,7 @@
 
     <container>
         <VLayout alignPolicy="center">
+            <Text size="10,2" text="${include==true? 'Include layout': 'Not include layout'}"/>
             <Text size="10,5" text="Test(width=10,height=5)" style="{width:auto}"/>
             <HLayout>
                 <Text size="3,1" text="Test(width=3)" style="{fontColor:RED,fontBold:true,fontName:楷体}"/>

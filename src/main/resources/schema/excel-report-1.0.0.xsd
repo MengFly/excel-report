@@ -676,6 +676,15 @@
             <xs:enumeration value="end"/>
         </xs:restriction>
     </xs:simpleType>
+
+    <xs:simpleType name="ImageAnchorType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="MOVE_AND_RESIZE"/>
+            <xs:enumeration value="DONT_MOVE_DO_RESIZE"/>
+            <xs:enumeration value="MOVE_DONT_RESIZE"/>
+            <xs:enumeration value="DONT_MOVE_AND_RESIZE"/>
+        </xs:restriction>
+    </xs:simpleType>
     <xs:simpleType name="Orientation">
         <xs:restriction base="xs:string">
             <xs:enumeration value="horizontal"/>
@@ -745,6 +754,16 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:simpleType name="ScaleType">
+
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="FIT_START"/>
+            <xs:enumeration value="FIT_END"/>
+            <xs:enumeration value="FIT_XY"/>
+            <xs:enumeration value="CENTER"/>
+        </xs:restriction>
+    </xs:simpleType>
+
     <xs:group name="ContainerGroupContainer">
 
         <xs:choice>
@@ -773,6 +792,7 @@
                 <xs:element minOccurs="0" maxOccurs="unbounded" name="Span" type="Span"/>
                 <xs:element minOccurs="0" maxOccurs="unbounded" name="Link" type="Link"/>
                 <xs:element minOccurs="0" maxOccurs="unbounded" name="Chart" type="Chart"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="include" type="include"/>
             </xs:choice>
         </xs:sequence>
     </xs:group>
@@ -930,8 +950,23 @@
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
+        <xs:attribute name="anchorType" type="ImageAnchorType">
+            <xs:annotation>
+                <xs:documentation>
+                    定位方式
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="scaleType" type="ScaleType" default="FIT_XY">
+            <xs:annotation>
+                <xs:documentation>
+                    图片的缩放方式
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
         <xs:attributeGroup ref="AttrContainerDefault"/>
         <xs:attributeGroup ref="AttrSize"/>
+
     </xs:complexType>
     <xs:complexType name="List">
         <xs:annotation>
@@ -1063,11 +1098,23 @@
                 <xs:documentation>是否标题叠加</xs:documentation>
             </xs:annotation>
         </xs:attribute>
+        <xs:attribute name="anchorType" type="ImageAnchorType">
+            <xs:annotation>
+                <xs:documentation>图表定位类型</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
         <xs:attributeGroup ref="AttrSize"/>
         <xs:attributeGroup ref="AttrContainerDefault"/>
 
     </xs:complexType>
-
+    <xs:complexType name="include">
+        <xs:attribute name="ref" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>要引入的模板位置</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:anyAttribute processContents="lax"/>
+    </xs:complexType>
 
     <xs:complexType name="Legend">
         <xs:attribute name="position" type="LegendPosition">
@@ -1304,7 +1351,6 @@
         <xs:attributeGroup ref="AttrChartAxis"/>
     </xs:complexType>
 
-
     <xs:complexType name="ChartValueAxis">
 
         <xs:sequence>
@@ -1426,5 +1472,6 @@
             </xs:element>
         </xs:all>
     </xs:complexType>
+
 
 </xs:schema>

@@ -4,12 +4,19 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class XmlUtil extends cn.hutool.core.util.XmlUtil {
+
+    public static Map<String, String> getElementNameValueMap(List<Element> element) {
+        if (element == null || element.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        return element.stream().collect(Collectors.toMap(
+                Node::getNodeName,
+                Node::getTextContent, (o, o2) -> o2));
+    }
 
     public static Map<String, String> getAttributeMap(Element element, String... ignoreAttribute) {
         Map<String, String> attributesMap = new HashMap<>();
@@ -27,7 +34,7 @@ public class XmlUtil extends cn.hutool.core.util.XmlUtil {
             if (ignoreAttributeSet.contains(nodeName)) {
                 continue;
             }
-            
+
             final String nodeValue = item.getNodeValue();
 
             attributesMap.put(nodeName, nodeValue);

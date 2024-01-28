@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.xddf.usermodel.chart.DisplayBlanks;
 import org.apache.poi.xssf.usermodel.XSSFChart;
 import org.apache.poi.xssf.usermodel.XSSFDrawing;
@@ -29,6 +30,7 @@ public class ChartComponent extends AbstractComponent {
     private DisplayBlanks displayBlanks;
     private boolean titleOverlay = false;
     private Legend legend;
+    private ClientAnchor.AnchorType anchorType;
 
 
     @Override
@@ -46,7 +48,7 @@ public class ChartComponent extends AbstractComponent {
 
         final ExcelCellSpan cellSpan = context.getCellSpan(point, size).merge();
         final XSSFDrawing drawing = context.createDrawingPatriarch();
-        XSSFChart chart = drawing.createChart(cellSpan.getFillAnchor());
+        XSSFChart chart = drawing.createChart(cellSpan.getFillAnchor(anchorType));
         chart.setTitleOverlay(titleOverlay);
         chart.setTitleText(title);
 

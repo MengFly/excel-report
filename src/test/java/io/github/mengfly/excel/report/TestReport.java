@@ -15,6 +15,7 @@ public class TestReport {
 
     private static ExcelReport report;
 
+
     @BeforeClass
     public static void before() {
         report = new ExcelReport();

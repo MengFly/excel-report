@@ -89,18 +89,22 @@
 
             <Chart size="10,15" title="测试的二维曲线图">
 
-                <Legend position="top_right" overlay="true"/>
+                <Legend position="top" overlay="true"/>
 
                 <ChartData>
-                    <labelAxis title="X" type="category">
+                    <labelAxis title="X" type="category"
+                               majorTickMark="out" labelAlignment="left" tickLabelPosition="nextTo">
                         <data title="X" valueType="value" dataList="${chartLabelData}"/>
                     </labelAxis>
 
-                    <valueAxis1 for="chartData, index: ${chartValueData}" title="Value1">
+                    <valueAxis1 for="chartData, index: ${chartValueData}" title="Value1" minimum="0">
                         <data title="Data ${index}" type="line" valueType="value" dataList="${chartData}"/>
-                        <data title="BarData ${index}" type="bar" valueType="value" dataList="${chartData}"/>
                     </valueAxis1>
 
+                    <valueAxis2 for="chartData, index: ${chartValueData}" title="Value2" minimum="0"
+                      numberFormat="0.00 J" tickLabelPosition="nextTo">
+                        <data title="Data ${index}" type="bar" valueType="value" dataList="${chartData}"/>
+                    </valueAxis2>
                 </ChartData>
             </Chart>
             <Chart size="10,15" title="测试的三维曲线图">

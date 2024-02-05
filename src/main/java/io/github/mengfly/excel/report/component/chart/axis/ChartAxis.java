@@ -59,6 +59,7 @@ public abstract class ChartAxis {
         if (minorUnit != null) {
             axis.setMinorUnit(minorUnit);
         }
+        axis.setVisible(true);
 
     }
 

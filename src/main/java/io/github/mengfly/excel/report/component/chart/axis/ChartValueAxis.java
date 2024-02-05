@@ -8,6 +8,7 @@ import io.github.mengfly.excel.report.component.chart.data.ValueAxisDataResolver
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xddf.usermodel.chart.XDDFChartAxis;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,5 +40,10 @@ public class ChartValueAxis extends ChartAxis {
 
     public ChartValueAxisData addData(CellRangeAddress addresses) {
         return this.addData(new ChartValueAxisData(new RelationAxisDataResolver(addresses)));
+    }
+
+    @Override
+    public void initAxisStyle(XDDFChartAxis axis) {
+        super.initAxisStyle(axis);
     }
 }

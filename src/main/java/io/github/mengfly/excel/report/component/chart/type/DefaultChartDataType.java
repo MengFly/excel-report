@@ -70,6 +70,7 @@ public class DefaultChartDataType implements ChartDataType {
             return;
         }
         XDDFValueAxis axis = ((XDDFValueAxis) AxisType.VALUE.createAxis(chart, AxisPosition.LEFT));
+
         axis.setCrossBetween(AxisCrossBetween.BETWEEN);
         axis.crossAxis(labelAxis);
         if (valueAxis2 != null) {
@@ -99,8 +100,8 @@ public class DefaultChartDataType implements ChartDataType {
                               XDDFChartAxis labelAxis,
                               XDDFDataSource<?> labelDatasource,
                               XDDFValueAxis axis) {
-
-
+        
+        chartAxis.initAxisStyle(axis);
         final Set<ChartTypes> chartTypes = supportChartTypes();
 
         final ChartDataContext dataSourceContext = new ChartDataContext(context.getSheet(), chartAxis);

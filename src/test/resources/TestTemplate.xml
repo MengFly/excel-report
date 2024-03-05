@@ -45,7 +45,7 @@
             <Link link="https://gitee.com/mengfly_p/excel-report" size="10,3" text="Excel Report Framework"
                   label="点击访问项目开源地址" style="HeaderLinkStyle"/>
 
-            <include ref="TestLayoutReport" include="${true}"/>
+            <include ref="TestLayoutReport" include="${false}" />
 
             <Text size="10,3" text="Test(width=10,height=3)"/>
 
@@ -89,15 +89,15 @@
 
             <Chart size="10,15" title="测试的二维曲线图">
 
-                <Legend position="top" overlay="true"/>
+                <Legend position="top" overlay="false"/>
 
                 <ChartData>
-                    <labelAxis title="X" type="category"
+                    <labelAxis title="X" type="category" showMajorGridLines="true"
                                majorTickMark="out" labelAlignment="left" tickLabelPosition="nextTo">
                         <data title="X" valueType="value" dataList="${chartLabelData}"/>
                     </labelAxis>
 
-                    <valueAxis1 for="chartData, index: ${chartValueData}" title="Value1" minimum="0">
+                    <valueAxis1 for="chartData, index: ${chartValueData}" title="Value1" minimum="0" showMajorGridLines="true">
                         <data title="Data ${index}" type="line" valueType="value" dataList="${chartData}"/>
                     </valueAxis1>
 
@@ -116,11 +116,11 @@
                         <data title="X" valueType="value" dataList="${chartLabelData}"/>
                     </labelAxis>
 
-                    <valueAxis1 for="chartData, index: ${chartValueData}" title="Value1">
+                    <valueAxis1 for="chartData, index: ${chartValueData}" title="Value1" showMinorGridLines="true">
                         <data title="Data ${index}" type="line3d" valueType="value" dataList="${chartData}"/>
                         <data title="BarData ${index}" type="bar3d" valueType="value" dataList="${chartData}"/>
                     </valueAxis1>
-                    <valueAxis2 for="chartData, index: ${chartValueData}" title="Value1">
+                    <valueAxis2 for="chartData, index: ${chartValueData}" title="Value1" showMinorGridLines="true">
                         <data title="Data ${index}" type="line3d" valueType="value" dataList="${chartData}"/>
                         <data title="BarData ${index}" type="bar3d" valueType="value" dataList="${chartData}"/>
                     </valueAxis2>

@@ -25,6 +25,20 @@ public abstract class ChartAxis {
     private AxisTickMark minorTickMark;
     private AxisTickLabelPosition tickLabelPosition;
 
+    // ==================================================================
+    //  Grid Properties
+    // ==================================================================
+
+    /**
+     * 是否显示主网格线
+     */
+    private boolean showMajorGridLines = false;
+    /**
+     * 是否显示次网格线
+     */
+    private boolean showMinorGridLines = false;
+
+
     public abstract AxisType getType();
 
     protected void initAxisStyle(XDDFChartAxis axis) {

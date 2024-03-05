@@ -11,6 +11,10 @@ import io.github.mengfly.excel.report.excel.ReportContext;
 import lombok.Data;
 import org.apache.poi.xddf.usermodel.chart.*;
 import org.apache.poi.xssf.usermodel.XSSFChart;
+import org.openxmlformats.schemas.drawingml.x2006.chart.CTCatAx;
+import org.openxmlformats.schemas.drawingml.x2006.chart.CTChartLines;
+import org.openxmlformats.schemas.drawingml.x2006.chart.CTPlotArea;
+import org.openxmlformats.schemas.drawingml.x2006.chart.CTValAx;
 
 import java.util.List;
 import java.util.Map;
@@ -58,6 +62,43 @@ public class DefaultChartDataType implements ChartDataType {
         final XDDFDataSource<?> labelDatasource = this.labelAxis.createDataSource(context.getSheet());
         initLeftAxisData(context, chart, labelAxis, labelDatasource);
         initRightAxisData(context, chart, labelAxis, labelDatasource);
+
+        final CTPlotArea plotArea = chart.getCTChart().getPlotArea();
+        // 初始化网格线
+        initialAxisGridLines(plotArea);
+
+    }
+
+    /**
+     * 初始化网格线
+     *
+     * @param plotArea plotArea
+     */
+    private void initialAxisGridLines(CTPlotArea plotArea) {
+
+        for (CTCatAx ctCatAx : plotArea.getCatAxArray()) {
+            if (labelAxis != null && labelAxis.isShowMajorGridLines()) {
+                ctCatAx.addNewMajorGridlines();
+            }
+            if (labelAxis != null && labelAxis.isShowMinorGridLines()) {
+                ctCatAx.addNewMinorGridlines();
+            }
+        }
+        ChartValueAxis[] axisArray = new ChartValueAxis[]{valueAxis1, valueAxis2};
+        final CTValAx[] valAxArray = plotArea.getValAxArray();
+        for (int i = 0; i < axisArray.length; i++) {
+            if (axisArray[i] != null && axisArray[i].isShowMinorGridLines()) {
+                if (!valAxArray[i].isSetMinorGridlines()) {
+                    valAxArray[i].addNewMinorGridlines();
+                }
+            }
+            if (axisArray[i] != null && axisArray[i].isShowMajorGridLines()) {
+                if (!valAxArray[i].isSetMajorGridlines()) {
+                    valAxArray[i].addNewMajorGridlines();
+                }
+            }
+        }
+
     }
 
     public Set<ChartTypes> supportChartTypes() {
@@ -100,7 +141,7 @@ public class DefaultChartDataType implements ChartDataType {
                               XDDFChartAxis labelAxis,
                               XDDFDataSource<?> labelDatasource,
                               XDDFValueAxis axis) {
-        
+
         chartAxis.initAxisStyle(axis);
         final Set<ChartTypes> chartTypes = supportChartTypes();
 

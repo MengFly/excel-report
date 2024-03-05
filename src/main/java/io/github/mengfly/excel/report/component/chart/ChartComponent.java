@@ -40,6 +40,7 @@ public class ChartComponent extends AbstractComponent {
             final XSSFChart chart = createChart(context, point);
 
             type.onExport(context, point, chart);
+
         }
 
     }

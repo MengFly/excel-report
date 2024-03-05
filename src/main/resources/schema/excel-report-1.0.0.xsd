@@ -1258,6 +1258,22 @@
             </xs:annotation>
         </xs:attribute>
     </xs:attributeGroup>
+    <xs:attributeGroup name="AttrChartGridLine">
+        <xs:attribute name="showMajorGridLines" type="xs:boolean" default="false">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否显示主网格线
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="showMinorGridLines" type="xs:boolean" default="false">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否显示次网格线
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
     <xs:attributeGroup name="AttrAxisData">
         <xs:attribute name="title" use="required">
             <xs:annotation>
@@ -1329,7 +1345,6 @@
                 <xs:complexType>
                     <xs:attributeGroup ref="AttrAxisData"/>
                 </xs:complexType>
-
             </xs:element>
         </xs:all>
 
@@ -1349,6 +1364,7 @@
         </xs:attribute>
 
         <xs:attributeGroup ref="AttrChartAxis"/>
+        <xs:attributeGroup ref="AttrChartGridLine"/>
     </xs:complexType>
 
     <xs:complexType name="ChartValueAxis">
@@ -1378,6 +1394,7 @@
         </xs:sequence>
         <xs:attributeGroup ref="AttrForeach"/>
         <xs:attributeGroup ref="AttrChartAxis"/>
+        <xs:attributeGroup ref="AttrChartGridLine"/>
     </xs:complexType>
 
     <xs:complexType name="PieValueAxis">
@@ -1428,6 +1445,7 @@
 
         <xs:attributeGroup ref="AttrForeach"/>
         <xs:attributeGroup ref="AttrChartAxis"/>
+        <xs:attributeGroup ref="AttrChartGridLine"/>
     </xs:complexType>
     <xs:complexType name="Chart3dData">
         <xs:all>

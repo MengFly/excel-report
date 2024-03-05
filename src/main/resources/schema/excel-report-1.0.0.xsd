@@ -1422,6 +1422,7 @@
         </xs:sequence>
         <xs:attributeGroup ref="AttrChartAxis"/>
     </xs:complexType>
+
     <xs:complexType name="Chart3dValueAxis">
 
         <xs:sequence>
@@ -1489,6 +1490,55 @@
                 </xs:annotation>
             </xs:element>
         </xs:all>
+        <xs:attribute name="showPercent" default="true" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否显示百分比
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="showBubbleSize" default="true" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否显示气泡大小
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="showLeaderLines" default="true" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否显示指示线
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="showSerName" default="false" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否显示系列名称
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="showCatName" default="true" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否显示类别名称
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="showVal" default="true" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否显示数值
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="showLegendKey" default="true" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否显示图例
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
     </xs:complexType>
 
 

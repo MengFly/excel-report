@@ -11,10 +11,7 @@ import io.github.mengfly.excel.report.excel.ReportContext;
 import lombok.Data;
 import org.apache.poi.xddf.usermodel.chart.*;
 import org.apache.poi.xssf.usermodel.XSSFChart;
-import org.openxmlformats.schemas.drawingml.x2006.chart.CTCatAx;
-import org.openxmlformats.schemas.drawingml.x2006.chart.CTChartLines;
-import org.openxmlformats.schemas.drawingml.x2006.chart.CTPlotArea;
-import org.openxmlformats.schemas.drawingml.x2006.chart.CTValAx;
+import org.openxmlformats.schemas.drawingml.x2006.chart.*;
 
 import java.util.List;
 import java.util.Map;

@@ -131,13 +131,30 @@
 
                 <Legend position="top_right" overlay="true"/>
 
-                <PieData>
+                <PieData showLegendKey="false">
                     <labelAxis title="X" type="category">
                         <data title="X" valueType="value" dataList="${chartLabelData}"/>
                     </labelAxis>
 
                     <valueAxis title="Value1">
                         <data varyColors="true" title="Data ${index}" type="pie" valueType="value"
+                              dataList="${chartValueData[0]}"/>
+                    </valueAxis>
+
+                </PieData>
+            </Chart>
+
+            <Chart size="10,15" title="测试饼图">
+
+                <Legend position="top_right" overlay="true"/>
+
+                <PieData showLegendKey="false">
+                    <labelAxis title="X" type="category">
+                        <data title="X" valueType="value" dataList="${chartLabelData}"/>
+                    </labelAxis>
+
+                    <valueAxis title="Value1">
+                        <data varyColors="true" title="Data ${index}" type="pie3d" valueType="value"
                               dataList="${chartValueData[0]}"/>
                     </valueAxis>
 

@@ -27,6 +27,7 @@ public class ChartPieTypeParser extends ChartDataTypeParser {
         type.setValueAxis(value1Axis);
         
         containerTreeNode.initProperties(type, context);
+        containerTreeNode.initProperties(type.getMarker(), context);
         return type;
     }
 

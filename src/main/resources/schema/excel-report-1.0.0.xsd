@@ -1052,6 +1052,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
+            <xs:element minOccurs="0" name="Marker" type="ChartMarker"/>
             <xs:element minOccurs="0" name="ChartData" type="ChartData">
                 <xs:annotation>
                     <xs:documentation source="description">
@@ -1313,6 +1314,58 @@
         </xs:attribute>
     </xs:attributeGroup>
 
+    <xs:complexType name="ChartMarker">
+        <xs:attribute name="showPercent" default="false" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否显示百分比
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="showBubbleSize" default="false" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否显示气泡大小
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="showLeaderLines" default="false" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否显示指示线
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="showSerName" default="false" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否显示系列名称
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="showCatName" default="false" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否显示类别名称
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="showVal" default="false" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否显示数值
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="showLegendKey" default="false" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否显示图例
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
     <xs:complexType name="ChartData">
         <xs:all>
             <xs:element minOccurs="0" name="labelAxis" type="ChartLabelAxis">
@@ -1337,116 +1390,6 @@
                 </xs:annotation>
             </xs:element>
         </xs:all>
-    </xs:complexType>
-    <xs:complexType name="ChartLabelAxis">
-
-        <xs:all>
-            <xs:element name="data">
-                <xs:complexType>
-                    <xs:attributeGroup ref="AttrAxisData"/>
-                </xs:complexType>
-            </xs:element>
-        </xs:all>
-
-        <xs:attribute name="type" type="AxisType">
-            <xs:annotation>
-                <xs:documentation source="description">
-                    坐标轴数值类型
-                </xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="labelAlignment" type="AxisLabelAlignment">
-            <xs:annotation>
-                <xs:documentation source="description">
-                    label alignment
-                </xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-
-        <xs:attributeGroup ref="AttrChartAxis"/>
-        <xs:attributeGroup ref="AttrChartGridLine"/>
-    </xs:complexType>
-
-    <xs:complexType name="ChartValueAxis">
-
-        <xs:sequence>
-            <xs:element name="data" maxOccurs="unbounded">
-                <xs:complexType>
-                    <xs:attribute name="title" use="required">
-                        <xs:annotation>
-                            <xs:documentation>数据名称</xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                    <xs:attribute name="type" use="required">
-                        <xs:simpleType>
-                            <xs:restriction base="xs:string">
-                                <xs:enumeration value="area"/>
-                                <xs:enumeration value="bar"/>
-                                <xs:enumeration value="line"/>
-                                <xs:enumeration value="scatter"/>
-                            </xs:restriction>
-                        </xs:simpleType>
-                    </xs:attribute>
-                    <xs:attributeGroup ref="AttrAxisData"/>
-                </xs:complexType>
-
-            </xs:element>
-        </xs:sequence>
-        <xs:attributeGroup ref="AttrForeach"/>
-        <xs:attributeGroup ref="AttrChartAxis"/>
-        <xs:attributeGroup ref="AttrChartGridLine"/>
-    </xs:complexType>
-
-    <xs:complexType name="PieValueAxis">
-
-        <xs:sequence>
-            <xs:element name="data" maxOccurs="unbounded">
-                <xs:complexType>
-                    <xs:attribute name="title" use="required">
-                        <xs:annotation>
-                            <xs:documentation>数据名称</xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                    <xs:attribute name="type" use="required">
-                        <xs:simpleType>
-                            <xs:restriction base="xs:string">
-                                <xs:enumeration value="pie"/>
-                                <xs:enumeration value="pie3d"/>
-                            </xs:restriction>
-                        </xs:simpleType>
-                    </xs:attribute>
-                    <xs:attributeGroup ref="AttrAxisData"/>
-                </xs:complexType>
-
-            </xs:element>
-        </xs:sequence>
-        <xs:attributeGroup ref="AttrChartAxis"/>
-    </xs:complexType>
-
-    <xs:complexType name="Chart3dValueAxis">
-
-        <xs:sequence>
-            <xs:element name="data" maxOccurs="unbounded">
-                <xs:complexType>
-
-                    <xs:attribute name="type">
-                        <xs:simpleType>
-                            <xs:restriction base="xs:string">
-                                <xs:enumeration value="area3d"/>
-                                <xs:enumeration value="bar3d"/>
-                                <xs:enumeration value="line3d"/>
-                            </xs:restriction>
-                        </xs:simpleType>
-                    </xs:attribute>
-                    <xs:attributeGroup ref="AttrAxisData"/>
-                </xs:complexType>
-
-            </xs:element>
-        </xs:sequence>
-
-        <xs:attributeGroup ref="AttrForeach"/>
-        <xs:attributeGroup ref="AttrChartAxis"/>
-        <xs:attributeGroup ref="AttrChartGridLine"/>
     </xs:complexType>
     <xs:complexType name="Chart3dData">
         <xs:all>
@@ -1490,56 +1433,114 @@
                 </xs:annotation>
             </xs:element>
         </xs:all>
-        <xs:attribute name="showPercent" default="true" type="xs:boolean">
-            <xs:annotation>
-                <xs:documentation source="description">
-                    是否显示百分比
-                </xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="showBubbleSize" default="true" type="xs:boolean">
-            <xs:annotation>
-                <xs:documentation source="description">
-                    是否显示气泡大小
-                </xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="showLeaderLines" default="true" type="xs:boolean">
-            <xs:annotation>
-                <xs:documentation source="description">
-                    是否显示指示线
-                </xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="showSerName" default="false" type="xs:boolean">
-            <xs:annotation>
-                <xs:documentation source="description">
-                    是否显示系列名称
-                </xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="showCatName" default="true" type="xs:boolean">
-            <xs:annotation>
-                <xs:documentation source="description">
-                    是否显示类别名称
-                </xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="showVal" default="true" type="xs:boolean">
-            <xs:annotation>
-                <xs:documentation source="description">
-                    是否显示数值
-                </xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="showLegendKey" default="true" type="xs:boolean">
-            <xs:annotation>
-                <xs:documentation source="description">
-                    是否显示图例
-                </xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
     </xs:complexType>
 
+    <xs:complexType name="ChartLabelAxis">
+
+        <xs:all>
+            <xs:element name="data">
+                <xs:complexType>
+                    <xs:attributeGroup ref="AttrAxisData"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+
+        <xs:attribute name="type" type="AxisType">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    坐标轴数值类型
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="labelAlignment" type="AxisLabelAlignment">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    label alignment
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attributeGroup ref="AttrChartAxis"/>
+        <xs:attributeGroup ref="AttrChartGridLine"/>
+    </xs:complexType>
+    <xs:complexType name="ChartValueAxis">
+
+        <xs:sequence>
+            <xs:element name="data" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="title" use="required">
+                        <xs:annotation>
+                            <xs:documentation>数据名称</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="type" use="required">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:enumeration value="area"/>
+                                <xs:enumeration value="bar"/>
+                                <xs:enumeration value="line"/>
+                                <xs:enumeration value="scatter"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                    <xs:attributeGroup ref="AttrAxisData"/>
+                </xs:complexType>
+
+            </xs:element>
+        </xs:sequence>
+        <xs:attributeGroup ref="AttrForeach"/>
+        <xs:attributeGroup ref="AttrChartAxis"/>
+        <xs:attributeGroup ref="AttrChartGridLine"/>
+    </xs:complexType>
+    <xs:complexType name="PieValueAxis">
+
+        <xs:sequence>
+            <xs:element name="data" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="title" use="required">
+                        <xs:annotation>
+                            <xs:documentation>数据名称</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="type" use="required">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:enumeration value="pie"/>
+                                <xs:enumeration value="pie3d"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                    <xs:attributeGroup ref="AttrAxisData"/>
+                </xs:complexType>
+
+            </xs:element>
+        </xs:sequence>
+        <xs:attributeGroup ref="AttrChartAxis"/>
+    </xs:complexType>
+    <xs:complexType name="Chart3dValueAxis">
+
+        <xs:sequence>
+            <xs:element name="data" maxOccurs="unbounded">
+                <xs:complexType>
+
+                    <xs:attribute name="type">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:enumeration value="area3d"/>
+                                <xs:enumeration value="bar3d"/>
+                                <xs:enumeration value="line3d"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                    <xs:attributeGroup ref="AttrAxisData"/>
+                </xs:complexType>
+
+            </xs:element>
+        </xs:sequence>
+
+        <xs:attributeGroup ref="AttrForeach"/>
+        <xs:attributeGroup ref="AttrChartAxis"/>
+        <xs:attributeGroup ref="AttrChartGridLine"/>
+    </xs:complexType>
 
 </xs:schema>

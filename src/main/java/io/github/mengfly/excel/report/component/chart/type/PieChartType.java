@@ -5,6 +5,7 @@ import io.github.mengfly.excel.report.component.chart.axis.ChartLabelAxis;
 import io.github.mengfly.excel.report.component.chart.axis.ChartValueAxis;
 import io.github.mengfly.excel.report.component.chart.data.ChartDataContext;
 import io.github.mengfly.excel.report.component.chart.data.ChartValueAxisData;
+import io.github.mengfly.excel.report.component.chart.data.Marker;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.excel.ReportContext;
 import lombok.Data;
@@ -13,7 +14,6 @@ import org.apache.poi.xddf.usermodel.chart.XDDFChartData;
 import org.apache.poi.xddf.usermodel.chart.XDDFDataSource;
 import org.apache.poi.xddf.usermodel.chart.XDDFNumericalDataSource;
 import org.apache.poi.xssf.usermodel.XSSFChart;
-import org.openxmlformats.schemas.drawingml.x2006.chart.CTDLbls;
 import org.openxmlformats.schemas.drawingml.x2006.chart.CTPie3DChart;
 import org.openxmlformats.schemas.drawingml.x2006.chart.CTPieChart;
 import org.openxmlformats.schemas.drawingml.x2006.chart.CTPlotArea;
@@ -25,14 +25,7 @@ public class PieChartType implements ChartDataType {
 
     private ChartLabelAxis labelAxis;
     private ChartValueAxis valueAxis;
-
-    private boolean showPercent = true;
-    private boolean showBubbleSize = true;
-    private boolean showLeaderLines = true;
-    private boolean showSerName = false;
-    private boolean showCatName = true;
-    private boolean showVal = true;
-    private boolean showLegendKey = true;
+    private Marker marker = new Marker();
 
     @Override
     public Set<ChartTypes> supportChartTypes() {
@@ -76,35 +69,23 @@ public class PieChartType implements ChartDataType {
 
                     chart.plot(data);
                 });
-        final CTPlotArea plotArea = chart.getCTChart().getPlotArea();
-        initMarker(plotArea);
 
     }
 
-    private void initMarker(CTPlotArea plotArea) {
-
+    @Override
+    public void initMarker(XSSFChart chart, Marker marker) {
+        final CTPlotArea plotArea = chart.getCTChart().getPlotArea();
         for (CTPieChart ctPieChart : plotArea.getPieChartArray()) {
             if (!ctPieChart.isSetDLbls()) {
-                initMarker(ctPieChart.addNewDLbls());
+                marker.initMarker(ctPieChart.addNewDLbls());
             }
 
         }
         for (CTPie3DChart ctPie3DChart : plotArea.getPie3DChartArray()) {
             if (!ctPie3DChart.isSetDLbls()) {
-                initMarker(ctPie3DChart.addNewDLbls());
+                marker.initMarker(ctPie3DChart.addNewDLbls());
             }
         }
     }
 
-    private void initMarker(CTDLbls ctdLbls) {
-
-        ctdLbls.addNewShowBubbleSize().setVal(showBubbleSize);
-        ctdLbls.addNewShowLeaderLines().setVal(showLeaderLines);
-        ctdLbls.addNewShowSerName().setVal(showSerName);
-        ctdLbls.addNewShowCatName().setVal(showCatName);
-        ctdLbls.addNewShowVal().setVal(showVal);
-        ctdLbls.addNewShowLegendKey().setVal(showLegendKey);
-        ctdLbls.addNewShowPercent().setVal(showPercent);
-
-    }
 }

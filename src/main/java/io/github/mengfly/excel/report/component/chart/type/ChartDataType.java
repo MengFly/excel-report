@@ -4,6 +4,7 @@ import io.github.mengfly.excel.report.component.chart.AxisType;
 import io.github.mengfly.excel.report.component.chart.axis.ChartLabelAxis;
 import io.github.mengfly.excel.report.component.chart.axis.ChartValueAxis;
 import io.github.mengfly.excel.report.component.chart.data.ChartValueAxisData;
+import io.github.mengfly.excel.report.component.chart.data.Marker;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.excel.ReportContext;
 import org.apache.poi.xddf.usermodel.chart.ChartTypes;
@@ -19,6 +20,8 @@ public interface ChartDataType {
     boolean needCreateChart();
 
     void onExport(ReportContext context, Point point, XSSFChart chart);
+
+    void initMarker(XSSFChart chart, Marker marker);
 
     default ChartLabelAxis initialLabelAxisDataByValue(ChartLabelAxis labelAxis, ChartValueAxis... valueAxes) {
 

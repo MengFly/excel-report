@@ -1,6 +1,7 @@
 package io.github.mengfly.excel.report.component.chart;
 
 import io.github.mengfly.excel.report.component.AbstractComponent;
+import io.github.mengfly.excel.report.component.chart.data.Marker;
 import io.github.mengfly.excel.report.component.chart.type.ChartDataType;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.entity.Size;
@@ -30,6 +31,7 @@ public class ChartComponent extends AbstractComponent {
     private DisplayBlanks displayBlanks;
     private boolean titleOverlay = false;
     private Legend legend;
+    private Marker marker;
     private ClientAnchor.AnchorType anchorType;
 
 
@@ -40,6 +42,10 @@ public class ChartComponent extends AbstractComponent {
             final XSSFChart chart = createChart(context, point);
 
             type.onExport(context, point, chart);
+
+            if (marker != null) {
+                type.initMarker(chart, marker);
+            }
 
         }
 

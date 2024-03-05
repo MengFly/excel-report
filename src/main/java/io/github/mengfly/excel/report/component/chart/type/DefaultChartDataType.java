@@ -6,6 +6,7 @@ import io.github.mengfly.excel.report.component.chart.axis.ChartLabelAxis;
 import io.github.mengfly.excel.report.component.chart.axis.ChartValueAxis;
 import io.github.mengfly.excel.report.component.chart.data.ChartDataContext;
 import io.github.mengfly.excel.report.component.chart.data.ChartValueAxisData;
+import io.github.mengfly.excel.report.component.chart.data.Marker;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.excel.ReportContext;
 import lombok.Data;
@@ -43,6 +44,8 @@ public class DefaultChartDataType implements ChartDataType {
      * 数值坐标2（对应坐标轴上的右/下轴）
      */
     private ChartValueAxis valueAxis2;
+    private Marker marker = new Marker();
+
 
     @Override
     public boolean needCreateChart() {
@@ -63,8 +66,8 @@ public class DefaultChartDataType implements ChartDataType {
         final CTPlotArea plotArea = chart.getCTChart().getPlotArea();
         // 初始化网格线
         initialAxisGridLines(plotArea);
-
     }
+
 
     /**
      * 初始化网格线
@@ -94,6 +97,45 @@ public class DefaultChartDataType implements ChartDataType {
                     valAxArray[i].addNewMajorGridlines();
                 }
             }
+        }
+
+    }
+
+    /**
+     * 初始化Marker
+     *
+     * @param marker plotArea
+     */
+    @Override
+    public void initMarker(XSSFChart chart, Marker marker) {
+        final CTPlotArea plotArea = chart.getCTChart().getPlotArea();
+        // ChartTypes.AREA
+        for (CTAreaChart ctAreaChart : plotArea.getAreaChartArray()) {
+            marker.initMarker(ctAreaChart.addNewDLbls());
+        }
+        // ChartTypes.BAR
+        for (CTBarChart ctBarChart : plotArea.getBarChartArray()) {
+            marker.initMarker(ctBarChart.addNewDLbls());
+        }
+        // ChartTypes.LINE
+        for (CTLineChart ctLineChart : plotArea.getLineChartArray()) {
+            marker.initMarker(ctLineChart.addNewDLbls());
+        }
+        // ChartTypes.SCATTER
+        for (CTScatterChart ctSeriesChart : plotArea.getScatterChartArray()) {
+            marker.initMarker(ctSeriesChart.addNewDLbls());
+        }
+        // ChartTypes.AREA3D
+        for (CTArea3DChart ctArea3DChart : plotArea.getArea3DChartArray()) {
+            marker.initMarker(ctArea3DChart.addNewDLbls());
+        }
+        // ChartTypes.LINE3D
+        for (CTLine3DChart ctLine3DChart : plotArea.getLine3DChartArray()) {
+            marker.initMarker(ctLine3DChart.addNewDLbls());
+        }
+        // ChartTypes.BAR3D
+        for (CTBar3DChart ctBar3DChart : plotArea.getBar3DChartArray()) {
+            marker.initMarker(ctBar3DChart.addNewDLbls());
         }
 
     }
@@ -162,5 +204,6 @@ public class DefaultChartDataType implements ChartDataType {
             chart.plot(data);
         });
     }
+
 
 }

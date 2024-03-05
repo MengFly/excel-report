@@ -39,6 +39,7 @@ class DefaultChartDataTypeParser extends ChartDataTypeParser {
         type.setValueAxis2(value2Axis);
 
         containerTreeNode.initProperties(type, context);
+        containerTreeNode.initProperties(type.getMarker(), context);
         return type;
     }
 
@@ -68,8 +69,6 @@ class DefaultChartDataTypeParser extends ChartDataTypeParser {
         }
         return null;
     }
-
-
 
 
 }

@@ -103,12 +103,12 @@ public class ExcelCellSpan {
                     Double columnWidth;
                     if (StrUtil.equalsAnyIgnoreCase("auto", widthStyle.get())) {
                         columnWidth = SheetUtil.getColumnWidth(
-                                getSheet(), col, true, point.getY(), point.getY() + size.height - 1);
+                                getSheet(), col, true, point.getY(), point.getY() + size.height - 1) + 4;
                     } else {
                         columnWidth = Convert.toDouble(widthStyle.get(), null);
                     }
                     if (columnWidth != null) {
-                        cellAutoWidth.compute(col, (integer, preValue) -> Math.max(preValue == null ? 0 : preValue, columnWidth + 4));
+                        cellAutoWidth.compute(col, (integer, preValue) -> Math.max(preValue == null ? 0 : preValue, columnWidth));
                     }
                 }
             }

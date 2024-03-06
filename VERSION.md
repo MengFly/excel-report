@@ -1,4 +1,4 @@
-## V1.2.0
+## V 1.2.0
 [更新详情](version/V1.2.0.md)
 
 - 添加 Template Manager, 以便支持模板引入

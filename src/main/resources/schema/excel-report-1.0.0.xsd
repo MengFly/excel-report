@@ -1076,7 +1076,6 @@
             </xs:element>
         </xs:all>
 
-
         <xs:attribute name="title" type="xs:string">
             <xs:annotation>
                 <xs:documentation source="description">

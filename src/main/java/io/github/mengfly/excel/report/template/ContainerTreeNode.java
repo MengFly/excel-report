@@ -18,6 +18,7 @@ import org.w3c.dom.Element;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 
@@ -39,6 +40,7 @@ public class ContainerTreeNode {
 
     /**
      * 渲染组件
+     *
      * @param context 组件数据
      * @return 组件
      */
@@ -108,6 +110,16 @@ public class ContainerTreeNode {
         treeNode.setParent(this);
         treeNode.setElement(childElement);
         return treeNode;
+    }
+
+    public <T> T getChild(DataContext context, String tagName, Supplier<T> supplier) {
+        final ContainerTreeNode child = getChild(tagName);
+        if (child != null) {
+            final T t = supplier.get();
+            child.initProperties(t, context);
+            return t;
+        }
+        return null;
     }
 
     private StyleMap parseJsonStyle(String attribute, DataContext context) {

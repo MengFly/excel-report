@@ -5,8 +5,8 @@ import io.github.mengfly.excel.report.component.chart.AxisType;
 import io.github.mengfly.excel.report.component.chart.axis.ChartLabelAxis;
 import io.github.mengfly.excel.report.component.chart.axis.ChartValueAxis;
 import io.github.mengfly.excel.report.component.chart.data.ChartDataContext;
+import io.github.mengfly.excel.report.component.chart.data.ChartMarker;
 import io.github.mengfly.excel.report.component.chart.data.ChartValueAxisData;
-import io.github.mengfly.excel.report.component.chart.data.Marker;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.excel.ReportContext;
 import lombok.Data;
@@ -44,7 +44,7 @@ public class DefaultChartDataType implements ChartDataType {
      * 数值坐标2（对应坐标轴上的右/下轴）
      */
     private ChartValueAxis valueAxis2;
-    private Marker marker = new Marker();
+    private ChartMarker marker = new ChartMarker();
 
 
     @Override
@@ -107,7 +107,7 @@ public class DefaultChartDataType implements ChartDataType {
      * @param marker plotArea
      */
     @Override
-    public void initMarker(XSSFChart chart, Marker marker) {
+    public void initMarker(XSSFChart chart, ChartMarker marker) {
         final CTPlotArea plotArea = chart.getCTChart().getPlotArea();
         // ChartTypes.AREA
         for (CTAreaChart ctAreaChart : plotArea.getAreaChartArray()) {

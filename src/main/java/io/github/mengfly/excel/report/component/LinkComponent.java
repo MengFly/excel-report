@@ -6,9 +6,8 @@ import io.github.mengfly.excel.report.excel.ReportContext;
 import io.github.mengfly.excel.report.style.CellStyles;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.FontUnderline;
-import org.apache.poi.xssf.usermodel.XSSFHyperlink;
+import org.apache.poi.ss.usermodel.Hyperlink;
 
 @Getter
 @Setter
@@ -27,12 +26,7 @@ public class LinkComponent extends TextComponent {
         ExcelCellSpan cellSpan = context.getCellSpan(point, getSize());
         cellSpan.merge().setValue(getText());
 
-        final XSSFHyperlink hyperlink = (XSSFHyperlink) context.getWorkbook().getCreationHelper()
-                .createHyperlink(HyperlinkType.URL);
-        hyperlink.setTooltip(label);
-        hyperlink.setAddress(link);
-        hyperlink.setLabel(label);
-
+        final Hyperlink hyperlink = context.createUrlHyperlink(link, label);
         cellSpan.setHyperLink(hyperlink);
     }
 }

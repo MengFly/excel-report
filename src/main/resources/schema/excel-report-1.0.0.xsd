@@ -676,7 +676,6 @@
             <xs:enumeration value="end"/>
         </xs:restriction>
     </xs:simpleType>
-
     <xs:simpleType name="ImageAnchorType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="MOVE_AND_RESIZE"/>
@@ -728,7 +727,6 @@
             <xs:enumeration value="out"/>
         </xs:restriction>
     </xs:simpleType>
-
     <xs:simpleType name="AxisTickLabelPosition">
         <xs:restriction base="xs:string">
             <xs:enumeration value="nextTo"/>
@@ -737,7 +735,6 @@
             <xs:enumeration value="low"/>
         </xs:restriction>
     </xs:simpleType>
-
     <xs:simpleType name="AxisType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="category"/>
@@ -745,7 +742,6 @@
             <xs:enumeration value="values"/>
         </xs:restriction>
     </xs:simpleType>
-
     <xs:simpleType name="AxisLabelAlignment">
         <xs:restriction base="xs:string">
             <xs:enumeration value="center"/>
@@ -753,7 +749,6 @@
             <xs:enumeration value="right"/>
         </xs:restriction>
     </xs:simpleType>
-
     <xs:simpleType name="ScaleType">
 
         <xs:restriction base="xs:string">
@@ -763,7 +758,28 @@
             <xs:enumeration value="CENTER"/>
         </xs:restriction>
     </xs:simpleType>
-
+    <xs:simpleType name="UnderLineType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="DASH"/>
+            <xs:enumeration value="DASH_HEAVY"/>
+            <xs:enumeration value="DASH_LONG"/>
+            <xs:enumeration value="DASH_LONG_HEAVY"/>
+            <xs:enumeration value="DOUBLE"/>
+            <xs:enumeration value="DOT_DASH"/>
+            <xs:enumeration value="DOT_DASH_HEAVY"/>
+            <xs:enumeration value="DOT_DOT_DASH"/>
+            <xs:enumeration value="DOT_DOT_DASH_HEAVY"/>
+            <xs:enumeration value="DOTTED"/>
+            <xs:enumeration value="DOTTED_HEAVY"/>
+            <xs:enumeration value="HEAVY"/>
+            <xs:enumeration value="NONE"/>
+            <xs:enumeration value="SINGLE"/>
+            <xs:enumeration value="WAVY"/>
+            <xs:enumeration value="WAVY_DOUBLE"/>
+            <xs:enumeration value="WAVY_HEAVY"/>
+            <xs:enumeration value="WORDS"/>
+        </xs:restriction>
+    </xs:simpleType>
     <xs:group name="ContainerGroupContainer">
 
         <xs:choice>
@@ -779,7 +795,6 @@
         </xs:choice>
 
     </xs:group>
-
     <xs:group name="LayoutGroupContainer">
         <xs:sequence>
             <xs:choice maxOccurs="unbounded">
@@ -1045,6 +1060,13 @@
         </xs:annotation>
 
         <xs:all>
+            <xs:element minOccurs="0" name="Title" type="ChartTitle">
+                <xs:annotation>
+                    <xs:documentation source="description">
+                        图表标题
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
             <xs:element minOccurs="0" name="Legend" type="Legend">
                 <xs:annotation>
                     <xs:documentation source="description">
@@ -1075,14 +1097,6 @@
                 </xs:annotation>
             </xs:element>
         </xs:all>
-
-        <xs:attribute name="title" type="xs:string">
-            <xs:annotation>
-                <xs:documentation source="description">
-                    图表标题
-                </xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
         <xs:attribute name="autoTitleDelete" type="xs:boolean">
             <xs:annotation>
                 <xs:documentation>是否自动删除标题</xs:documentation>
@@ -1091,11 +1105,6 @@
         <xs:attribute name="displayBlankAs" type="DisplayBlankAs">
             <xs:annotation>
                 <xs:documentation>空值显示方式</xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="titleOverlay" type="xs:boolean" default="false">
-            <xs:annotation>
-                <xs:documentation>是否标题叠加</xs:documentation>
             </xs:annotation>
         </xs:attribute>
         <xs:attribute name="anchorType" type="ImageAnchorType">
@@ -1115,7 +1124,6 @@
         </xs:attribute>
         <xs:anyAttribute processContents="lax"/>
     </xs:complexType>
-
     <xs:complexType name="Legend">
         <xs:attribute name="position" type="LegendPosition">
             <xs:annotation>
@@ -1128,6 +1136,57 @@
             <xs:annotation>
                 <xs:documentation source="description">
                     是否叠加
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="ChartTitle">
+        <xs:attribute name="text" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    标题文本
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="overlay" type="xs:boolean" default="false">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否叠加
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="bold" type="xs:boolean" default="true">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否粗体
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="fontSize" type="xs:double" default="12">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    字体大小
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="underLine" type="UnderLineType" default="NONE">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否下划线
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="baseLine" type="xs:int">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    基线
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="italic" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否斜体
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>

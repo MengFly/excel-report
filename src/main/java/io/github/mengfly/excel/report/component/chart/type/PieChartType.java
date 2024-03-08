@@ -5,7 +5,7 @@ import io.github.mengfly.excel.report.component.chart.axis.ChartLabelAxis;
 import io.github.mengfly.excel.report.component.chart.axis.ChartValueAxis;
 import io.github.mengfly.excel.report.component.chart.data.ChartDataContext;
 import io.github.mengfly.excel.report.component.chart.data.ChartValueAxisData;
-import io.github.mengfly.excel.report.component.chart.data.Marker;
+import io.github.mengfly.excel.report.component.chart.data.ChartMarker;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.excel.ReportContext;
 import lombok.Data;
@@ -25,7 +25,7 @@ public class PieChartType implements ChartDataType {
 
     private ChartLabelAxis labelAxis;
     private ChartValueAxis valueAxis;
-    private Marker marker = new Marker();
+    private ChartMarker marker = new ChartMarker();
 
     @Override
     public Set<ChartTypes> supportChartTypes() {
@@ -73,7 +73,7 @@ public class PieChartType implements ChartDataType {
     }
 
     @Override
-    public void initMarker(XSSFChart chart, Marker marker) {
+    public void initMarker(XSSFChart chart, ChartMarker marker) {
         final CTPlotArea plotArea = chart.getCTChart().getPlotArea();
         for (CTPieChart ctPieChart : plotArea.getPieChartArray()) {
             if (!ctPieChart.isSetDLbls()) {

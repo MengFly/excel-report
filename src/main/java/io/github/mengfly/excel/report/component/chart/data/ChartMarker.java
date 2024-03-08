@@ -4,7 +4,7 @@ import lombok.Data;
 import org.openxmlformats.schemas.drawingml.x2006.chart.CTDLbls;
 
 @Data
-public class Marker {
+public class ChartMarker {
     private boolean showPercent = true;
     private boolean showBubbleSize = false;
     private boolean showLeaderLines = false;

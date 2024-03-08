@@ -11,12 +11,11 @@ import io.github.mengfly.excel.report.style.StyleMap;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.common.usermodel.HyperlinkType;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFDataFormat;
 import org.apache.poi.xssf.usermodel.XSSFDrawing;
+import org.apache.poi.xssf.usermodel.XSSFHyperlink;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
 import java.io.IOException;
@@ -157,5 +156,16 @@ public class ReportContext {
      */
     public void addOnExportFinalizer(Runnable runnable) {
         onExportFinalizer.add(runnable);
+    }
+
+
+    public Hyperlink createUrlHyperlink(String url, String label) {
+        final Hyperlink hyperlink = workbook.getCreationHelper().createHyperlink(HyperlinkType.URL);
+        if (hyperlink instanceof XSSFHyperlink) {
+            ((XSSFHyperlink) hyperlink).setTooltip(label);
+        }
+        hyperlink.setAddress(url);
+        hyperlink.setLabel(label);
+        return hyperlink;
     }
 }

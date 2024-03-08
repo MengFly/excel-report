@@ -129,7 +129,6 @@ public class TestChart extends VLayout {
         type.setValueAxis2(axisRight);
 
         ChartComponent chartComponent = new ChartComponent(type);
-        chartComponent.setTitle("测试图表");
         chartComponent.setSize(Size.of(10, 15));
         chartComponent.setLegend(new Legend(LegendPosition.TOP_RIGHT, false));
 

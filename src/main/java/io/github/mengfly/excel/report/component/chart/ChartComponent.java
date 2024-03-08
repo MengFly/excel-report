@@ -1,7 +1,8 @@
 package io.github.mengfly.excel.report.component.chart;
 
 import io.github.mengfly.excel.report.component.AbstractComponent;
-import io.github.mengfly.excel.report.component.chart.data.Marker;
+import io.github.mengfly.excel.report.component.chart.data.ChartMarker;
+import io.github.mengfly.excel.report.component.chart.data.ChartTitle;
 import io.github.mengfly.excel.report.component.chart.type.ChartDataType;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.entity.Size;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.xddf.usermodel.chart.DisplayBlanks;
+import org.apache.poi.xddf.usermodel.text.XDDFTextBody;
 import org.apache.poi.xssf.usermodel.XSSFChart;
 import org.apache.poi.xssf.usermodel.XSSFDrawing;
 
@@ -26,12 +28,11 @@ public class ChartComponent extends AbstractComponent {
     private final ChartDataType type;
 
     private Size size = Size.of(4, 10);
-    private String title;
     private Boolean autoTitleDelete;
     private DisplayBlanks displayBlanks;
-    private boolean titleOverlay = false;
     private Legend legend;
-    private Marker marker;
+    private ChartMarker marker;
+    private ChartTitle chartTitle;
     private ClientAnchor.AnchorType anchorType;
 
 
@@ -41,23 +42,37 @@ public class ChartComponent extends AbstractComponent {
         if (type.needCreateChart()) {
             final XSSFChart chart = createChart(context, point);
 
+
             type.onExport(context, point, chart);
 
             if (marker != null) {
                 type.initMarker(chart, marker);
             }
 
+            // 初始化字体
+            initChartTitle(chart);
+
         }
 
     }
+
+    private void initChartTitle(XSSFChart chart) {
+        if (chartTitle != null) {
+            chart.setTitleText(chartTitle.getText());
+            chart.setTitleOverlay(chartTitle.isOverLay());
+
+            final XDDFTextBody body = chart.getTitle().getBody();
+
+            chartTitle.initTextBodyStyle(body);
+        }
+    }
+
 
     private XSSFChart createChart(ReportContext context, Point point) {
 
         final ExcelCellSpan cellSpan = context.getCellSpan(point, size).merge();
         final XSSFDrawing drawing = context.createDrawingPatriarch();
         XSSFChart chart = drawing.createChart(cellSpan.getFillAnchor(anchorType));
-        chart.setTitleOverlay(titleOverlay);
-        chart.setTitleText(title);
 
         if (autoTitleDelete != null) {
             chart.setAutoTitleDeleted(autoTitleDelete);

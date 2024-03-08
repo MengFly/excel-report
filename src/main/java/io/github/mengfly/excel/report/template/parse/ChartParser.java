@@ -3,16 +3,22 @@ package io.github.mengfly.excel.report.template.parse;
 import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.component.chart.ChartComponent;
 import io.github.mengfly.excel.report.component.chart.Legend;
-import io.github.mengfly.excel.report.component.chart.data.Marker;
+import io.github.mengfly.excel.report.component.chart.data.ChartMarker;
+import io.github.mengfly.excel.report.component.chart.data.ChartTitle;
 import io.github.mengfly.excel.report.component.chart.type.ChartDataType;
 import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
 import io.github.mengfly.excel.report.template.parse.chart.ChartDataTypeParserFactory;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.compress.utils.Sets;
+
+import java.util.Set;
 
 @Slf4j
 public class ChartParser extends AbstractLayoutParser {
+    private static final Set<String> ignoreTags = Sets.newHashSet("Legend", "Title", "Marker");
+
     @Override
     public String getTagName() {
         return "Chart";
@@ -28,19 +34,22 @@ public class ChartParser extends AbstractLayoutParser {
         }
 
         ChartComponent component = new ChartComponent(type);
-        component.setLegend(getChartLegend(containerTreeNode, context));
-        component.setMarker(getChartMarker(containerTreeNode, context));
+
+        // 标题
+        component.setChartTitle(containerTreeNode.getChild(context, "Title", ChartTitle::new));
+        // 图例
+        component.setLegend(containerTreeNode.getChild(context, "Legend", Legend::new));
+        // 数据标识
+        component.setMarker(containerTreeNode.getChild(context, "Marker", ChartMarker::new));
 
         component.setSize(getSize(containerTreeNode, context, Size.of(4, 10)));
+
         return component;
     }
 
     private ChartDataType getChartDataType(ContainerTreeNode containerTreeNode, DataContext context) {
         ContainerTreeNode dataNode = containerTreeNode.listChild(null)
-                .stream().filter(node ->
-                        !"Legend".equals(node.getTagName()) &&
-                                !"Marker".equals(node.getTagName())
-                ).findFirst().orElse(null);
+                .stream().filter(node -> !ignoreTags.contains(node.getTagName())).findFirst().orElse(null);
 
         if (dataNode == null) {
             return null;
@@ -50,27 +59,4 @@ public class ChartParser extends AbstractLayoutParser {
 
     }
 
-    private Legend getChartLegend(ContainerTreeNode containerTreeNode, DataContext context) {
-        final ContainerTreeNode legendNode = containerTreeNode.getChild("Legend");
-        if (legendNode == null) {
-            return null;
-        }
-
-        Legend chartLegend = new Legend();
-        legendNode.initProperties(chartLegend, context);
-
-        return chartLegend;
-    }
-
-    private Marker getChartMarker(ContainerTreeNode containerTreeNode, DataContext context) {
-        final ContainerTreeNode markerNode = containerTreeNode.getChild("Marker");
-        if (markerNode == null) {
-            return null;
-        }
-
-        Marker marker = new Marker();
-        markerNode.initProperties(marker, context);
-
-        return marker;
-    }
 }

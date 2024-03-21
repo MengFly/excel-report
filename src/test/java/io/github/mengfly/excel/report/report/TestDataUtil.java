@@ -1,5 +1,6 @@
 package io.github.mengfly.excel.report.report;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.RandomUtil;
 import io.github.mengfly.excel.report.component.table.TableColumn;
 import io.github.mengfly.excel.report.component.table.TableObjFieldColumn;
@@ -7,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +17,10 @@ public class TestDataUtil {
 
     public static File getTestImageFile() {
         return new File("img/test.jpg");
+    }
 
+    public static String getBase64Image() {
+        return FileUtil.readString(new File("img/base64.txt"), StandardCharsets.UTF_8);
     }
 
     public static List<String> getRandomStringList(int size) {

@@ -45,7 +45,7 @@ public class TestTemplate {
         context.put("image", TestDataUtil.getTestImageFile());
         context.put("tableData", TestDataUtil.getData(10));
         context.put("listData", TestDataUtil.getRandomStringList(9));
-
+        context.put("base64Image", TestDataUtil.getBase64Image());
         List<String> label = TestDataUtil.getRandomStringList(10);
         context.put("chartLabelData", label);
 

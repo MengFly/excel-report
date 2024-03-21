@@ -87,6 +87,11 @@
                 <Image size="6,11" src="${image}" scaleType="CENTER"/>
             </HLayout>
 
+            <HLayout>
+                <Text size="1,15" text="Base64Image" style="{rotation:90}"/>
+                <Image size="9,15" src="${base64Image}"/>
+            </HLayout>
+
             <Chart size="10,15">
                 <Title text="测试的二维曲线图" fontSize="20" italic="true" underLine="DASH_HEAVY"/>
                 <Legend position="top" overlay="false"/>

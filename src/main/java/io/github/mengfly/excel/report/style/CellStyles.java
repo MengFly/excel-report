@@ -199,7 +199,6 @@ public class CellStyles {
         return register(new StyleKey<>(id, methodName, type));
     }
 
-
     private static <T> StyleKey<T> registerFont(StyleKey<T> key) {
         fontStyleMap.put(key.getId(), key);
         return key;

@@ -1,5 +1,6 @@
 package io.github.mengfly.excel.report.component.image;
 
+import cn.hutool.core.codec.Base64;
 import lombok.Getter;
 
 import java.io.ByteArrayInputStream;
@@ -26,6 +27,6 @@ public class Base64Image implements Image {
 
     @Override
     public InputStream openStream() {
-        return new ByteArrayInputStream(src.getBytes());
+        return new ByteArrayInputStream(Base64.decode(src));
     }
 }

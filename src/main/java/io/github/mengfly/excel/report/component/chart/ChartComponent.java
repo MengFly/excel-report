@@ -17,6 +17,7 @@ import org.apache.poi.xddf.usermodel.chart.DisplayBlanks;
 import org.apache.poi.xddf.usermodel.text.XDDFTextBody;
 import org.apache.poi.xssf.usermodel.XSSFChart;
 import org.apache.poi.xssf.usermodel.XSSFDrawing;
+import org.openxmlformats.schemas.drawingml.x2006.chart.CTChartSpace;
 
 @Getter
 @Setter
@@ -73,6 +74,9 @@ public class ChartComponent extends AbstractComponent {
         final ExcelCellSpan cellSpan = context.getCellSpan(point, size).merge();
         final XSSFDrawing drawing = context.createDrawingPatriarch();
         XSSFChart chart = drawing.createChart(cellSpan.getFillAnchor(anchorType));
+
+        final CTChartSpace ctChartSpace = chart.getCTChartSpace();
+        ctChartSpace.addNewRoundedCorners().setVal(false);
 
         if (autoTitleDelete != null) {
             chart.setAutoTitleDeleted(autoTitleDelete);

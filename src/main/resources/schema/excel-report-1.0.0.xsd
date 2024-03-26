@@ -571,6 +571,8 @@
         </xs:attribute>
 
     </xs:complexType>
+    <xs:complexType name="PageColSplit"/>
+    <xs:complexType name="PageRowSplit"/>
     <xs:simpleType name="BorderStyle">
         <xs:annotation>
             <xs:documentation source="description">
@@ -808,6 +810,8 @@
                 <xs:element minOccurs="0" maxOccurs="unbounded" name="Link" type="Link"/>
                 <xs:element minOccurs="0" maxOccurs="unbounded" name="Chart" type="Chart"/>
                 <xs:element minOccurs="0" maxOccurs="unbounded" name="include" type="include"/>
+                <xs:element minOccurs="0" name="PageColSplit" type="PageColSplit"/>
+                <xs:element minOccurs="0" name="PageRowSplit" type="PageRowSplit"/>
             </xs:choice>
         </xs:sequence>
     </xs:group>

@@ -22,6 +22,8 @@ public class ParserFactory {
         addParser(new ChartParser());
         addParser(new SpanParser());
         addParser(new IncludeParser());
+        addParser(new PageRowSplitParser());
+        addParser(new PageColSplitParser());
     }
 
     public static void addParser(ContainerParser parser) {

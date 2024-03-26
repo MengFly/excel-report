@@ -1370,6 +1370,21 @@
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
+
+        <xs:attribute name="smooth" type="xs:boolean" default="true">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否平滑曲线
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="showLeaderLines" default="false" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    是否显示指示线
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
     </xs:attributeGroup>
 
     <xs:complexType name="ChartMarker">

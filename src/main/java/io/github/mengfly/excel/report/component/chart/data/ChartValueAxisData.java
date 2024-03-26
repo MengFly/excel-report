@@ -14,6 +14,9 @@ public class ChartValueAxisData extends ChartAxisData<XDDFNumericalDataSource<?>
     private ChartTypes type;
     private Boolean varyColors;
 
+    private boolean smooth = true;
+    private Boolean showLeaderLines;
+
     public ChartValueAxisData(AxisDataResolver resolver) {
         super(resolver);
     }
@@ -40,6 +43,17 @@ public class ChartValueAxisData extends ChartAxisData<XDDFNumericalDataSource<?>
     public void initSeriesStyle(XDDFChartData.Series series) {
         if (getTitle() != null) {
             series.setTitle(getTitle(), null);
+        }
+        if (showLeaderLines != null) {
+            series.setShowLeaderLines(showLeaderLines);
+        }
+        if (series instanceof XDDFLineChartData.Series) {
+            final XDDFLineChartData.Series lineSeries = (XDDFLineChartData.Series) series;
+            lineSeries.setSmooth(smooth);
+        }
+        if (series instanceof XDDFScatterChartData.Series) {
+            final XDDFScatterChartData.Series scatterSeries = (XDDFScatterChartData.Series) series;
+            scatterSeries.setSmooth(smooth);
         }
     }
 }

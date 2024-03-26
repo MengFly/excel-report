@@ -105,7 +105,7 @@
 
                     <valueAxis1 for="chartData, index: ${chartValueData}" title="Value1" minimum="0"
                                 showMajorGridLines="true">
-                        <data title="Data ${index}" type="line" valueType="value" dataList="${chartData}"/>
+                        <data title="Data ${index}" type="line" valueType="value" dataList="${chartData}" smooth="false"/>
                     </valueAxis1>
 
                     <valueAxis2 for="chartData, index: ${chartValueData}" title="Value2" minimum="0"

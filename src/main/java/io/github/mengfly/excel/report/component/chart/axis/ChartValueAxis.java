@@ -17,7 +17,7 @@ import java.util.List;
 @Setter
 public class ChartValueAxis extends ChartAxis {
 
-
+    private boolean lineSmooth;
     private List<ChartValueAxisData> dataList = new ArrayList<>();
 
     @Override

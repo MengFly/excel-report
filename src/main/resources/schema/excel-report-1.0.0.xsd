@@ -983,6 +983,13 @@
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
+        <xs:attribute name="padding" type="xs:string" default="1,1,1,1">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    图片的内边距
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
         <xs:attributeGroup ref="AttrContainerDefault"/>
         <xs:attributeGroup ref="AttrSize"/>
 

@@ -21,7 +21,7 @@
 <dependency>
     <groupId>io.github.mengfly</groupId>
     <artifactId>excel-report</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 
@@ -107,5 +107,5 @@ public static void main(String[] args) {
 
 ```
 
-### 4. 最终结果
-![导出图片结果](img/export.png)
+### 4. 最终效果
+![导出图片结果](img/export.jpg)

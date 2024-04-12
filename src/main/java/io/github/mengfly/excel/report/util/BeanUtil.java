@@ -14,7 +14,7 @@ import java.util.*;
 public class BeanUtil extends cn.hutool.core.bean.BeanUtil {
 
 
-    public static void initBeanProperties(Object bean, Map<String, String> attributeMap) {
+    public static void initBeanProperties(Object bean, Map<String, ?> attributeMap) {
         if (bean == null) {
             return;
         }
@@ -31,24 +31,26 @@ public class BeanUtil extends cn.hutool.core.bean.BeanUtil {
                 return;
             }
 
-            Object settingValue = value;
-            if (propertyDescriptor.getPropertyType().isEnum()) {
-                final Map<String, Enum<?>> enumMap = getEnumMap(propertyDescriptor.getPropertyType());
-                String enumKey = value.replaceAll(" ", "").replaceAll("_", "").toLowerCase();
+            settingBeanProperties(bean, propertyDescriptor, value);
 
-                settingValue = enumMap.get(enumKey);
-            }
-
-            if (settingValue != null) {
-                settingBeanProperties(bean, propertyDescriptor, settingValue);
-            }
         });
     }
 
     private static void settingBeanProperties(Object bean, PropertyDescriptor propertyDescriptor, Object settingValue) {
         try {
-            settingValue = Convert.convert(propertyDescriptor.getPropertyType(), settingValue);
+            if (!propertyDescriptor.getPropertyType().isInstance(settingValue)) {
+                if (propertyDescriptor.getPropertyType().isEnum()) {
+                    final Map<String, Enum<?>> enumMap = getEnumMap(propertyDescriptor.getPropertyType());
+                    String enumKey = String.valueOf(settingValue).replaceAll(" ", "").replaceAll("_", "").toLowerCase();
 
+                    settingValue = enumMap.get(enumKey);
+                }
+
+                settingValue = Convert.convert(propertyDescriptor.getPropertyType(), settingValue);
+            }
+            if (settingValue == null) {
+                return;
+            }
             if (propertyDescriptor.getWriteMethod() != null) {
                 propertyDescriptor.getWriteMethod().invoke(bean, settingValue);
             } else {

@@ -49,11 +49,13 @@
 
             <Text size="10,3" text="Test(width=10,height=3)"/>
 
+            <Text size="10,3" text="${T(cn.hutool.core.util.RandomUtil).randomInt(1, 100)}"/>
+
             <Text size="10,3"
                   text="&lt;html>this is &lt;font fontColor='green' fontHeight='20'>RichText&lt;/font> Simple&lt;/html>"/>
 
             <PageRowSplit/>
-            
+
             <HLayout>
                 <Table dataList="${tableData}">
                     <column id="seq" name="序号" style="tableHeaderStyle" dataStyle="tableDataStyle"/>

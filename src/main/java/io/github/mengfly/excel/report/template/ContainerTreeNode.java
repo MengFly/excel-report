@@ -156,8 +156,8 @@ public class ContainerTreeNode {
         if (attributeMap.isEmpty()) {
             return;
         }
-        attributeMap.replaceAll((k, v) -> context.doExpression(attributeMap.get(k), String.class));
-
-        BeanUtil.initBeanProperties(result, attributeMap);
+        Map<String, Object> propertiesMap = new HashMap<>();
+        attributeMap.forEach((k, v) -> propertiesMap.put(k, context.doExpression(attributeMap.get(k), Object.class)));
+        BeanUtil.initBeanProperties(result, propertiesMap);
     }
 }

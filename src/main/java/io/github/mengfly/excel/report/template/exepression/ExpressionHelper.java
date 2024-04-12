@@ -26,8 +26,12 @@ public class ExpressionHelper {
 
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T doExpression(String expression, DataContext dataContext, Class<T> clazz) {
         final Object evaluate = doExpression(expression, dataContext);
+        if (clazz == Object.class) {
+            return (T) evaluate;
+        }
         return Convert.convert(clazz, evaluate);
     }
 

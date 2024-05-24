@@ -917,7 +917,13 @@
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
-
+        <xs:attribute name="headerHeight" default="true" type="xs:int">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    表头高度
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
     </xs:complexType>
     <xs:complexType name="TableColumn">
         <xs:attribute name="id" type="xs:string" use="required">
@@ -1250,7 +1256,7 @@
         </xs:attribute>
     </xs:attributeGroup>
     <xs:attributeGroup name="AttrChartAxis">
-        <xs:attribute name="title" type="xs:string" use="required">
+        <xs:attribute name="title" type="xs:string">
             <xs:annotation>
                 <xs:documentation source="description">
                     坐标轴名称

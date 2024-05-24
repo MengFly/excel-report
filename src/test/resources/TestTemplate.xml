@@ -104,7 +104,7 @@
                 <Marker showVal="true"/>
 
                 <ChartData>
-                    <labelAxis title="X" type="category" showMajorGridLines="true"
+                    <labelAxis type="category" showMajorGridLines="true"
                                majorTickMark="out" labelAlignment="left" tickLabelPosition="nextTo">
                         <data title="X" valueType="value" dataList="${chartLabelData}"/>
                     </labelAxis>

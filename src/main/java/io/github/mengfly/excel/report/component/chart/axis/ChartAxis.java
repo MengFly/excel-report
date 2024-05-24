@@ -1,5 +1,6 @@
 package io.github.mengfly.excel.report.component.chart.axis;
 
+import cn.hutool.core.util.StrUtil;
 import io.github.mengfly.excel.report.component.chart.AxisType;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,7 +43,9 @@ public abstract class ChartAxis {
     public abstract AxisType getType();
 
     protected void initAxisStyle(XDDFChartAxis axis) {
-        axis.setTitle(title);
+        if (StrUtil.isNotEmpty(title)) {
+            axis.setTitle(title);
+        }
         if (numberFormat != null) {
             axis.setNumberFormat(numberFormat);
         }

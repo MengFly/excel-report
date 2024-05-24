@@ -27,7 +27,7 @@ public interface ChartDataType {
 
         if (labelAxis == null) {
             labelAxis = new ChartLabelAxis();
-            labelAxis.setTitle("X");
+            labelAxis.setTitle("");
             labelAxis.setType(AxisType.VALUE);
         }
         if (labelAxis.getData() != null) {

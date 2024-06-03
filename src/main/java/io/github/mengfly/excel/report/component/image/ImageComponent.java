@@ -26,8 +26,9 @@ public class ImageComponent extends AbstractComponent {
     private String padding = "2,2,2,2";
 
     @Override
-    public void onExport(ReportContext context, Point point) {
-        final ExcelCellSpan cellSpan = context.getCellSpan(point, size).merge();
+    public void onExport(ReportContext context, Point point, Size suggestSize) {
+
+        final ExcelCellSpan cellSpan = context.getCellSpan(point, suggestSize).merge();
 
 
         if (image != null) {

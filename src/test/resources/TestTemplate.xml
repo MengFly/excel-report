@@ -42,14 +42,14 @@
 
     <container>
         <VLayout alignPolicy="center">
-            <Link link="https://gitee.com/mengfly_p/excel-report" size="10,3" text="Excel Report Framework"
+            <Link link="https://gitee.com/mengfly_p/excel-report" size="-1,3" text="Excel Report Framework"
                   label="点击访问项目开源地址" style="HeaderLinkStyle"/>
 
             <include ref="TestLayoutReport" include="${false}"/>
 
             <Text size="10,3" text="Test(width=10,height=3)"/>
 
-            <Text size="10,3" text="${T(cn.hutool.core.util.RandomUtil).randomInt(1, 100)}"/>
+            <Text size="10,3" text="This is a random number: ${T(cn.hutool.core.util.RandomUtil).randomInt(1, 100)}"/>
 
             <Text size="10,3"
                   text="&lt;html>this is &lt;font fontColor='green' fontHeight='20'>RichText&lt;/font> Simple&lt;/html>"/>
@@ -74,8 +74,8 @@
             </VLayout>
 
             <HLayout>
-                <Text size="3,10" text="Test(width=3, height=10)"/>
-                <Text size="5,10" text="Test(width=5, height=10)"/>
+                <Text size="3,-1" text="Test(width=FillParent, height=10)"/>
+                <Text size="5,-1" text="Test(width=FillParent, height=10)"/>
                 <List span="2" orientation="vertical" dataList="${listData}">
                     <header title="Vertical List"/>
                 </List>
@@ -92,7 +92,7 @@
             </HLayout>
 
             <HLayout>
-                <Text size="1,15" text="Base64Image" style="{rotation:90}"/>
+                <Text size="1,-1" text="Base64Image\n(FillParent)" style="{rotation:90}"/>
                 <Image size="9,15" src="${base64Image}"/>
             </HLayout>
 

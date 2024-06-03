@@ -2,6 +2,7 @@ package io.github.mengfly.excel.report.layout;
 
 import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.entity.Point;
+import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.excel.ReportContext;
 import io.github.mengfly.excel.report.style.StyleHolder;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
@@ -19,8 +20,8 @@ public abstract class AbstractLayout extends StyleHolder implements Layout {
     protected final List<Container> containers = new ArrayList<>();
 
     @Override
-    public final void export(ReportContext context, Point point) {
-        Layout.super.export(context, point);
+    public final void export(ReportContext context, Point point, Size suggestSize) {
+        Layout.super.export(context, point, suggestSize);
     }
 
     @Override

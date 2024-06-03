@@ -12,7 +12,7 @@ public class PageRowSplitComponent extends AbstractComponent {
     }
 
     @Override
-    public void onExport(ReportContext context, Point point) {
+    public void onExport(ReportContext context, Point point, Size suggestSize) {
         context.getSheet().setRowBreak(point.getY() - 1);
     }
 }

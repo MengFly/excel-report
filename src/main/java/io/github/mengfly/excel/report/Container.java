@@ -13,6 +13,7 @@ public interface Container extends StyleAble {
      * 获取该组件相关的模板信息
      * <br>
      * 该方法只有在通过模板方法创建的时候才会返回信息，否则返回null
+     *
      * @return 模板信息
      */
     ContainerTreeNode getTemplateNode();
@@ -26,8 +27,8 @@ public interface Container extends StyleAble {
      */
     Size getSize();
 
-    default void export(ReportContext context, Point point) {
-        context.getStyleChain().onStyle(getStyle(), () -> onExport(context, point));
+    default void export(ReportContext context, Point point, Size suggestSize) {
+        context.getStyleChain().onStyle(getStyle(), () -> onExport(context, point, suggestSize));
     }
 
     /**
@@ -36,10 +37,11 @@ public interface Container extends StyleAble {
      * @param context 导出上下文
      * @param point   组件位置(左上角Cell位置)
      */
-    void onExport(ReportContext context, Point point);
+    void onExport(ReportContext context, Point point, Size suggestSize);
 
     /**
      * 打印组件信息
+     *
      * @return 组件信息
      */
     default String print() {

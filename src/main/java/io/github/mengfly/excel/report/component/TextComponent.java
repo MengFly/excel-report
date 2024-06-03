@@ -19,9 +19,8 @@ public class TextComponent extends AbstractComponent {
     private Object text;
 
     @Override
-    public void onExport(ReportContext context, Point point) {
-
-        ExcelCellSpan cellSpan = context.getCellSpan(point, size);
+    public void onExport(ReportContext context, Point point, Size suggestSize) {
+        ExcelCellSpan cellSpan = context.getCellSpan(point, suggestSize);
         cellSpan.merge().setValue(text);
 
     }

@@ -19,7 +19,10 @@ public class HLayout extends AbstractLayout {
     public Size getSize() {
         Size size = new Size();
         for (Container container : getContainers()) {
-            size.width += container.getSize().width;
+            final int width = container.getSize().width;
+            if (width > 0) {
+                size.width += width;
+            }
             size.height = Math.max(size.height, container.getSize().height);
         }
         return size;

@@ -20,7 +20,11 @@ public class VLayout extends AbstractLayout {
         Size size = new Size();
         for (Container container : getContainers()) {
             size.width = Math.max(size.width, container.getSize().width);
-            size.height += container.getSize().height;
+
+            final int height = container.getSize().height;
+            if (height > 0) {
+                size.height += height;
+            }
         }
         return size;
     }

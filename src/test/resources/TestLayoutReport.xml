@@ -16,6 +16,10 @@
                 <Text size="3,1" text="Test(width=3)" style="{fontColor:RED,fontBold:true,fontName:楷体}"/>
                 <Text size="5,1" text="Test(width=5)"/>
             </HLayout>
+            <HLayout size="-1,1">
+                <Text size="-1,1" text="Test(weight=3)" style="{fontColor:RED,fontBold:true,fontName:楷体,weight:3}"/>
+                <Text size="-1,1" text="Test(weight=5)" style="{weight:5}"/>
+            </HLayout>
         </VLayout>
     </container>
 </template>

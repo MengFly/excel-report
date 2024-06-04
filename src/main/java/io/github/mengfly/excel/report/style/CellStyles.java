@@ -1,9 +1,7 @@
 package io.github.mengfly.excel.report.style;
 
-import io.github.mengfly.excel.report.style.key.CellWidthHeightKey;
-import io.github.mengfly.excel.report.style.key.ColorStyleKey;
-import io.github.mengfly.excel.report.style.key.NoOpStyleKey;
-import io.github.mengfly.excel.report.style.key.StyleKey;
+import io.github.mengfly.excel.report.entity.Size;
+import io.github.mengfly.excel.report.style.key.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
@@ -154,6 +152,8 @@ public class CellStyles {
      * @see XSSFFont#setFamily(FontFamily)
      */
     public static final StyleKey<FontFamily> fontFamily = registerFont("fontFamily", "setFamily", FontFamily.class);
+
+    public static final StyleKey<Size> preferredSize = register(new SizeStyleKey("preferredSize"));
 
 
     static {

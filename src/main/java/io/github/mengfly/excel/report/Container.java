@@ -21,7 +21,7 @@ public interface Container extends StyleAble {
     void setTemplateNode(ContainerTreeNode templateNode);
 
     /**
-     * 获取容器的尺寸
+     * 获取容器的尺寸（组件基础尺寸）
      *
      * @return 容器尺寸
      */

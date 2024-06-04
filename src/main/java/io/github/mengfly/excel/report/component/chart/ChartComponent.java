@@ -52,7 +52,6 @@ public class ChartComponent extends AbstractComponent {
 
             // 初始化字体
             initChartTitle(chart);
-
         }
 
     }

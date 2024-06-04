@@ -60,7 +60,8 @@
                 <Table dataList="${tableData}">
                     <column id="seq" name="序号" style="tableHeaderStyle" dataStyle="tableDataStyle"/>
                     <column id="name" name="姓名" style="tableHeaderStyle" dataStyle="tableDataStyle"/>
-                    <column id="age" name="年龄" style="tableHeaderStyle" dataStyle="tableDataStyle"/>
+                    <column id="age" name="年龄" style="tableHeaderStyle"
+                            dataStyle="tableDataStyle {dataFormat:0岁}"/>
                 </Table>
                 <Image size="7,11" src="${image}" scaleType="FIT_XY" anchorType="MOVE_AND_RESIZE" padding="10"/>
             </HLayout>

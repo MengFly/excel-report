@@ -110,6 +110,14 @@ public class CellStyles {
      */
     public static final StyleKey<String> height = register(new CellWidthHeightKey("height"));
     public static final StyleKey<String> dataFormat = register(new NoOpStyleKey<>("dataFormat", String.class));
+    /**
+     * 组件权重，在自动调整组件大小的时候使用，例如
+     * <p>
+     * 在HLayout中，如果组件的宽度设置为了 -1, 那么该属性生效
+     * <p>
+     * 在VLayout中，如果组件的高度设置为了 -1, 那么该属性生效
+     */
+    public static final StyleKey<Double> weight = register(new NoOpStyleKey<>("weight", Double.class));
 
     // =================================================================================================================
     // Font Style

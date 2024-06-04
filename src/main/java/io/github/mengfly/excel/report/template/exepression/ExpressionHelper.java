@@ -23,7 +23,6 @@ public class ExpressionHelper {
                 () -> createExpression(expression));
 
         return templateExpression.evaluate(dataContext);
-
     }
 
     @SuppressWarnings("unchecked")

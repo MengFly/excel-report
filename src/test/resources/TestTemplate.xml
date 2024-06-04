@@ -69,7 +69,7 @@
             <VLayout for="header,index : ${{'h1', 'h2', 'h3', 'h4'}}">
                 <List if="${index != 1}" span="2"
                       orientation="horizontal"
-                      style="{width:auto}" dataList="${listData}">
+                      style="{width:auto,alignHorizontal:center}" dataList="${listData}">
                     <header title="Horizontal-${header}-${index}" style="{fontBold:true}"/>
                 </List>
             </VLayout>
@@ -77,8 +77,8 @@
             <HLayout>
                 <Text size="3,-1" text="Test(width=FillParent, height=10)"/>
                 <Text size="5,-1" text="Test(width=FillParent, height=10)"/>
-                <List span="2" orientation="vertical" dataList="${listData}">
-                    <header title="Vertical List"/>
+                <List span="2" orientation="vertical" dataList="${listData}" style="{alignHorizontal:center}">
+                    <header title="Vertical List" style="{alignHorizontal:center}"/>
                 </List>
             </HLayout>
 

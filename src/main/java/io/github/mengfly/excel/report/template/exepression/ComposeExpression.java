@@ -21,4 +21,12 @@ public class ComposeExpression implements TemplateExpression {
 
         return sb.toString();
     }
+
+    @Override
+    public String toString() {
+        if (expressions == null || expressions.isEmpty()) {
+            return "";
+        }
+        return expressions.toString();
+    }
 }

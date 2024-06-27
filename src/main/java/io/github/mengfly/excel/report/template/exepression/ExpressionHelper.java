@@ -15,7 +15,7 @@ public class ExpressionHelper {
     private static final String expressionPrefix = "${";
     private static final String expressionSuffix = "}";
 
-    private final ExpressionParser parser = new SpelExpressionParser();
+    private static final ExpressionParser parser = new SpelExpressionParser();
     private final Cache<String, TemplateExpression> expressionMap = new LRUCache<>(256);
 
     public Object doExpression(String expression, DataContext dataContext) {
@@ -34,7 +34,7 @@ public class ExpressionHelper {
         return Convert.convert(clazz, evaluate);
     }
 
-    private TemplateExpression createExpression(String expression) {
+    public static TemplateExpression createExpression(String expression) {
         List<TemplateExpression> expressions = new ArrayList<>();
 
         // 开始解析表达式列表
@@ -50,9 +50,23 @@ public class ExpressionHelper {
             // 查询结束位置
             final int end = searchEnd(expression, expressionStart);
             if (end > 0) {
-                final String subExpression = expression.substring(expressionStart + expressionPrefix.length(), end);
-                expressions.add(new StandardExpression(parser.parseExpression(subExpression)));
+                // 判断是否是表达式
+                final String suffix = expression.substring(end, end + 1);
+                final String prefix = expression.substring(expressionStart, expressionStart + expressionPrefix.length());
+                if (suffix.equals(expressionSuffix) && prefix.equals(expressionPrefix)) {
+                    final String subExpression = expression.substring(expressionStart + expressionPrefix.length(), end);
+                    try {
+                        expressions.add(new StandardExpression(parser.parseExpression(subExpression)));
+                    } catch (Exception e) {
+                        expressions.add(new NotExpression(expression.substring(expressionStart, end)));
+                    }
+                } else {
+                    expressions.add(new NotExpression(expression.substring(expressionStart, end)));
+                }
                 startSearch = end + 1;
+            } else {
+                // 说明搜索到头了
+                break;
             }
         }
         if (startSearch < expression.length()) {
@@ -73,6 +87,12 @@ public class ExpressionHelper {
             nextStart = expression.length();
         }
         int end = expression.indexOf(expressionSuffix, expressionStart);
+        if (end > nextStart) {
+            return nextStart - 1;
+        }
+        if (end == -1) {
+            return -1;
+        }
         while (true) {
             int next = expression.indexOf(expressionSuffix, end + 1);
             if (next > nextStart || next == -1) {

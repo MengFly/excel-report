@@ -22,4 +22,9 @@ public class StandardExpression implements TemplateExpression {
         }
         return value;
     }
+
+    @Override
+    public String toString() {
+        return "exp:" + expression.getExpressionString();
+    }
 }

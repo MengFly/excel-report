@@ -1000,6 +1000,13 @@
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
+        <xs:attribute name="scaleHeight" type="xs:double" default="1.0">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    高度缩放
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
         <xs:attribute name="padding" type="xs:string" default="1,1,1,1">
             <xs:annotation>
                 <xs:documentation source="description">

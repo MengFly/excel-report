@@ -13,7 +13,7 @@ public enum ScaleType {
 
     FIT_START {
         public void onAnchor(ClientAnchor anchor, ExcelCellSpan cellSpan, Dimension imageDimension) {
-            final Dimension2D dimension = cellSpan.cellSpanDimension();
+            Dimension2D dimension = cellSpan.cellSpanDimension();
 
             double scaleWidth = dimension.getWidth() / imageDimension.width;
             double scaleHeight = dimension.getHeight() / imageDimension.height;

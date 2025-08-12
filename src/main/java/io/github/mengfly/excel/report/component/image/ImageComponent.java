@@ -24,6 +24,10 @@ public class ImageComponent extends AbstractComponent {
     private ScaleType scaleType = ScaleType.FIT_XY;
     private ClientAnchor.AnchorType anchorType;
     private String padding = "2,2,2,2";
+    /**
+     * 高度缩放比例（再原基础上进行高度的适配）
+     */
+    private Double scaleHeight = 1.0;
 
     @Override
     public void onExport(ReportContext context, Point point, Size suggestSize) {
@@ -39,6 +43,7 @@ public class ImageComponent extends AbstractComponent {
                 final ClientAnchor fillAnchor = cellSpan.getFillAnchor(anchorType);
                 final XSSFPicture picture = patriarch.createPicture(fillAnchor, pictureIndex);
                 final Dimension imageDimension = picture.getImageDimension();
+                imageDimension.height = (int) (imageDimension.height * scaleHeight);
                 context.addOnExportFinalizer(() -> {
                     scaleType.onAnchor(fillAnchor, cellSpan, imageDimension);
                     Border padding = Border.of(getPadding());

@@ -21,10 +21,9 @@
 
     <container>
         <VLayout>
-
             <VLayout alignPolicy="center">
                 <Text size="5,1" text="Image CENTER" style="imageTag"/>
-                <Image size="5,10" src="${image}" scaleType="CENTER"/>
+                <Image size="5,10" src="${image}" scaleType="CENTER" anchorType="DONT_MOVE_AND_RESIZE"/>
                 <Text size="5,1" text="Image FIT_END" style="imageTag"/>
                 <Image size="5,10" src="${image}" scaleType="FIT_END"/>
                 <Text size="5,1" text="Image FIT_START" style="imageTag"/>
@@ -41,7 +40,7 @@
                 <Text size="5,1" text="Image FIT_END" style="imageTag"/>
                 <Image size="5,1" style="{height:200}" src="${image}" scaleType="FIT_END"/>
                 <Text size="5,1" text="Image FIT_START" style="imageTag"/>
-                <Image size="5,1" style="{height:200}" src="${image}" scaleType="FIT_START"/>
+                <Image size="5,1" style="{height:200}" src="${image}" scaleType="FIT_START" anchorType="DONT_MOVE_AND_RESIZE"/>
                 <Text size="5,1" text="Image FIT_XY" style="imageTag"/>
                 <Image size="5,1" style="{height:200}" src="${image}" scaleType="FIT_XY"/>
             </VLayout>

@@ -3,6 +3,7 @@ package io.github.mengfly.excel.report.component.image;
 import io.github.mengfly.excel.report.excel.ExcelCellSpan;
 import io.github.mengfly.excel.report.util.CellUtils;
 import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.util.Units;
 
 import java.awt.*;
 import java.awt.geom.Dimension2D;
@@ -55,7 +56,9 @@ public enum ScaleType {
     CENTER {
         @Override
         public void onAnchor(ClientAnchor anchor, ExcelCellSpan cellSpan, Dimension imageDimension) {
+
             final Dimension2D dimension = cellSpan.cellSpanDimension();
+
             int startRow = anchor.getRow1();
             int startCol = anchor.getCol1();
 

@@ -1,5 +1,6 @@
 package io.github.mengfly.excel.report.entity;
 
+import cn.hutool.core.convert.Convert;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -18,10 +19,10 @@ public class Size {
             return null;
         } else {
             String[] split = size.split(",");
-            if (split.length!= 2) {
+            if (split.length != 2) {
                 throw new IllegalArgumentException("size must be width height");
             }
-            return new Size(Integer.parseInt(split[0]), Integer.parseInt(split[1]));
+            return new Size(Convert.toInt(split[0]), Convert.toInt(split[1]));
         }
     }
 

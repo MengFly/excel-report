@@ -2,7 +2,6 @@ package io.github.mengfly.excel.report.component.chart.data;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.apache.poi.xddf.usermodel.chart.XDDFChartData;
 import org.apache.poi.xddf.usermodel.chart.XDDFDataSource;
 
 @Data

@@ -16,7 +16,6 @@ public abstract class ChartAxisData<T extends XDDFDataSource<?>> {
         return resolver.dataCount();
     }
 
-    @SuppressWarnings("unchecked")
     public T createDataSource(ChartDataContext context) {
         return ((T) resolver.createDataSource(context));
     }

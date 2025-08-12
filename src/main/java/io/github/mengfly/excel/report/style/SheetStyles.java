@@ -154,7 +154,6 @@ public class SheetStyles {
         DEFAULT_STYLE.addStyle(key, defaultValue);
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> StyleKey<T> getStyleKey(String key) {
         return (StyleKey<T>) styleMap.get(key);
     }

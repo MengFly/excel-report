@@ -188,7 +188,6 @@ public class CellStyles {
         setDefaultStyle(fontFamily, FontFamily.NOT_APPLICABLE);
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> StyleKey<T> getStyleKey(String key) {
         if (isFontStyle(key)) {
             return (StyleKey<T>) fontStyleMap.get(key);

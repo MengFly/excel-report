@@ -25,7 +25,6 @@ public class ExpressionHelper {
         return templateExpression.evaluate(dataContext);
     }
 
-    @SuppressWarnings("unchecked")
     public <T> T doExpression(String expression, DataContext dataContext, Class<T> clazz) {
         final Object evaluate = doExpression(expression, dataContext);
         if (clazz == Object.class) {

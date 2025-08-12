@@ -3,8 +3,6 @@ package io.github.mengfly.excel.report.component.image;
 import io.github.mengfly.excel.report.excel.ExcelCellSpan;
 import io.github.mengfly.excel.report.util.CellUtils;
 import org.apache.poi.ss.usermodel.ClientAnchor;
-import org.apache.poi.util.Units;
-
 import java.awt.*;
 import java.awt.geom.Dimension2D;
 

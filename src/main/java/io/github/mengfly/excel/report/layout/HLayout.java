@@ -4,7 +4,6 @@ import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.entity.AlignPolicy;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.entity.Size;
-import io.github.mengfly.excel.report.excel.ReportContext;
 import io.github.mengfly.excel.report.style.CellStyles;
 import io.github.mengfly.excel.report.util.WeightSizeHelper;
 import lombok.Getter;
@@ -34,20 +33,31 @@ public class HLayout extends AbstractLayout {
     }
 
     @Override
-    public void onExport(ReportContext context, Point point, Size suggestSize) {
-        int start = 0;
-
+    public void onMeasure(Size suggestSize) {
+        // 测量自身
+        measuredSize = suggestSize;
         final WeightSizeHelper sizeHelper = new WeightSizeHelper(suggestSize, getContainers(), WeightSizeHelper.SIZE_TYPE_WIDTH);
 
         for (Container container : getContainers()) {
             final int childHeightSize = getChildContainerSuggestSize(suggestSize, container);
             final int childWidthSize = sizeHelper.distributionSize(container);
 
-            Size childSize = new Size(childWidthSize, childHeightSize);
+            // 测量子组件
+            container.onMeasure(Size.of(childWidthSize, childHeightSize));
+        }
+    }
 
-            container.export(context, point.add(start, alignPolicy.getPoint(suggestSize.height, childSize.height)), childSize);
-
-            start += childSize.width;
+    @Override
+    public void onLayout(Point relativePosition) {
+        position = relativePosition;
+        // 开始布局子组件
+        int start = 0;
+        final Size measuredSize = getMeasuredSize();
+        for (Container container : getContainers()) {
+            final Point position = getPosition().add(start,
+                    alignPolicy.getPoint(measuredSize.height, measuredSize.height));
+            container.onLayout(position);
+            start += container.getMeasuredSize().width;
         }
     }
 

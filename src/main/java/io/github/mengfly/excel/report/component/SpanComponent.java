@@ -1,6 +1,5 @@
 package io.github.mengfly.excel.report.component;
 
-import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.excel.ReportContext;
 import io.github.mengfly.excel.report.style.CellStyles;
@@ -28,7 +27,7 @@ public class SpanComponent extends AbstractComponent {
 
 
     @Override
-    public void onExport(ReportContext context, Point point, Size suggestSize) {
-        context.getCellSpan(point, suggestSize).merge();
+    public void onExport(ReportContext context) {
+        context.getCellSpan(getPosition(), getMeasuredSize()).merge();
     }
 }

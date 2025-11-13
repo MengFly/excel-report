@@ -4,7 +4,6 @@ import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.entity.AlignPolicy;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.entity.Size;
-import io.github.mengfly.excel.report.excel.ReportContext;
 import io.github.mengfly.excel.report.style.CellStyles;
 import io.github.mengfly.excel.report.util.WeightSizeHelper;
 import lombok.Getter;
@@ -35,22 +34,32 @@ public class VLayout extends AbstractLayout {
     }
 
     @Override
-    public void onExport(ReportContext context, Point point, Size suggestSize) {
-
-        int start = 0;
-
-        final WeightSizeHelper sizeHelper = new WeightSizeHelper(suggestSize, getContainers(), WeightSizeHelper.SIZE_TYPE_HEIGHT);
+    public void onMeasure(Size suggestSize) {
+        measuredSize = suggestSize;
+        final WeightSizeHelper sizeHelper =
+                new WeightSizeHelper(suggestSize, getContainers(), WeightSizeHelper.SIZE_TYPE_HEIGHT);
 
         for (Container container : getContainers()) {
             final int childWidthSize = getChildContainerSuggestSize(suggestSize, container);
             final int childHeightSize = sizeHelper.distributionSize(container);
             Size childSize = new Size(childWidthSize, childHeightSize);
+            // 子组件继续测量
+            container.onMeasure(childSize);
+        }
+    }
 
-            container.export(
-                    context,
-                    point.add(alignPolicy.getPoint(childSize.width, childSize.width), start),
-                    childSize
-            );
+    @Override
+    public void onLayout(Point relativePosition) {
+        position = relativePosition;
+        int start = 0;
+
+        for (Container container : getContainers()) {
+            Size childSize = container.getMeasuredSize();
+
+            final Point point = relativePosition.add(
+                    alignPolicy.getPoint(childSize.width, childSize.width), start);
+
+            container.onLayout(point);
 
             start += childSize.height;
         }

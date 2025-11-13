@@ -52,7 +52,7 @@
 
     <container>
         <VLayout>
-            <Text size="8,1" style="headerStyle" text="${areaName}指标敏感度统计表"/>
+            <Text size="-1,1" style="headerStyle" text="${areaName}指标敏感度统计表"/>
             <Table dataList="${dataList}" headerHeight="2">
                 <column id="seq" name="序号" style="tableHeaderStyle" dataStyle="tableDataStyle"/>
 

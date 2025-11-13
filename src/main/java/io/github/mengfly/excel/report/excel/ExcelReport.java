@@ -2,7 +2,6 @@ package io.github.mengfly.excel.report.excel;
 
 import cn.hutool.core.util.StrUtil;
 import io.github.mengfly.excel.report.Container;
-import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.style.CellStyles;
 import io.github.mengfly.excel.report.style.SheetStyles;
 import io.github.mengfly.excel.report.style.StyleMap;
@@ -62,7 +61,12 @@ public class ExcelReport {
         SheetStyles.initSheetStyle(sheet, sheetStyleMap);
         ReportContext context = new ReportContext(workbook, sheet);
         context.getStyleChain().onStyle(CellStyles.DEFAULT_STYLE,
-                () -> container.export(context, new Point(0, 0), container.getSize()));
+                () -> {
+                    // 在导出数据之前，先进行测量
+                    container.onMeasure();
+                    container.onLayout();
+                    container.export(context);
+                });
         context.applyCellWidthHeight(sheetStyleMap);
     }
 

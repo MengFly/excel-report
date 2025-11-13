@@ -37,12 +37,12 @@ public class ListComponent extends AbstractComponent {
     }
 
     @Override
-    public void onExport(ReportContext context, Point point, Size suggestSize) {
+    public void onExport(ReportContext context) {
         // TODO  2024/6/3 调整大小？
         if (orientation == Orientation.VERTICAL) {
-            exportVerticalList(context, point);
+            exportVerticalList(context, getPosition());
         } else {
-            exportHorizontalList(context, point);
+            exportHorizontalList(context, getPosition());
         }
     }
 

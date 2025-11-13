@@ -27,17 +27,42 @@ public interface Container extends StyleAble {
      */
     Size getSize();
 
-    default void export(ReportContext context, Point point, Size suggestSize) {
-        context.getStyleChain().onStyle(getStyle(), () -> onExport(context, point, suggestSize));
+    /**
+     * 获取测量后的尺寸（组件实际尺寸）
+     *
+     * @return 测量后的尺寸
+     */
+    Size getMeasuredSize();
+
+    /**
+     * 获取组件位置
+     *
+     * @return 组件位置
+     */
+    Point getPosition();
+
+    default void onMeasure() {
+        onMeasure(getSize());
+    }
+
+    void onMeasure(Size suggestSize);
+
+    default void onLayout() {
+        onLayout(new Point(0, 0));
+    }
+
+    void onLayout(Point relativePosition);
+
+    default void export(ReportContext context) {
+        context.getStyleChain().onStyle(getStyle(), () -> onExport(context));
     }
 
     /**
      * 子组件必须实现该方法实现导出逻辑
      *
      * @param context 导出上下文
-     * @param point   组件位置(左上角Cell位置)
      */
-    void onExport(ReportContext context, Point point, Size suggestSize);
+    void onExport(ReportContext context);
 
     /**
      * 打印组件信息
@@ -45,7 +70,7 @@ public interface Container extends StyleAble {
      * @return 组件信息
      */
     default String print() {
-        return String.format("%s[%s]", getClass().getSimpleName(), getSize());
+        return String.format("%s[%s]", getClass().getSimpleName(), getMeasuredSize());
     }
 
 

@@ -38,13 +38,12 @@ public class ChartComponent extends AbstractComponent {
 
 
     @Override
-    public void onExport(ReportContext context, Point point, Size suggestSize) {
+    public void onExport(ReportContext context) {
 
         if (type.needCreateChart()) {
-            final XSSFChart chart = createChart(context, point, suggestSize);
+            final XSSFChart chart = createChart(context, getPosition(), getMeasuredSize());
 
-
-            type.onExport(context, point, chart);
+            type.onExport(context, getPosition(), chart);
 
             if (marker != null) {
                 type.initMarker(chart, marker);

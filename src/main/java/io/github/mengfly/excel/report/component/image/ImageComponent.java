@@ -2,7 +2,6 @@ package io.github.mengfly.excel.report.component.image;
 
 import io.github.mengfly.excel.report.component.AbstractComponent;
 import io.github.mengfly.excel.report.entity.Border;
-import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.excel.ExcelCellSpan;
 import io.github.mengfly.excel.report.excel.ReportContext;
@@ -30,9 +29,9 @@ public class ImageComponent extends AbstractComponent {
     private Double scaleHeight = 1.0;
 
     @Override
-    public void onExport(ReportContext context, Point point, Size suggestSize) {
+    public void onExport(ReportContext context) {
 
-        final ExcelCellSpan cellSpan = context.getCellSpan(point, suggestSize).merge();
+        final ExcelCellSpan cellSpan = context.getCellSpan(getPosition(), getMeasuredSize()).merge();
 
 
         if (image != null) {

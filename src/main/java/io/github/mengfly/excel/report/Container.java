@@ -34,23 +34,35 @@ public interface Container extends StyleAble {
      */
     Size getMeasuredSize();
 
+    /**
+     * 获取组件位置
+     *
+     * @return 组件位置
+     */
+    Point getPosition();
+
     default void onMeasure() {
         onMeasure(getSize());
     }
 
     void onMeasure(Size suggestSize);
 
-    default void export(ReportContext context, Point point) {
-        context.getStyleChain().onStyle(getStyle(), () -> onExport(context, point));
+    default void onLayout() {
+        onLayout(new Point(0, 0));
+    }
+
+    void onLayout(Point relativePosition);
+
+    default void export(ReportContext context) {
+        context.getStyleChain().onStyle(getStyle(), () -> onExport(context));
     }
 
     /**
      * 子组件必须实现该方法实现导出逻辑
      *
      * @param context 导出上下文
-     * @param point   组件位置(左上角Cell位置)
      */
-    void onExport(ReportContext context, Point point);
+    void onExport(ReportContext context);
 
     /**
      * 打印组件信息

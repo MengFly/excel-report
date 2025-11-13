@@ -4,7 +4,6 @@ import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.entity.AlignPolicy;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.entity.Size;
-import io.github.mengfly.excel.report.excel.ReportContext;
 import io.github.mengfly.excel.report.style.CellStyles;
 import io.github.mengfly.excel.report.util.WeightSizeHelper;
 import lombok.Getter;
@@ -50,20 +49,20 @@ public class VLayout extends AbstractLayout {
     }
 
     @Override
-    public void onExport(ReportContext context, Point point) {
+    public void onLayout(Point relativePosition) {
+        position = relativePosition;
         int start = 0;
 
         for (Container container : getContainers()) {
             Size childSize = container.getMeasuredSize();
 
-            container.export(
-                    context,
-                    point.add(alignPolicy.getPoint(childSize.width, childSize.width), start)
-            );
+            final Point point = relativePosition.add(
+                    alignPolicy.getPoint(childSize.width, childSize.width), start);
+
+            container.onLayout(point);
 
             start += childSize.height;
         }
-
     }
 
     private int getChildContainerSuggestSize(Size size, Container container) {

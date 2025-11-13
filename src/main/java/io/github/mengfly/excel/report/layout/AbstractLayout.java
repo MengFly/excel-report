@@ -19,10 +19,18 @@ public abstract class AbstractLayout extends StyleHolder implements Layout {
     private ContainerTreeNode templateNode;
     protected final List<Container> containers = new ArrayList<>();
     protected Size measuredSize;
+    protected Point position;
 
     @Override
-    public final void export(ReportContext context, Point point) {
-        Layout.super.export(context, point);
+    public final void export(ReportContext context) {
+        Layout.super.export(context);
+    }
+
+    @Override
+    public void onExport(ReportContext context) {
+        for (Container container : getContainers()) {
+            container.export(context);
+        }
     }
 
     @Override

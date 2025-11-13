@@ -44,10 +44,12 @@ public class TableComponent extends AbstractComponent {
     }
 
     @Override
-    public void onExport(ReportContext context, Point point) {
+    public void onExport(ReportContext context) {
+        // TODO  2024/6/3 调整大小？
         if (columns == null) {
             return;
         }
+        Point point = getPosition();
         int curColumn = 0;
         for (TableColumn column : columns) {
             StyleMap style = context.getCurrentChildStyle(column.getStyle());

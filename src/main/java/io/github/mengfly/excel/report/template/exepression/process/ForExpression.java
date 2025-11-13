@@ -22,7 +22,6 @@ public class ForExpression extends ProcessExpression {
         super(context, expression);
 
         // 开始解析参数与表达式
-
         if (expression != null) {
 
             final int firstIndex = expression.indexOf(':');

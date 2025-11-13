@@ -10,6 +10,7 @@ import io.github.mengfly.excel.report.style.key.StyleKey;
 import io.github.mengfly.excel.report.template.exepression.process.ProcessControl;
 import io.github.mengfly.excel.report.template.parse.ParserFactory;
 import io.github.mengfly.excel.report.util.BeanUtil;
+import io.github.mengfly.excel.report.util.StyleUtil;
 import io.github.mengfly.excel.report.util.XmlUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -62,19 +63,18 @@ public class ContainerTreeNode {
         if (StrUtil.isEmpty(attribute)) {
             return new StyleMap();
         }
+        StyleMap map = new StyleMap();
+        final List<String> styleSplit = StyleUtil.analysisStyle(attribute);
 
-        // 判断是否是Style引用
-        attribute = attribute.trim();
-        if (attribute.startsWith("{")) {
-            return parseJsonStyle(attribute, context);
-        } else {
-            final List<String> ids = StrUtil.splitTrim(attribute, " ");
-            StyleMap map = new StyleMap();
-            for (String id : ids) {
-                map.addStyle(getStyleById(id));
+        for (String style : styleSplit) {
+            // 判断是否是Style引用
+            if (style.startsWith("{")) {
+                map.addStyle(parseJsonStyle(style, context));
+            } else {
+                map.addStyle(getStyleById(style));
             }
-            return map;
         }
+        return map;
     }
 
     private StyleMap getStyleById(String attribute) {

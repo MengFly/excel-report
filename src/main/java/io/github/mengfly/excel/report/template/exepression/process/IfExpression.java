@@ -17,7 +17,7 @@ public class IfExpression extends ProcessExpression {
         try {
             isTrue = context.doExpression(expression, Boolean.class);
         } catch (Exception e) {
-            log.error("Can't eval expression for: {}", expression);
+            log.error("Can't eval expression for: {}", expression, e);
         }
         if (isTrue) {
             dataConsumer.accept(context);

@@ -1,8 +1,6 @@
 package io.github.mengfly.excel.report.component.chart;
 
-import org.apache.poi.xddf.usermodel.chart.AxisLabelAlignment;
 import org.apache.poi.xddf.usermodel.chart.AxisPosition;
-import org.apache.poi.xddf.usermodel.chart.XDDFCategoryAxis;
 import org.apache.poi.xddf.usermodel.chart.XDDFChartAxis;
 import org.apache.poi.xssf.usermodel.XSSFChart;
 

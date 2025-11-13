@@ -559,7 +559,16 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-
+            <xs:element minOccurs="0" name="weight" type="xs:double">
+                <xs:annotation>
+                    <xs:documentation source="description">
+                        组件占比，默认为1，
+                        在自动调整组件大小的时候使用，例如
+                        在HLayout中，如果组件的宽度设置为了 -1, 那么该属性生效
+                        在VLayout中，如果组件的高度设置为了 -1, 那么该属性生效
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
         </xs:all>
 
         <xs:attribute name="id" use="required" type="xs:ID">
@@ -826,6 +835,7 @@
         </xs:annotation>
         <xs:group ref="LayoutGroupContainer"/>
         <xs:attribute name="alignPolicy" type="AlignPolicy"/>
+        <xs:attributeGroup ref="AttrSize"/>
         <xs:attributeGroup ref="AttrContainerDefault"/>
         <xs:attributeGroup ref="AttrForeach"/>
     </xs:complexType>
@@ -837,6 +847,7 @@
         </xs:annotation>
         <xs:group ref="LayoutGroupContainer"/>
         <xs:attribute name="alignPolicy" type="AlignPolicy"/>
+        <xs:attributeGroup ref="AttrSize"/>
         <xs:attributeGroup ref="AttrContainerDefault"/>
         <xs:attributeGroup ref="AttrForeach"/>
     </xs:complexType>
@@ -917,7 +928,13 @@
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
-
+        <xs:attribute name="headerHeight" default="true" type="xs:int">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    表头高度
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
     </xs:complexType>
     <xs:complexType name="TableColumn">
         <xs:attribute name="id" type="xs:string" use="required">
@@ -980,6 +997,13 @@
             <xs:annotation>
                 <xs:documentation>
                     图片的缩放方式
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="scaleHeight" type="xs:double" default="1.0">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    高度缩放
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
@@ -1250,7 +1274,7 @@
         </xs:attribute>
     </xs:attributeGroup>
     <xs:attributeGroup name="AttrChartAxis">
-        <xs:attribute name="title" type="xs:string" use="required">
+        <xs:attribute name="title" type="xs:string">
             <xs:annotation>
                 <xs:documentation source="description">
                     坐标轴名称

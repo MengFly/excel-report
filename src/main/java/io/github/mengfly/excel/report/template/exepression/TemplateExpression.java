@@ -4,6 +4,9 @@ import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.PropertyAccessor;
 import org.springframework.expression.TypedValue;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
+
 import io.github.mengfly.excel.report.template.DataContext;
 
 import java.util.Map;
@@ -28,22 +31,26 @@ public interface TemplateExpression {
         }
 
         @Override
-        public boolean canRead(EvaluationContext context, Object target, String name) {
+        public boolean canRead(@NonNull EvaluationContext context,@Nullable Object target, @Nullable String name) {
             return true;
         }
 
+        @SuppressWarnings("null")
         @Override
-        public TypedValue read(EvaluationContext context, Object target, String name) {
+        public @NonNull TypedValue read(@NonNull EvaluationContext context, @Nullable Object target, @Nullable String name) {
             return new TypedValue(((Map<?, ?>) target).get(name));
         }
 
         @Override
-        public boolean canWrite(EvaluationContext context, Object target, String name) {
+        public boolean canWrite(@NonNull EvaluationContext context, @Nullable Object target, @Nullable String name) {
             return true;
         }
 
+        @SuppressWarnings("null")
         @Override
-        public void write(EvaluationContext context, Object target, String name, Object newValue) {
+        public void write(
+                @NonNull EvaluationContext context,
+                @Nullable Object target, @Nullable String name, @Nullable Object newValue) {
             //noinspection rawtypes,unchecked
             ((Map) target).put(name, newValue);
         }

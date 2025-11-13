@@ -1,9 +1,7 @@
 package io.github.mengfly.excel.report.style;
 
-import io.github.mengfly.excel.report.style.key.CellWidthHeightKey;
-import io.github.mengfly.excel.report.style.key.ColorStyleKey;
-import io.github.mengfly.excel.report.style.key.NoOpStyleKey;
-import io.github.mengfly.excel.report.style.key.StyleKey;
+import io.github.mengfly.excel.report.entity.Size;
+import io.github.mengfly.excel.report.style.key.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
@@ -110,6 +108,14 @@ public class CellStyles {
      */
     public static final StyleKey<String> height = register(new CellWidthHeightKey("height"));
     public static final StyleKey<String> dataFormat = register(new NoOpStyleKey<>("dataFormat", String.class));
+    /**
+     * 组件权重，在自动调整组件大小的时候使用，例如
+     * <p>
+     * 在HLayout中，如果组件的宽度设置为了 -1, 那么该属性生效
+     * <p>
+     * 在VLayout中，如果组件的高度设置为了 -1, 那么该属性生效
+     */
+    public static final StyleKey<Double> weight = register(new NoOpStyleKey<>("weight", Double.class));
 
     // =================================================================================================================
     // Font Style
@@ -147,6 +153,8 @@ public class CellStyles {
      */
     public static final StyleKey<FontFamily> fontFamily = registerFont("fontFamily", "setFamily", FontFamily.class);
 
+    public static final StyleKey<Size> preferredSize = register(new SizeStyleKey("preferredSize"));
+
 
     static {
         setDefaultStyle(borderTop, BorderStyle.THIN);
@@ -180,7 +188,6 @@ public class CellStyles {
         setDefaultStyle(fontFamily, FontFamily.NOT_APPLICABLE);
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> StyleKey<T> getStyleKey(String key) {
         if (isFontStyle(key)) {
             return (StyleKey<T>) fontStyleMap.get(key);

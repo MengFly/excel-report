@@ -38,13 +38,12 @@ public class ChartComponent extends AbstractComponent {
 
 
     @Override
-    public void onExport(ReportContext context, Point point) {
+    public void onExport(ReportContext context) {
 
         if (type.needCreateChart()) {
-            final XSSFChart chart = createChart(context, point);
+            final XSSFChart chart = createChart(context, getPosition(), getMeasuredSize());
 
-
-            type.onExport(context, point, chart);
+            type.onExport(context, getPosition(), chart);
 
             if (marker != null) {
                 type.initMarker(chart, marker);
@@ -52,7 +51,6 @@ public class ChartComponent extends AbstractComponent {
 
             // 初始化字体
             initChartTitle(chart);
-
         }
 
     }
@@ -69,9 +67,9 @@ public class ChartComponent extends AbstractComponent {
     }
 
 
-    private XSSFChart createChart(ReportContext context, Point point) {
+    private XSSFChart createChart(ReportContext context, Point point, Size suggestSize) {
 
-        final ExcelCellSpan cellSpan = context.getCellSpan(point, size).merge();
+        final ExcelCellSpan cellSpan = context.getCellSpan(point, suggestSize).merge();
         final XSSFDrawing drawing = context.createDrawingPatriarch();
         XSSFChart chart = drawing.createChart(cellSpan.getFillAnchor(anchorType));
 

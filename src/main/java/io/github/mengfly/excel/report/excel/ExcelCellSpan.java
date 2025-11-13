@@ -51,7 +51,10 @@ public class ExcelCellSpan {
     }
 
     public ExcelCellSpan merge() {
-        if (size.width <= 1 && size.height <= 1) {
+        if (size.width <= 0 || size.height <= 0) {
+            return this;
+        }
+        if (size.width == 1 && size.height == 1) {
             return this;
         }
         ExcelUtil.merge(getSheet(), point.getY(), point.getY() + size.height - 1, point.getX(), point.getX() + size.width - 1);

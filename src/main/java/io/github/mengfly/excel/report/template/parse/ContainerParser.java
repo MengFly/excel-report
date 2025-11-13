@@ -4,6 +4,8 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.entity.Size;
+import io.github.mengfly.excel.report.style.CellStyles;
+import io.github.mengfly.excel.report.style.StyleMap;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
 import io.github.mengfly.excel.report.template.exepression.process.ProcessControl;
@@ -26,7 +28,13 @@ public abstract class ContainerParser {
 
         if (container != null) {
             initProperties(container, containerTreeNode, context);
-            container.addStyle(containerTreeNode.getStyle("style", context));
+            final StyleMap style = containerTreeNode.getStyle("style", context);
+
+            final Size size = getSize(containerTreeNode, context, container.getSize());
+            if (size != null) {
+                style.addStyle(CellStyles.preferredSize, size);
+            }
+            container.addStyle(style);
         }
         return container;
     }

@@ -1,5 +1,6 @@
 package io.github.mengfly.excel.report.style.key;
 
+import org.apache.poi.ss.usermodel.PageMargin;
 import org.apache.poi.ss.usermodel.Sheet;
 
 public class SheetMarginStyleKey extends StyleKey<Double> {
@@ -15,14 +16,14 @@ public class SheetMarginStyleKey extends StyleKey<Double> {
         if (target instanceof Sheet) {
             Sheet sheet = (Sheet) target;
             if (marginType == null) {
-                sheet.setMargin(Sheet.LeftMargin, ((Double) style));
-                sheet.setMargin(Sheet.RightMargin, ((Double) style));
-                sheet.setMargin(Sheet.TopMargin, ((Double) style));
-                sheet.setMargin(Sheet.BottomMargin, ((Double) style));
-                sheet.setMargin(Sheet.FooterMargin, ((Double) style));
-                sheet.setMargin(Sheet.HeaderMargin, ((Double) style));
+                sheet.setMargin(PageMargin.LEFT, ((Double) style));
+                sheet.setMargin(PageMargin.RIGHT, ((Double) style));
+                sheet.setMargin(PageMargin.TOP, ((Double) style));
+                sheet.setMargin(PageMargin.BOTTOM, ((Double) style));
+                sheet.setMargin(PageMargin.FOOTER, ((Double) style));
+                sheet.setMargin(PageMargin.HEADER, ((Double) style));
             } else {
-                sheet.setMargin(marginType, (Double) style);
+                sheet.setMargin(PageMargin.getByShortValue(marginType), (Double) style);
             }
         }
     }

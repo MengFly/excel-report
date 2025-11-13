@@ -1,7 +1,7 @@
 package io.github.mengfly.excel.report.template.exepression;
 
-import lombok.RequiredArgsConstructor;
 import io.github.mengfly.excel.report.template.DataContext;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class NotExpression implements TemplateExpression {
@@ -11,5 +11,10 @@ public class NotExpression implements TemplateExpression {
     @Override
     public Object evaluate(DataContext dataContext) {
         return expression;
+    }
+
+    @Override
+    public String toString() {
+        return  expression;
     }
 }

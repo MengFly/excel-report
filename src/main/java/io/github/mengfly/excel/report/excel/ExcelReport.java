@@ -2,7 +2,6 @@ package io.github.mengfly.excel.report.excel;
 
 import cn.hutool.core.util.StrUtil;
 import io.github.mengfly.excel.report.Container;
-import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.style.CellStyles;
 import io.github.mengfly.excel.report.style.SheetStyles;
 import io.github.mengfly.excel.report.style.StyleMap;
@@ -35,6 +34,7 @@ public class ExcelReport {
 
     /**
      * 存储Excel文件
+     *
      * @param file 要存储的文件位置
      * @throws IOException 写文件失败抛出此异常
      */
@@ -50,8 +50,9 @@ public class ExcelReport {
 
     /**
      * 导出组件到Sheet页面中
-     * @param name sheet 页面名称， 如果名称重复则在名称后面自动添加序号
-     * @param container 要导出的组件
+     *
+     * @param name       sheet 页面名称， 如果名称重复则在名称后面自动添加序号
+     * @param container  要导出的组件
      * @param sheetStyle Sheet页面的样式
      */
     public void exportSheet(String name, Container container, StyleMap sheetStyle) {
@@ -59,15 +60,22 @@ public class ExcelReport {
         StyleMap sheetStyleMap = SheetStyles.DEFAULT_STYLE.createChildStyleMap(sheetStyle);
         SheetStyles.initSheetStyle(sheet, sheetStyleMap);
         ReportContext context = new ReportContext(workbook, sheet);
-        context.getStyleChain().onStyle(CellStyles.DEFAULT_STYLE, () -> container.export(context, new Point(0, 0)));
+        context.getStyleChain().onStyle(CellStyles.DEFAULT_STYLE,
+                () -> {
+                    // 在导出数据之前，先进行测量
+                    container.onMeasure();
+                    container.onLayout();
+                    container.export(context);
+                });
         context.applyCellWidthHeight(sheetStyleMap);
     }
 
     /**
      * 导出模板到Sheet页面中
+     *
      * @param template 模板
-     * @param name sheet 页面名称， 如果名称重复则在名称后面自动添加序号
-     * @param context 模板数据
+     * @param name     sheet 页面名称， 如果名称重复则在名称后面自动添加序号
+     * @param context  模板数据
      */
     public void exportTemplate(ReportTemplate template, String name, DataContext context) {
         Container container = template.render(context);

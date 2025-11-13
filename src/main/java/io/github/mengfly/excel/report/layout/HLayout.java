@@ -34,20 +34,31 @@ public class HLayout extends AbstractLayout {
     }
 
     @Override
-    public void onExport(ReportContext context, Point point, Size suggestSize) {
-        int start = 0;
-
+    public void onMeasure(Size suggestSize) {
+        // 测量自身
+        measuredSize = suggestSize;
         final WeightSizeHelper sizeHelper = new WeightSizeHelper(suggestSize, getContainers(), WeightSizeHelper.SIZE_TYPE_WIDTH);
 
         for (Container container : getContainers()) {
             final int childHeightSize = getChildContainerSuggestSize(suggestSize, container);
             final int childWidthSize = sizeHelper.distributionSize(container);
 
-            Size childSize = new Size(childWidthSize, childHeightSize);
+            // 测量子组件
+            container.onMeasure(Size.of(childWidthSize, childHeightSize));
+        }
+    }
 
-            container.export(context, point.add(start, alignPolicy.getPoint(suggestSize.height, childSize.height)), childSize);
+    @Override
+    public void onExport(ReportContext context, Point point) {
+        int start = 0;
 
-            start += childSize.width;
+        final Size measuredSize = getMeasuredSize();
+        for (Container container : getContainers()) {
+
+            container.export(context,
+                    point.add(start, alignPolicy.getPoint(measuredSize.height, measuredSize.height)));
+
+            start += container.getMeasuredSize().width;
         }
     }
 

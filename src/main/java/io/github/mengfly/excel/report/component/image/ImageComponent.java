@@ -30,9 +30,9 @@ public class ImageComponent extends AbstractComponent {
     private Double scaleHeight = 1.0;
 
     @Override
-    public void onExport(ReportContext context, Point point, Size suggestSize) {
+    public void onExport(ReportContext context, Point point) {
 
-        final ExcelCellSpan cellSpan = context.getCellSpan(point, suggestSize).merge();
+        final ExcelCellSpan cellSpan = context.getCellSpan(point, getMeasuredSize()).merge();
 
 
         if (image != null) {

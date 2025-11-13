@@ -37,7 +37,7 @@ public class ListComponent extends AbstractComponent {
     }
 
     @Override
-    public void onExport(ReportContext context, Point point, Size suggestSize) {
+    public void onExport(ReportContext context, Point point) {
         // TODO  2024/6/3 调整大小？
         if (orientation == Orientation.VERTICAL) {
             exportVerticalList(context, point);

@@ -1,6 +1,7 @@
 package io.github.mengfly.excel.report;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.swing.DesktopUtil;
 import cn.hutool.core.util.RandomUtil;
 import io.github.mengfly.excel.report.excel.ExcelReport;
 import io.github.mengfly.excel.report.report.TestDataUtil;
@@ -31,6 +32,7 @@ public class TestTemplate {
     @AfterClass
     public static void after() throws IOException {
         report.save(new File("test-template.xlsx"));
+        DesktopUtil.open(new File("test-template.xlsx"));
     }
 
     @Test

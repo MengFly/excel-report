@@ -38,11 +38,10 @@ public class ChartComponent extends AbstractComponent {
 
 
     @Override
-    public void onExport(ReportContext context, Point point, Size suggestSize) {
+    public void onExport(ReportContext context, Point point) {
 
         if (type.needCreateChart()) {
-            final XSSFChart chart = createChart(context, point, suggestSize);
-
+            final XSSFChart chart = createChart(context, point, getMeasuredSize());
 
             type.onExport(context, point, chart);
 

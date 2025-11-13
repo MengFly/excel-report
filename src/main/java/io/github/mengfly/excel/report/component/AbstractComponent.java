@@ -14,9 +14,16 @@ import lombok.Setter;
 public abstract class AbstractComponent extends StyleHolder implements Component {
 
     private ContainerTreeNode templateNode;
+    private Size measuredSize;
 
     @Override
-    public final void export(ReportContext context, Point point, Size suggestSize) {
-        Component.super.export(context, point, suggestSize);
+    public final void export(ReportContext context, Point point) {
+        Component.super.export(context, point);
+    }
+
+    @Override
+    public void onMeasure(Size suggestSize) {
+        // 默认的测量大小等于推荐的大小
+        measuredSize = suggestSize;
     }
 }

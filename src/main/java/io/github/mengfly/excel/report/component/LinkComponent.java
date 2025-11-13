@@ -23,8 +23,8 @@ public class LinkComponent extends TextComponent {
     }
 
     @Override
-    public void onExport(ReportContext context, Point point, Size suggestSize) {
-        ExcelCellSpan cellSpan = context.getCellSpan(point, suggestSize);
+    public void onExport(ReportContext context, Point point) {
+        ExcelCellSpan cellSpan = context.getCellSpan(point, getMeasuredSize());
         cellSpan.merge().setValue(getText());
 
         final Hyperlink hyperlink = context.createUrlHyperlink(link, label);

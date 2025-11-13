@@ -20,9 +20,15 @@ public class Size {
         } else {
             String[] split = size.split(",");
             if (split.length != 2) {
-                throw new IllegalArgumentException("size must be width height");
+                throw new IllegalArgumentException("size must be width,height");
             }
-            return new Size(Convert.toInt(split[0]), Convert.toInt(split[1]));
+            try {
+                int width = Convert.toInt(split[0].trim());
+                int height = Convert.toInt(split[1].trim());
+                return new Size(width, height);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("size must be width,height");
+            }
         }
     }
 

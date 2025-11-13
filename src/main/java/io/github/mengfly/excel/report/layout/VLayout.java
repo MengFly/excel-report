@@ -35,25 +35,35 @@ public class VLayout extends AbstractLayout {
     }
 
     @Override
-    public void onExport(ReportContext context, Point point, Size suggestSize) {
-
-        int start = 0;
-
-        final WeightSizeHelper sizeHelper = new WeightSizeHelper(suggestSize, getContainers(), WeightSizeHelper.SIZE_TYPE_HEIGHT);
+    public void onMeasure(Size suggestSize) {
+        measuredSize = suggestSize;
+        final WeightSizeHelper sizeHelper =
+                new WeightSizeHelper(suggestSize, getContainers(), WeightSizeHelper.SIZE_TYPE_HEIGHT);
 
         for (Container container : getContainers()) {
             final int childWidthSize = getChildContainerSuggestSize(suggestSize, container);
             final int childHeightSize = sizeHelper.distributionSize(container);
             Size childSize = new Size(childWidthSize, childHeightSize);
+            // 子组件继续测量
+            container.onMeasure(childSize);
+        }
+    }
+
+    @Override
+    public void onExport(ReportContext context, Point point) {
+        int start = 0;
+
+        for (Container container : getContainers()) {
+            Size childSize = container.getMeasuredSize();
 
             container.export(
                     context,
-                    point.add(alignPolicy.getPoint(childSize.width, childSize.width), start),
-                    childSize
+                    point.add(alignPolicy.getPoint(childSize.width, childSize.width), start)
             );
 
             start += childSize.height;
         }
+
     }
 
     private int getChildContainerSuggestSize(Size size, Container container) {

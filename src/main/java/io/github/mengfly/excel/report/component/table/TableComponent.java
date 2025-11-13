@@ -44,7 +44,7 @@ public class TableComponent extends AbstractComponent {
     }
 
     @Override
-    public void onExport(ReportContext context, Point point, Size suggestSize) {
+    public void onExport(ReportContext context, Point point) {
         // TODO  2024/6/3 调整大小？
         if (columns == null) {
             return;

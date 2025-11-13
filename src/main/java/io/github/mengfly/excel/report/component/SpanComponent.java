@@ -28,7 +28,7 @@ public class SpanComponent extends AbstractComponent {
 
 
     @Override
-    public void onExport(ReportContext context, Point point, Size suggestSize) {
-        context.getCellSpan(point, suggestSize).merge();
+    public void onExport(ReportContext context, Point point) {
+        context.getCellSpan(point, getMeasuredSize()).merge();
     }
 }

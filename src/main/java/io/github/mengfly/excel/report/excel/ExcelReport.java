@@ -62,7 +62,11 @@ public class ExcelReport {
         SheetStyles.initSheetStyle(sheet, sheetStyleMap);
         ReportContext context = new ReportContext(workbook, sheet);
         context.getStyleChain().onStyle(CellStyles.DEFAULT_STYLE,
-                () -> container.export(context, new Point(0, 0), container.getSize()));
+                () -> {
+                    // 在导出数据之前，先进行测量
+                    container.onMeasure();
+                    container.export(context, new Point(0, 0));
+                });
         context.applyCellWidthHeight(sheetStyleMap);
     }
 

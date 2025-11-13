@@ -3,6 +3,9 @@ package io.github.mengfly.excel.report.component.chart.data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.apache.poi.xddf.usermodel.PresetColor;
+import org.apache.poi.xddf.usermodel.XDDFColor;
+import org.apache.poi.xddf.usermodel.XDDFSolidFillProperties;
 import org.apache.poi.xddf.usermodel.chart.*;
 import org.apache.poi.xssf.usermodel.XSSFChart;
 
@@ -44,6 +47,7 @@ public class ChartValueAxisData extends ChartAxisData<XDDFNumericalDataSource<?>
         if (getTitle() != null) {
             series.setTitle(getTitle(), null);
         }
+        series.setFillProperties(new XDDFSolidFillProperties(XDDFColor.from(PresetColor.GREEN)));
         if (showLeaderLines != null) {
             series.setShowLeaderLines(showLeaderLines);
         }

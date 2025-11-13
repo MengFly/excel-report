@@ -15,7 +15,7 @@ import java.io.IOException;
 public class TestReport {
 
     private static ExcelReport report;
-    
+
     @BeforeClass
     public static void before() {
         report = new ExcelReport();
@@ -34,6 +34,7 @@ public class TestReport {
         System.out.println("Preparing export sheet");
         // 在打印之前先测量
         layout.onMeasure();
+        layout.onLayout();
         System.out.println(layout.print());
         report.exportSheet(layout.getClass().getSimpleName(), layout, SheetStyles.DEFAULT_STYLE);
         System.out.println();

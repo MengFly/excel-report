@@ -24,6 +24,7 @@ public class ParserFactory {
         addParser(new IncludeParser());
         addParser(new PageRowSplitParser());
         addParser(new PageColSplitParser());
+        addParser(new GridLayoutParser());
     }
 
     public static void addParser(ContainerParser parser) {

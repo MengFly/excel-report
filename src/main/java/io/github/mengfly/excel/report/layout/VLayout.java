@@ -9,6 +9,8 @@ import io.github.mengfly.excel.report.util.WeightSizeHelper;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 
 @Getter
 @Setter
@@ -18,8 +20,35 @@ public class VLayout extends AbstractLayout {
 
     @Override
     public Size getSize() {
+        return sumContainerSize(getContainers());
+    }
+
+    @Override
+    public void onMeasure(Size suggestSize) {
+        measuredSize = suggestSize;
+        measure(getContainers(), suggestSize);
+    }
+
+    @Override
+    public void onLayout(Point relativePosition) {
+        position = relativePosition;
+        int start = 0;
+
+        for (Container container : containers) {
+            Size childSize = container.getMeasuredSize();
+
+            final Point point = relativePosition.add(
+                    alignPolicy.getPoint(measuredSize.width, childSize.width), start);
+
+            container.onLayout(point);
+
+            start += childSize.height;
+        }
+    }
+
+    public static Size sumContainerSize(List<Container> containers) {
         Size size = new Size();
-        for (Container container : getContainers()) {
+        for (Container container : containers) {
             size.width = Math.max(size.width, container.getSize().width);
 
             final int height = container.getSize().height;
@@ -33,13 +62,11 @@ public class VLayout extends AbstractLayout {
         return size;
     }
 
-    @Override
-    public void onMeasure(Size suggestSize) {
-        measuredSize = suggestSize;
+    public static void measure(List<Container> containers, Size suggestSize) {
         final WeightSizeHelper sizeHelper =
-                new WeightSizeHelper(suggestSize, getContainers(), WeightSizeHelper.SIZE_TYPE_HEIGHT);
+                new WeightSizeHelper(suggestSize, containers, WeightSizeHelper.SIZE_TYPE_HEIGHT);
 
-        for (Container container : getContainers()) {
+        for (Container container : containers) {
             final int childWidthSize = getChildContainerSuggestSize(suggestSize, container);
             final int childHeightSize = sizeHelper.distributionSize(container);
             Size childSize = new Size(childWidthSize, childHeightSize);
@@ -48,24 +75,7 @@ public class VLayout extends AbstractLayout {
         }
     }
 
-    @Override
-    public void onLayout(Point relativePosition) {
-        position = relativePosition;
-        int start = 0;
-
-        for (Container container : getContainers()) {
-            Size childSize = container.getMeasuredSize();
-
-            final Point point = relativePosition.add(
-                    alignPolicy.getPoint(childSize.width, childSize.width), start);
-
-            container.onLayout(point);
-
-            start += childSize.height;
-        }
-    }
-
-    private int getChildContainerSuggestSize(Size size, Container container) {
+    private static int getChildContainerSuggestSize(Size size, Container container) {
 
         final Size style = container.getStyle(CellStyles.preferredSize, null);
 

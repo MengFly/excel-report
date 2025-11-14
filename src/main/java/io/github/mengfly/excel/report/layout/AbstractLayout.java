@@ -38,4 +38,11 @@ public abstract class AbstractLayout extends StyleHolder implements Layout {
         this.containers.add(item);
         return item;
     }
+
+    protected Size containerWrapSize(Size size) {
+        return Size.of(
+                size.width > 0 ? size.width : 1,
+                size.height > 0 ? size.height : 1
+        );
+    }
 }

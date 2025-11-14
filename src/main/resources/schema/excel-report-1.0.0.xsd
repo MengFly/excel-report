@@ -796,6 +796,7 @@
         <xs:choice>
             <xs:element minOccurs="0" maxOccurs="unbounded" name="VLayout" type="VLayout"/>
             <xs:element minOccurs="0" maxOccurs="unbounded" name="HLayout" type="HLayout"/>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="GridLayout" type="GridLayout"/>
             <xs:element minOccurs="0" maxOccurs="unbounded" name="Text" type="Text"/>
             <xs:element minOccurs="0" maxOccurs="unbounded" name="Table" type="Table"/>
             <xs:element minOccurs="0" maxOccurs="unbounded" name="Image" type="Image"/>
@@ -809,6 +810,7 @@
     <xs:group name="LayoutGroupContainer">
         <xs:sequence>
             <xs:choice maxOccurs="unbounded">
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="GridLayout" type="GridLayout"/>
                 <xs:element minOccurs="0" maxOccurs="unbounded" name="VLayout" type="VLayout"/>
                 <xs:element minOccurs="0" maxOccurs="unbounded" name="HLayout" type="HLayout"/>
                 <xs:element minOccurs="0" maxOccurs="unbounded" name="Text" type="Text"/>
@@ -846,6 +848,31 @@
             </xs:documentation>
         </xs:annotation>
         <xs:group ref="LayoutGroupContainer"/>
+        <xs:attribute name="alignPolicy" type="AlignPolicy"/>
+        <xs:attributeGroup ref="AttrSize"/>
+        <xs:attributeGroup ref="AttrContainerDefault"/>
+        <xs:attributeGroup ref="AttrForeach"/>
+    </xs:complexType>
+    <xs:complexType name="GridLayout">
+        <xs:annotation>
+            <xs:documentation source="description">
+                网格布局组件
+            </xs:documentation>
+        </xs:annotation>
+        <xs:group ref="LayoutGroupContainer"/>
+        <xs:attribute name="count" type="xs:int">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    GridLayout的列数或者行数
+                </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:int">
+                    <xs:minInclusive value="1"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="orientation" type="Orientation"/>
         <xs:attribute name="alignPolicy" type="AlignPolicy"/>
         <xs:attributeGroup ref="AttrSize"/>
         <xs:attributeGroup ref="AttrContainerDefault"/>

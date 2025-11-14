@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<template xmlns="http://mengfly.github.io/excel-report/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://mengfly.github.io/excel-report/1.0.0 https://mengfly.github.io/xsd/excel-report-1.0.0.xsd"
+          name="Example1"
+          version="1.0"
+          author="MengFly"
+          createAt="2023-12-27 18:31:25"
+          description="测试">
+
+
+    <sheetStyle>
+        <defaultRowHeight>24</defaultRowHeight>
+    </sheetStyle>
+
+    <container>
+
+
+        <VLayout alignPolicy="center">
+            <GridLayout alignPolicy="center" orientation="vertical" count="4">
+
+                <Text size="11,1" text="震动总次数"/>
+                <Text size="11,1" text="123"/>
+                <Text size="9,1" text="单次最大能量(J)"/>
+                <Text size="9,1" text="123"/>
+
+                <Text size="11,1" text="平均能量(J)"/>
+                <Text size="11,1" text="123"/>
+                <Text size="9,1" text="总能量(J)"/>
+                <Text size="9,1" text="123"/>
+
+            </GridLayout>
+
+            <GridLayout alignPolicy="center" orientation="horizontal" count="4">
+
+                <Text size="11,1" text="震动总次数"/>
+                <Text size="11,1" text="123"/>
+                <Text size="9,1" text="单次最大能量(J)"/>
+                <Text size="9,1" text="123"/>
+
+                <Text size="11,1" text="平均能量(J)"/>
+                <Text size="11,1" text="123"/>
+                <Text size="9,1" text="总能量(J)"/>
+                <Text size="9,1" text="123"/>
+
+            </GridLayout>
+
+        </VLayout>
+
+
+    </container>
+</template>

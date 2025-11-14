@@ -40,6 +40,7 @@ public class TestTemplate {
         exportTemplate(report, new DataContext(), "TestLayoutReport.xml");
         exportTemplate(report, createIndexSensitivityTemplateContext(), "IndexSensitivityTemplate.xml");
         exportTemplate(report, createTemplateContext(), "TestTemplate.xml");
+        exportTemplate(report, new DataContext(), "TestGridLayout.xml");
     }
 
     private DataContext createTemplateContext() {

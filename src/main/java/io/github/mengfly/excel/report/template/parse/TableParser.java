@@ -2,7 +2,7 @@ package io.github.mengfly.excel.report.template.parse;
 
 import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.component.table.TableColumn;
-import io.github.mengfly.excel.report.component.table.TableComponent;
+import io.github.mengfly.excel.report.component.table.TableComponentNew;
 import io.github.mengfly.excel.report.component.table.TableObjFieldColumn;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
@@ -28,12 +28,25 @@ public class TableParser extends ContainerParser {
     @Override
     public Container parse(ContainerTreeNode containerTreeNode, DataContext context) {
 
-        final TableComponent component = new TableComponent();
+        return new TableComponentNew(
+                getDataList(containerTreeNode, context),
+                getColumns(containerTreeNode, context),
+                getHeaderHeight(containerTreeNode, context),
+                getHeaderVisible(containerTreeNode, context)
+        );
+    }
 
-        component.setColumns(getColumns(containerTreeNode, context));
-        component.setDataList(getDataList(containerTreeNode, context));
-
-        return component;
+    private Integer getHeaderHeight(ContainerTreeNode containerTreeNode, DataContext context) {
+        try {
+            if (containerTreeNode.getElement().hasAttribute("headerHeight")) {
+                return context.doExpression(containerTreeNode.getElement().getAttribute("headerHeight"), Integer.class);
+            } else {
+                return 1;
+            }
+        } catch (Exception e) {
+            log.error("无法解析数据", e);
+            return 1;
+        }
     }
 
     private List<TableColumn> getColumns(ContainerTreeNode containerTreeNode, DataContext context) {
@@ -59,7 +72,20 @@ public class TableParser extends ContainerParser {
             log.error("无法解析数据", e);
             return Collections.emptyList();
         }
-
     }
+
+    private boolean getHeaderVisible(ContainerTreeNode containerTreeNode, DataContext context) {
+        try {
+            if (containerTreeNode.getElement().hasAttribute("headerVisible")) {
+                return context.doExpression(containerTreeNode.getElement().getAttribute("headerVisible"), Boolean.class);
+            } else {
+                return true;
+            }
+        } catch (Exception e) {
+            log.error("无法解析数据", e);
+            return true;
+        }
+    }
+
 
 }

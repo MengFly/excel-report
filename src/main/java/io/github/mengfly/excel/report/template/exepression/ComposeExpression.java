@@ -1,11 +1,13 @@
 package io.github.mengfly.excel.report.template.exepression;
 
 import io.github.mengfly.excel.report.template.DataContext;
+import lombok.Getter;
 
 import java.util.List;
 
 public class ComposeExpression implements TemplateExpression {
 
+    @Getter
     private final List<TemplateExpression> expressions;
 
     public ComposeExpression(List<TemplateExpression> expressions) {

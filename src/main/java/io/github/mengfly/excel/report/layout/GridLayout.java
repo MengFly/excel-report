@@ -16,9 +16,9 @@ public class GridLayout extends AbstractLayout {
     /**
      * 横向或者纵向
      */
-    private Orientation orientation;
+    private Orientation orientation = Orientation.HORIZONTAL;
 
-    private AlignPolicy alignPolicy;
+    private AlignPolicy alignPolicy = AlignPolicy.CENTER;
     /**
      * 行数或列数
      * <p>

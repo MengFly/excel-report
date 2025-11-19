@@ -1,6 +1,7 @@
 package io.github.mengfly.excel.report.template.exepression;
 
 import io.github.mengfly.excel.report.template.DataContext;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.expression.Expression;
 
@@ -9,9 +10,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class StandardExpression implements TemplateExpression {
 
+    @Getter
     private final Expression expression;
-
-
+    
     @Override
     public Object evaluate(DataContext dataContext) {
 

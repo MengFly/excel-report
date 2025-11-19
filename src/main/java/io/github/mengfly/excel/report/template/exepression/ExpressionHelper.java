@@ -20,11 +20,20 @@ public class ExpressionHelper {
 
     public Object doExpression(String expression, DataContext dataContext) {
         final TemplateExpression templateExpression = expressionMap.get(expression, true,
-                () -> createExpression(expression));
+                () -> {
+                    TemplateExpression exp = createExpression(expression);
+                    onCreateExpression(exp);
+                    return exp;
+                });
 
         return templateExpression.evaluate(dataContext);
     }
 
+    protected void onCreateExpression(TemplateExpression expression) {
+
+    }
+
+    @SuppressWarnings("unchecked")
     public <T> T doExpression(String expression, DataContext dataContext, Class<T> clazz) {
         final Object evaluate = doExpression(expression, dataContext);
         if (clazz == Object.class) {

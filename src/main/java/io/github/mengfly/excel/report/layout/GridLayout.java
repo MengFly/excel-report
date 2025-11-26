@@ -52,10 +52,12 @@ public class GridLayout extends AbstractLayout {
         if (orientation == Orientation.HORIZONTAL) {
             return new VLayout() {{
                 setAlignPolicy(alignPolicy);
+                addStyle(GridLayout.this.getStyle());
             }};
         } else {
             return new HLayout() {{
                 setAlignPolicy(alignPolicy);
+                addStyle(GridLayout.this.getStyle());
             }};
         }
     }
@@ -64,10 +66,12 @@ public class GridLayout extends AbstractLayout {
         if (orientation == Orientation.HORIZONTAL) {
             return new HLayout() {{
                 setAlignPolicy(alignPolicy);
+                addStyle(GridLayout.this.getStyle());
             }};
         } else {
             return new VLayout() {{
                 setAlignPolicy(alignPolicy);
+                addStyle(GridLayout.this.getStyle());
             }};
         }
     }

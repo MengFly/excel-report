@@ -1447,7 +1447,172 @@
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
+
+        <xs:attribute name="color" default="green" type="XDDFColor">
+            <xs:annotation>
+                <xs:documentation source="description">
+                    颜色,Sheet Tab 颜色
+                    颜色可以是描述符，如white,black,red,green,blue,yellow,cyan等
+                    也可以是十六进制颜色代码，如#FF0000，表示红色
+                </xs:documentation>
+            </xs:annotation>
+
+        </xs:attribute>
     </xs:attributeGroup>
+
+    <xs:simpleType name="XDDFColor">
+        <xs:union>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="alice_blue"/>
+                    <xs:enumeration value="antique_white"/>
+                    <xs:enumeration value="aqua"/>
+                    <xs:enumeration value="aquamarine"/>
+                    <xs:enumeration value="azure"/>
+                    <xs:enumeration value="beige"/>
+                    <xs:enumeration value="bisque"/>
+                    <xs:enumeration value="black"/>
+                    <xs:enumeration value="blanched_almond"/>
+                    <xs:enumeration value="blue"/>
+                    <xs:enumeration value="blue_violet"/>
+                    <xs:enumeration value="cadet_blue"/>
+                    <xs:enumeration value="chartreuse"/>
+                    <xs:enumeration value="chocolate"/>
+                    <xs:enumeration value="coral"/>
+                    <xs:enumeration value="cornflower_blue"/>
+                    <xs:enumeration value="cornsilk"/>
+                    <xs:enumeration value="crimson"/>
+                    <xs:enumeration value="cyan"/>
+                    <xs:enumeration value="deep_pink"/>
+                    <xs:enumeration value="deep_sky_blue"/>
+                    <xs:enumeration value="dim_gray"/>
+                    <xs:enumeration value="dark_blue"/>
+                    <xs:enumeration value="dark_cyan"/>
+                    <xs:enumeration value="dark_goldenrod"/>
+                    <xs:enumeration value="dark_gray"/>
+                    <xs:enumeration value="dark_green"/>
+                    <xs:enumeration value="dark_khaki"/>
+                    <xs:enumeration value="dark_magenta"/>
+                    <xs:enumeration value="dark_olive_green"/>
+                    <xs:enumeration value="dark_orange"/>
+                    <xs:enumeration value="dark_orchid"/>
+                    <xs:enumeration value="dark_red"/>
+                    <xs:enumeration value="dark_salmon"/>
+                    <xs:enumeration value="dark_sea_green"/>
+                    <xs:enumeration value="dark_slate_blue"/>
+                    <xs:enumeration value="dark_slate_gray"/>
+                    <xs:enumeration value="dark_turquoise"/>
+                    <xs:enumeration value="dark_violet"/>
+                    <xs:enumeration value="dodger_blue"/>
+                    <xs:enumeration value="firebrick"/>
+                    <xs:enumeration value="floral_white"/>
+                    <xs:enumeration value="forest_green"/>
+                    <xs:enumeration value="fuchsia"/>
+                    <xs:enumeration value="gainsboro"/>
+                    <xs:enumeration value="ghost_white"/>
+                    <xs:enumeration value="gold"/>
+                    <xs:enumeration value="goldenrod"/>
+                    <xs:enumeration value="gray"/>
+                    <xs:enumeration value="green"/>
+                    <xs:enumeration value="green_yellow"/>
+                    <xs:enumeration value="honeydew"/>
+                    <xs:enumeration value="hot_pink"/>
+                    <xs:enumeration value="indian_red"/>
+                    <xs:enumeration value="indigo"/>
+                    <xs:enumeration value="ivory"/>
+                    <xs:enumeration value="khaki"/>
+                    <xs:enumeration value="lavender"/>
+                    <xs:enumeration value="lavender_blush"/>
+                    <xs:enumeration value="lawn_green"/>
+                    <xs:enumeration value="lemon_chiffon"/>
+                    <xs:enumeration value="lime"/>
+                    <xs:enumeration value="lime_green"/>
+                    <xs:enumeration value="linen"/>
+                    <xs:enumeration value="light_blue"/>
+                    <xs:enumeration value="light_coral"/>
+                    <xs:enumeration value="light_cyan"/>
+                    <xs:enumeration value="light_goldenrod_yellow"/>
+                    <xs:enumeration value="light_gray"/>
+                    <xs:enumeration value="light_green"/>
+                    <xs:enumeration value="light_pink"/>
+                    <xs:enumeration value="light_salmon"/>
+                    <xs:enumeration value="light_sea_green"/>
+                    <xs:enumeration value="light_sky_blue"/>
+                    <xs:enumeration value="light_slate_gray"/>
+                    <xs:enumeration value="light_steel_blue"/>
+                    <xs:enumeration value="light_yellow"/>
+                    <xs:enumeration value="magenta"/>
+                    <xs:enumeration value="maroon"/>
+                    <xs:enumeration value="medium_aquamarine"/>
+                    <xs:enumeration value="medium_blue"/>
+                    <xs:enumeration value="medium_orchid"/>
+                    <xs:enumeration value="medium_purple"/>
+                    <xs:enumeration value="medium_sea_green"/>
+                    <xs:enumeration value="medium_slate_blue"/>
+                    <xs:enumeration value="medium_spring_green"/>
+                    <xs:enumeration value="medium_turquoise"/>
+                    <xs:enumeration value="medium_violet_red"/>
+                    <xs:enumeration value="midnight_blue"/>
+                    <xs:enumeration value="mint_cream"/>
+                    <xs:enumeration value="misty_rose"/>
+                    <xs:enumeration value="moccasin"/>
+                    <xs:enumeration value="navajo_white"/>
+                    <xs:enumeration value="navy"/>
+                    <xs:enumeration value="old_lace"/>
+                    <xs:enumeration value="olive"/>
+                    <xs:enumeration value="olive_drab"/>
+                    <xs:enumeration value="orange"/>
+                    <xs:enumeration value="orange_red"/>
+                    <xs:enumeration value="orchid"/>
+                    <xs:enumeration value="pale_goldenrod"/>
+                    <xs:enumeration value="pale_green"/>
+                    <xs:enumeration value="pale_turquoise"/>
+                    <xs:enumeration value="pale_violet_red"/>
+                    <xs:enumeration value="papaya_whip"/>
+                    <xs:enumeration value="peach_puff"/>
+                    <xs:enumeration value="peru"/>
+                    <xs:enumeration value="pink"/>
+                    <xs:enumeration value="plum"/>
+                    <xs:enumeration value="powder_blue"/>
+                    <xs:enumeration value="purple"/>
+                    <xs:enumeration value="red"/>
+                    <xs:enumeration value="rosy_brown"/>
+                    <xs:enumeration value="royal_blue"/>
+                    <xs:enumeration value="saddle_brown"/>
+                    <xs:enumeration value="salmon"/>
+                    <xs:enumeration value="sandy_brown"/>
+                    <xs:enumeration value="sea_green"/>
+                    <xs:enumeration value="sea_shell"/>
+                    <xs:enumeration value="sienna"/>
+                    <xs:enumeration value="silver"/>
+                    <xs:enumeration value="sky_blue"/>
+                    <xs:enumeration value="slate_blue"/>
+                    <xs:enumeration value="slate_gray"/>
+                    <xs:enumeration value="snow"/>
+                    <xs:enumeration value="spring_green"/>
+                    <xs:enumeration value="steel_blue"/>
+                    <xs:enumeration value="tan"/>
+                    <xs:enumeration value="teal"/>
+                    <xs:enumeration value="thistle"/>
+                    <xs:enumeration value="tomato"/>
+                    <xs:enumeration value="turquoise"/>
+                    <xs:enumeration value="violet"/>
+                    <xs:enumeration value="wheat"/>
+                    <xs:enumeration value="white"/>
+                    <xs:enumeration value="white_smoke"/>
+                    <xs:enumeration value="yellow"/>
+                    <xs:enumeration value="yellow_green"/>
+
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="#[0-9A-Fa-f]{6}"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:union>
+
+    </xs:simpleType>
 
     <xs:complexType name="ChartMarker">
         <xs:attribute name="showPercent" default="false" type="xs:boolean">

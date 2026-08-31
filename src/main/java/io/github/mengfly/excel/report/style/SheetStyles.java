@@ -1,14 +1,15 @@
 package io.github.mengfly.excel.report.style;
 
-import io.github.mengfly.excel.report.style.key.ColorStyleKey;
-import io.github.mengfly.excel.report.style.key.SheetMarginStyleKey;
-import io.github.mengfly.excel.report.style.key.StyleKey;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
-import java.util.HashMap;
-import java.util.Map;
+import io.github.mengfly.excel.report.style.key.ColorStyleKey;
+import io.github.mengfly.excel.report.style.key.SheetMarginStyleKey;
+import io.github.mengfly.excel.report.style.key.StyleKey;
 
 /**
  * 工作表样式定义类
@@ -154,6 +155,7 @@ public class SheetStyles {
         DEFAULT_STYLE.addStyle(key, defaultValue);
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> StyleKey<T> getStyleKey(String key) {
         return (StyleKey<T>) styleMap.get(key);
     }

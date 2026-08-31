@@ -1,5 +1,7 @@
 package io.github.mengfly.excel.report.template.exepression;
 
+import java.util.Map;
+
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.PropertyAccessor;
 import org.springframework.expression.TypedValue;
@@ -8,8 +10,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import io.github.mengfly.excel.report.template.DataContext;
-
-import java.util.Map;
 
 public interface TemplateExpression {
 
@@ -46,12 +46,11 @@ public interface TemplateExpression {
             return true;
         }
 
-        @SuppressWarnings("null")
+        @SuppressWarnings({ "null", "rawtypes", "unchecked" })
         @Override
         public void write(
                 @NonNull EvaluationContext context,
                 @Nullable Object target, @Nullable String name, @Nullable Object newValue) {
-            //noinspection rawtypes,unchecked
             ((Map) target).put(name, newValue);
         }
     }

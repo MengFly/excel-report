@@ -1,15 +1,29 @@
 package io.github.mengfly.excel.report.style;
 
-import io.github.mengfly.excel.report.entity.Size;
-import io.github.mengfly.excel.report.style.key.*;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.*;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.FontFamily;
+import org.apache.poi.ss.usermodel.FontUnderline;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.ReadingOrder;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 
-import java.util.HashMap;
-import java.util.Map;
+import io.github.mengfly.excel.report.entity.Size;
+import io.github.mengfly.excel.report.style.key.CellWidthHeightKey;
+import io.github.mengfly.excel.report.style.key.ColorStyleKey;
+import io.github.mengfly.excel.report.style.key.NoOpStyleKey;
+import io.github.mengfly.excel.report.style.key.SizeStyleKey;
+import io.github.mengfly.excel.report.style.key.StyleKey;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 单元格样式定义类
@@ -188,6 +202,7 @@ public class CellStyles {
         setDefaultStyle(fontFamily, FontFamily.NOT_APPLICABLE);
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> StyleKey<T> getStyleKey(String key) {
         if (isFontStyle(key)) {
             return (StyleKey<T>) fontStyleMap.get(key);

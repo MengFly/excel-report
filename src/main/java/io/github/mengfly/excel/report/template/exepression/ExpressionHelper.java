@@ -1,14 +1,15 @@
 package io.github.mengfly.excel.report.template.exepression;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.impl.LRUCache;
 import cn.hutool.core.convert.Convert;
 import io.github.mengfly.excel.report.template.DataContext;
-import org.springframework.expression.ExpressionParser;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ExpressionHelper {
 
@@ -42,6 +43,7 @@ public class ExpressionHelper {
         return Convert.convert(clazz, evaluate);
     }
 
+    @SuppressWarnings("null")
     public static TemplateExpression createExpression(String expression) {
         List<TemplateExpression> expressions = new ArrayList<>();
 

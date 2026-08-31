@@ -1,14 +1,20 @@
 package io.github.mengfly.excel.report.util;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 public class XmlUtil extends cn.hutool.core.util.XmlUtil {
 
+    @SuppressWarnings("null")
     public static Map<String, String> getElementNameValueMap(List<Element> element) {
         if (element == null || element.isEmpty()) {
             return Collections.emptyMap();

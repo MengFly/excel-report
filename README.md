@@ -21,7 +21,7 @@
 <dependency>
     <groupId>io.github.mengfly</groupId>
     <artifactId>excel-report</artifactId>
-    <version>1.3.0</version>
+    <version>1.5.1</version>
 </dependency>
 ```
 

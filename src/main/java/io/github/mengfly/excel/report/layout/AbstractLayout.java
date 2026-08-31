@@ -12,14 +12,27 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
+
 public abstract class AbstractLayout extends StyleHolder implements Layout {
 
-    @Setter
+
     private ContainerTreeNode templateNode;
+    @Getter
     protected final List<Container> containers = new ArrayList<>();
+    @Getter
     protected Size measuredSize;
+    @Getter
     protected Point position;
+
+    @Override
+    public ContainerTreeNode templateNode() {
+        return templateNode;
+    }
+
+    @Override
+    public void templateNode(ContainerTreeNode templateNode) {
+        this.templateNode = templateNode;
+    }
 
     @Override
     public final void export(ReportContext context) {

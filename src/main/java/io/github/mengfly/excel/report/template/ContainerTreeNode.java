@@ -48,7 +48,7 @@ public class ContainerTreeNode {
     public Container render(DataContext context) {
         final Container container = ParserFactory.doParseElement(this, context);
         if (container != null) {
-            container.setTemplateNode(this);
+            container.templateNode(this);
         }
         return container;
     }

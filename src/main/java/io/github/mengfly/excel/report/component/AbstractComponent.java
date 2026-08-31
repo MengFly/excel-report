@@ -9,13 +9,25 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-@Getter
-@Setter
 public abstract class AbstractComponent extends StyleHolder implements Component {
 
     private ContainerTreeNode templateNode;
+    @Getter
+    @Setter
     private Size measuredSize;
+    @Getter
+    @Setter
     private Point position;
+
+    @Override
+    public ContainerTreeNode templateNode() {
+        return templateNode;
+    }
+
+    @Override
+    public void templateNode(ContainerTreeNode templateNode) {
+        this.templateNode = templateNode;
+    }
 
     @Override
     public final void export(ReportContext context) {

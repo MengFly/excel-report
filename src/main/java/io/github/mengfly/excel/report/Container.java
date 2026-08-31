@@ -16,9 +16,9 @@ public interface Container extends StyleAble {
      *
      * @return 模板信息
      */
-    ContainerTreeNode getTemplateNode();
+    ContainerTreeNode templateNode();
 
-    void setTemplateNode(ContainerTreeNode templateNode);
+    void templateNode(ContainerTreeNode templateNode);
 
     /**
      * 获取容器的尺寸（组件基础尺寸）
@@ -73,5 +73,7 @@ public interface Container extends StyleAble {
         return String.format("%s[%s]", getClass().getSimpleName(), getMeasuredSize());
     }
 
-
+    default String getTypeName() {
+        return getClass().getSimpleName();
+    }
 }

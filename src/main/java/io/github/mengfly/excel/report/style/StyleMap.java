@@ -1,6 +1,7 @@
 package io.github.mengfly.excel.report.style;
 
 import io.github.mengfly.excel.report.style.key.StyleKey;
+import lombok.Getter;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import java.util.Optional;
 /**
  * 样式字典
  */
+@Getter
 public class StyleMap {
     private final Map<String, String> styleMap = new HashMap<>();
 
@@ -33,12 +35,8 @@ public class StyleMap {
 
     public void addStyle(StyleMap styleMap) {
         if (styleMap != null) {
-            this.styleMap.putAll(styleMap.toMap());
+            this.styleMap.putAll(styleMap.getStyleMap());
         }
-    }
-
-    private Map<String, String> toMap() {
-        return styleMap;
     }
 
     public <T> T getStyle(StyleKey<T> key, T defaultValue) {

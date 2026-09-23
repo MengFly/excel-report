@@ -76,6 +76,7 @@ public class ExcelReport {
      * @param template 模板
      * @param name     sheet 页面名称， 如果名称重复则在名称后面自动添加序号
      * @param context  模板数据
+     * @return 导出的组件
      */
     public Container exportTemplate(ReportTemplate template, String name, DataContext context) {
         Container container = template.render(context);

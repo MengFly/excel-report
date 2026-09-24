@@ -11,24 +11,17 @@ import lombok.Setter;
 @Setter
 public class TemplateManager {
 
-    private static TemplateManager instance;
-
-    public static TemplateManager getInstance() {
-        if (instance == null) {
-            instance = new TemplateManager();
-        }
-        return instance;
-    
-    }
+    @Getter
+    private static final TemplateManager instance = new TemplateManager();
 
     /**
      * 模板工厂
      */
     private TemplateFactory templateFactory = new ClasspathTemplateFactory();
 
-
     /**
      * 获取模板
+     *
      * @param id 模板Id
      * @return 模板信息
      * @throws TemplateNotFoundException 如果找不到模板，抛出异常

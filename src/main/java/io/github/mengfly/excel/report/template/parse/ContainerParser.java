@@ -8,6 +8,7 @@ import io.github.mengfly.excel.report.style.CellStyles;
 import io.github.mengfly.excel.report.style.StyleMap;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
+import io.github.mengfly.excel.report.template.TemplateManager;
 import io.github.mengfly.excel.report.template.exepression.process.ProcessControl;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,17 +21,18 @@ import java.util.List;
 public abstract class ContainerParser {
     private static final List<String> IGNORE_PROPERTIES = Arrays.asList("style", "size", "for", "if");
 
-    public final Container doParse(ContainerTreeNode containerTreeNode, DataContext context) {
+    public final Container doParse(TemplateManager manager, ContainerTreeNode node, DataContext context) {
 
-        ProcessControl control = containerTreeNode.getProcessControl(context, "if");
+        ProcessControl control = node.getProcessControl(context, "if");
 
-        final Container container = control.fetchOne((processContext) -> parse(containerTreeNode, processContext));
+        final Container container = control.fetchOne((processContext) ->
+                parse(manager, node, processContext));
 
         if (container != null) {
-            initProperties(container, containerTreeNode, context);
-            final StyleMap style = containerTreeNode.getStyle("style", context);
+            initProperties(container, node, context);
+            final StyleMap style = node.getStyle("style", context);
 
-            final Size size = getSize(containerTreeNode, context, container.getSize());
+            final Size size = getSize(node, context, container.getSize());
             if (size != null) {
                 style.addStyle(CellStyles.preferredSize, size);
             }
@@ -54,7 +56,7 @@ public abstract class ContainerParser {
     }
 
 
-    protected abstract Container parse(ContainerTreeNode containerTreeNode, DataContext context);
+    protected abstract Container parse(TemplateManager manager, ContainerTreeNode node, DataContext context);
 
     protected Size getSize(ContainerTreeNode containerTreeNode, DataContext context, Size defaultSize) {
         String size = containerTreeNode.getAttribute("size");

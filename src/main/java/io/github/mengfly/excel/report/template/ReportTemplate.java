@@ -94,8 +94,7 @@ public class ReportTemplate {
 
 
     public Container render(DataContext context) {
-        rootNode.setTemplateManager(templateManager);
-        return rootNode.render(context);
+        return rootNode.render(templateManager,context);
     }
 
 

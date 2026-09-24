@@ -33,7 +33,6 @@ public class ContainerTreeNode {
     private ContainerTreeNode parent;
     private Element element;
     private Map<String, StyleMap> syleMap = new HashMap<>();
-    private TemplateManager templateManager;
 
     public String getTagName() {
         return element.getTagName();
@@ -42,11 +41,12 @@ public class ContainerTreeNode {
     /**
      * 渲染组件
      *
+     * @param manager
      * @param context 组件数据
      * @return 组件
      */
-    public Container render(DataContext context) {
-        final Container container = ParserFactory.doParseElement(this, context);
+    public Container render(TemplateManager manager, DataContext context) {
+        final Container container = ParserFactory.doParseElement(manager,this, context);
         if (container != null) {
             container.templateNode(this);
         }
@@ -96,7 +96,6 @@ public class ContainerTreeNode {
             final ContainerTreeNode treeNode = new ContainerTreeNode();
             treeNode.setParent(this);
             treeNode.setElement(childElement);
-            treeNode.setTemplateManager(templateManager);
             return treeNode;
         }).collect(Collectors.toList());
     }

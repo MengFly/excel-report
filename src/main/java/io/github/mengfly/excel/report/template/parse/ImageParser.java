@@ -2,12 +2,13 @@ package io.github.mengfly.excel.report.template.parse;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.http.HttpUtil;
-import lombok.Getter;
 import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.component.image.*;
 import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
+import io.github.mengfly.excel.report.template.TemplateManager;
+import lombok.Getter;
 
 import java.io.File;
 import java.io.InputStream;
@@ -17,11 +18,11 @@ public class ImageParser extends ContainerParser {
     private final String tagName = "Image";
 
     @Override
-    public Container parse(ContainerTreeNode containerTreeNode, DataContext context) {
+    public Container parse(TemplateManager manager, ContainerTreeNode node, DataContext context) {
         final ImageComponent component = new ImageComponent();
-        component.setSize(getSize(containerTreeNode, context, Size.of(4, 10)));
+        component.setSize(getSize(node, context, Size.of(4, 10)));
 
-        String attribute = containerTreeNode.getAttribute("src");
+        String attribute = node.getAttribute("src");
         final Object imageSource = context.doExpression(attribute);
         component.setImage(deduceImage(imageSource));
 

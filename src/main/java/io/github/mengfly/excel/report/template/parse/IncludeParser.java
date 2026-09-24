@@ -24,18 +24,16 @@ public class IncludeParser extends ContainerParser {
     }
 
     @Override
-    protected Container parse(ContainerTreeNode containerTreeNode, DataContext context) {
-        final TemplateManager templateManager = containerTreeNode.getTemplateManager();
-        if (templateManager == null) {
+    protected Container parse(TemplateManager manager, ContainerTreeNode node, DataContext context) {
+        if (manager == null) {
             throw new ExcelReportException("include template must create by TemplateManager." +
                     "use ReportTemplate#setTemplate or TemplateManager#getTemplate to create Template.");
         }
 
+        final String attribute = node.getAttribute("ref");
+        final ReportTemplate template = manager.getTemplate(attribute);
 
-        final String attribute = containerTreeNode.getAttribute("ref");
-        final ReportTemplate template = templateManager.getTemplate(attribute);
-
-        final Map<String, String> attributeMap = containerTreeNode.getAttributeMap("ref");
+        final Map<String, String> attributeMap = node.getAttributeMap("ref");
 
         DataContext includeContext = new DataContext();
 

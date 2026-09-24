@@ -4,6 +4,7 @@ import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.component.split.PageColSplitComponent;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
+import io.github.mengfly.excel.report.template.TemplateManager;
 
 public class PageColSplitParser extends ContainerParser {
 
@@ -13,7 +14,7 @@ public class PageColSplitParser extends ContainerParser {
     }
 
     @Override
-    protected Container parse(ContainerTreeNode containerTreeNode, DataContext context) {
+    protected Container parse(TemplateManager manager, ContainerTreeNode node, DataContext context) {
         return new PageColSplitComponent();
     }
 }

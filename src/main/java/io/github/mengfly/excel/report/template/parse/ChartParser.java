@@ -9,6 +9,7 @@ import io.github.mengfly.excel.report.component.chart.type.ChartDataType;
 import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
+import io.github.mengfly.excel.report.template.TemplateManager;
 import io.github.mengfly.excel.report.template.parse.chart.ChartDataTypeParserFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.utils.Sets;
@@ -25,9 +26,9 @@ public class ChartParser extends AbstractLayoutParser {
     }
 
     @Override
-    protected Container parse(ContainerTreeNode containerTreeNode, DataContext context) {
+    protected Container parse(TemplateManager manager, ContainerTreeNode node, DataContext context) {
 
-        ChartDataType type = getChartDataType(containerTreeNode, context);
+        ChartDataType type = getChartDataType(node, context);
         if (type == null) {
             log.error("Not found any ChartData.");
             return null;
@@ -36,13 +37,13 @@ public class ChartParser extends AbstractLayoutParser {
         ChartComponent component = new ChartComponent(type);
 
         // 标题
-        component.setChartTitle(containerTreeNode.getChild(context, "Title", ChartTitle::new));
+        component.setChartTitle(node.getChild(context, "Title", ChartTitle::new));
         // 图例
-        component.setLegend(containerTreeNode.getChild(context, "Legend", Legend::new));
+        component.setLegend(node.getChild(context, "Legend", Legend::new));
         // 数据标识
-        component.setMarker(containerTreeNode.getChild(context, "Marker", ChartMarker::new));
+        component.setMarker(node.getChild(context, "Marker", ChartMarker::new));
 
-        component.setSize(getSize(containerTreeNode, context, Size.of(4, 10)));
+        component.setSize(getSize(node, context, Size.of(4, 10)));
 
         return component;
     }

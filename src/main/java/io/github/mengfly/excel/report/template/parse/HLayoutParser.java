@@ -4,6 +4,7 @@ import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.layout.HLayout;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
+import io.github.mengfly.excel.report.template.TemplateManager;
 import lombok.Getter;
 
 @Getter
@@ -11,10 +12,10 @@ public class HLayoutParser extends AbstractLayoutParser {
     private final String tagName = "HLayout";
 
     @Override
-    public Container parse(ContainerTreeNode containerTreeNode, DataContext context) {
+    public Container parse(TemplateManager manager, ContainerTreeNode node, DataContext context) {
         final HLayout layout = new HLayout();
 
-        doParseChildContainer(layout, containerTreeNode, context);
+        doParseChildContainer(manager, layout, node, context);
 
         return layout;
     }

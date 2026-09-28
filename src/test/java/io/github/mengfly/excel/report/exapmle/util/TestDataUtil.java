@@ -1,4 +1,4 @@
-package io.github.mengfly.excel.report.report;
+package io.github.mengfly.excel.report.exapmle.util;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.RandomUtil;

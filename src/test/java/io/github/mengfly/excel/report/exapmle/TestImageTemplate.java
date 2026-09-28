@@ -1,7 +1,7 @@
-package io.github.mengfly.excel.report;
+package io.github.mengfly.excel.report.exapmle;
 
 import io.github.mengfly.excel.report.excel.ExcelReport;
-import io.github.mengfly.excel.report.report.TestDataUtil;
+import io.github.mengfly.excel.report.exapmle.util.TestDataUtil;
 import io.github.mengfly.excel.report.template.DataContext;
 import io.github.mengfly.excel.report.template.TemplateManager;
 import org.junit.Test;

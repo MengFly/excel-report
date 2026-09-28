@@ -1,15 +1,13 @@
 package io.github.mengfly.excel.report.exapmle;
 
 import cn.hutool.core.util.RandomUtil;
+import io.github.mengfly.excel.report.exapmle.util.TestTemplateUtil;
 import io.github.mengfly.excel.report.excel.ExcelReport;
 import io.github.mengfly.excel.report.template.DataContext;
-import io.github.mengfly.excel.report.template.ReportTemplate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,7 +15,7 @@ import java.util.List;
 public class Example1 {
 
 
-    public static List<List<DataStat>> getData() {
+    private static List<List<DataStat>> getData() {
         List<List<DataStat>> province = new ArrayList<>();
         province.add(Collections.singletonList(DataStat.createRandom("all")));
         for (int i = 0; i < 5; i++) {
@@ -32,18 +30,13 @@ public class Example1 {
 
     public static void main(String[] args) throws IOException {
 
-
         DataContext context = new DataContext();
         context.put("data", Example1.getData());
 
         ExcelReport report = new ExcelReport();
+        TestTemplateUtil.exportTemplate(report, context, "Example1Template.xml");
 
-        try (final InputStream resourceAsStream = Example1.class.getClassLoader().getResourceAsStream("Example1Template.xml")) {
-            ReportTemplate template = new ReportTemplate(resourceAsStream);
-
-            report.exportTemplate(template, null, context);
-        }
-        report.save(new File("example1.xlsx"));
+        TestTemplateUtil.saveReport(report, "example1");
     }
 
     @Data

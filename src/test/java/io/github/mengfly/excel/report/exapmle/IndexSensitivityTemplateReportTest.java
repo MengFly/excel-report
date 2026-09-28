@@ -1,8 +1,8 @@
-package io.github.mengfly.excel.report.report;
+package io.github.mengfly.excel.report.exapmle;
 
 import cn.hutool.core.util.RandomUtil;
 import io.github.mengfly.excel.report.excel.ExcelReport;
-import io.github.mengfly.excel.report.report.util.TestTemplateUtil;
+import io.github.mengfly.excel.report.exapmle.util.TestTemplateUtil;
 import io.github.mengfly.excel.report.template.DataContext;
 import org.junit.Test;
 

@@ -56,6 +56,7 @@ public class ReportContext {
 
     /**
      * 根据样式表获取Cell样式
+     *
      * @param map 样式表
      * @return Cell样式
      */
@@ -86,6 +87,7 @@ public class ReportContext {
 
     /**
      * 根据样式表获取字体
+     *
      * @param map 样式表
      * @return 字体
      */
@@ -106,6 +108,7 @@ public class ReportContext {
 
     /**
      * 添加图片
+     *
      * @param image 图片
      * @return 图片的索引
      * @throws IOException 如果图片读取失败，抛出异常
@@ -125,19 +128,19 @@ public class ReportContext {
 
         autoHeightRow.forEach((row, height) -> sheet.getRow(row).setHeightInPoints(height.floatValue()));
 
-        if (!autoHeightRow.isEmpty()) {
-            // 调整大小
-            sheetStyle.getStyle(SheetStyles.defaultRowHeight).ifPresent(height -> {
-                for (int i = sheet.getFirstRowNum(); i <= sheet.getLastRowNum(); i++) {
-                    final Row row = sheet.getRow(i);
-                    if (row != null) {
-                        if (!autoHeightRow.containsKey(i)) {
-                            row.setHeightInPoints(height);
-                        }
-                    }
+        // Excel 不认 sheet 级 sheetFormatPr@defaultRowHeight（无 ht 的行会按字体自行推算），
+        // 因此除已单独设置了高度的行之外，其余行必须逐行写入 ht，否则 sheetStyle 的 defaultRowHeight 不生效。
+        sheetStyle.getStyle(SheetStyles.defaultRowHeight).ifPresent(height -> {
+            for (int i = sheet.getFirstRowNum(); i <= sheet.getLastRowNum(); i++) {
+                if (autoHeightRow.containsKey(i)) {
+                    continue;
                 }
-            });
-        }
+                final Row row = sheet.getRow(i);
+                if (row != null) {
+                    row.setHeightInPoints(height);
+                }
+            }
+        });
 
         onExportFinalizer.forEach(runnable -> {
             try {
@@ -147,11 +150,11 @@ public class ReportContext {
             }
         });
 
-
     }
 
     /**
      * 添加导出时的回调,该回调函数会在导出Excel的最后执行
+     *
      * @param runnable 回调
      */
     public void addOnExportFinalizer(Runnable runnable) {

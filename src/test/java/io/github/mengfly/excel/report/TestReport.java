@@ -42,7 +42,7 @@ public class TestReport {
 
     @AfterClass
     public static void after() throws IOException {
-        report.save(new File("test-report.xlsx"));
+        report.save(new File("example/test-report.xlsx"));
         DesktopUtil.open(new File("test-report.xlsx"));
     }
 

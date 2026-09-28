@@ -41,7 +41,6 @@ public class ContainerTreeNode {
     /**
      * 渲染组件
      *
-     * @param manager
      * @param context 组件数据
      * @return 组件
      */

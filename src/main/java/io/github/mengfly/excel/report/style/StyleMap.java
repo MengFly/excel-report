@@ -25,10 +25,27 @@ public class StyleMap {
         styleMap.put(key.getId(), key.toString(value));
     }
 
+    /**
+     * 按给定的 key 集合摘取样式，作为样式池（如 {@code ReportContext#fontPool}）的 key。
+     * <p>
+     * <b>缺失的样式直接跳过，不写 null 占位</b>：写 null 会让"语义等价"的样式因为 null 占位差异
+     * 产生不同的 Map 结构，作为池 key 时无法命中同一份 POI 对象。
+     * <p>
+     * 与写 null 占位相比，取值行为完全等价：{@link #getStyle(StyleKey)} 对"缺失"与"值为 null"
+     * 同样返回 {@link Optional#empty()}；仅 {@link #containsKey} 会由 true 变为 false，
+     * 而现有调用方（{@code CellStyles#createCellStyle}/{@code createFont}）在 containsKey 之后
+     * 走的就是 getStyle，结果一致。
+     *
+     * @param keys 需要摘取的样式 key
+     * @return 仅包含有值样式的样式字典（可能为空）
+     */
     public StyleMap getStyleMap(Collection<StyleKey<?>> keys) {
         StyleMap style = new StyleMap();
         for (StyleKey<?> key : keys) {
-            style.styleMap.put(key.getId(), styleMap.get(key.getId()));
+            final String value = styleMap.get(key.getId());
+            if (value != null) {
+                style.styleMap.put(key.getId(), value);
+            }
         }
         return style;
     }

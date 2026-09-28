@@ -7,7 +7,6 @@ import io.github.mengfly.excel.report.component.image.*;
 import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
-import io.github.mengfly.excel.report.template.TemplateManager;
 import lombok.Getter;
 
 import java.io.File;
@@ -18,7 +17,7 @@ public class ImageParser extends ContainerParser {
     private final String tagName = "Image";
 
     @Override
-    public Container parse(TemplateManager manager, ContainerTreeNode node, DataContext context) {
+    public Container parse(ContainerTreeNode node, DataContext context) {
         final ImageComponent component = new ImageComponent();
         component.setSize(getSize(node, context, Size.of(4, 10)));
 

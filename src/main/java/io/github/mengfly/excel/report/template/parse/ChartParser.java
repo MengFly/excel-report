@@ -9,7 +9,6 @@ import io.github.mengfly.excel.report.component.chart.type.ChartDataType;
 import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
-import io.github.mengfly.excel.report.template.TemplateManager;
 import io.github.mengfly.excel.report.template.parse.chart.ChartDataTypeParserFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.utils.Sets;
@@ -26,7 +25,7 @@ public class ChartParser extends AbstractLayoutParser {
     }
 
     @Override
-    protected Container parse(TemplateManager manager, ContainerTreeNode node, DataContext context) {
+    protected Container parse(ContainerTreeNode node, DataContext context) {
 
         ChartDataType type = getChartDataType(node, context);
         if (type == null) {

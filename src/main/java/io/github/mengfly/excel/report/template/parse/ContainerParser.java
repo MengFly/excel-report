@@ -8,7 +8,6 @@ import io.github.mengfly.excel.report.style.CellStyles;
 import io.github.mengfly.excel.report.style.StyleMap;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
-import io.github.mengfly.excel.report.template.TemplateManager;
 import io.github.mengfly.excel.report.template.exepression.process.ProcessControl;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,12 +20,11 @@ import java.util.List;
 public abstract class ContainerParser {
     private static final List<String> IGNORE_PROPERTIES = Arrays.asList("style", "size", "for", "if");
 
-    public final Container doParse(TemplateManager manager, ContainerTreeNode node, DataContext context) {
+    public final Container doParse(ContainerTreeNode node, DataContext context) {
 
         ProcessControl control = node.getProcessControl(context, "if");
 
-        final Container container = control.fetchOne((processContext) ->
-                parse(manager, node, processContext));
+        final Container container = control.fetchOne((processContext) -> parse(node, processContext));
 
         if (container != null) {
             initProperties(container, node, context);
@@ -56,7 +54,7 @@ public abstract class ContainerParser {
     }
 
 
-    protected abstract Container parse(TemplateManager manager, ContainerTreeNode node, DataContext context);
+    protected abstract Container parse(ContainerTreeNode node, DataContext context);
 
     protected Size getSize(ContainerTreeNode containerTreeNode, DataContext context, Size defaultSize) {
         String size = containerTreeNode.getAttribute("size");

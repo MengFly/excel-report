@@ -45,8 +45,8 @@ public class ContainerTreeNode {
      * @param context 组件数据
      * @return 组件
      */
-    public Container render(TemplateManager manager, DataContext context) {
-        final Container container = ParserFactory.doParseElement(manager,this, context);
+    public Container render(DataContext context) {
+        final Container container = ParserFactory.doParseElement(this, context);
         if (container != null) {
             container.templateNode(this);
         }

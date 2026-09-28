@@ -1,7 +1,6 @@
 package io.github.mengfly.excel.report.template.parse;
 
 import io.github.mengfly.excel.report.Container;
-import io.github.mengfly.excel.report.exception.ExcelReportException;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
 import io.github.mengfly.excel.report.template.ReportTemplate;
@@ -24,14 +23,10 @@ public class IncludeParser extends ContainerParser {
     }
 
     @Override
-    protected Container parse(TemplateManager manager, ContainerTreeNode node, DataContext context) {
-        if (manager == null) {
-            throw new ExcelReportException("include template must create by TemplateManager." +
-                    "use ReportTemplate#setTemplate or TemplateManager#getTemplate to create Template.");
-        }
+    protected Container parse(ContainerTreeNode node, DataContext context) {
 
         final String attribute = node.getAttribute("ref");
-        final ReportTemplate template = manager.getTemplate(attribute);
+        final ReportTemplate template = TemplateManager.getInstance().getTemplate(attribute);
 
         final Map<String, String> attributeMap = node.getAttributeMap("ref");
 

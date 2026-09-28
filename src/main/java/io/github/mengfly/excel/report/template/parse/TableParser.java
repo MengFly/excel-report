@@ -6,7 +6,6 @@ import io.github.mengfly.excel.report.component.table.TableComponentNew;
 import io.github.mengfly.excel.report.component.table.TableObjFieldColumn;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
-import io.github.mengfly.excel.report.template.TemplateManager;
 import io.github.mengfly.excel.report.util.BeanUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +26,7 @@ public class TableParser extends ContainerParser {
     }
 
     @Override
-    public Container parse(TemplateManager manager, ContainerTreeNode node, DataContext context) {
+    public Container parse(ContainerTreeNode node, DataContext context) {
 
         return new TableComponentNew(
                 getDataList(node, context),

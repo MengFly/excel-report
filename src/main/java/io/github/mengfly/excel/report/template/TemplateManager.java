@@ -40,12 +40,11 @@ public class TemplateManager {
         if (id == null) {
             throw new TemplateNotFoundException(null);
         }
+        if(templateFactory == null) {
+            throw new IllegalStateException("No Setting Template Factory");
+        }
         // computeIfAbsent 对同一 key 加锁，不同 key 可并发解析；映射函数抛出的异常会原样传播
-        return templateCache.computeIfAbsent(id, key -> {
-            final ReportTemplate template = templateFactory.getTemplate(key);
-            template.setTemplateManager(this);
-            return template;
-        });
+        return templateCache.computeIfAbsent(id, templateFactory::getTemplate);
     }
 
     /**

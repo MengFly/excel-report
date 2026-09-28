@@ -5,7 +5,6 @@ import io.github.mengfly.excel.report.component.list.ListComponent;
 import io.github.mengfly.excel.report.component.list.ListHeader;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
-import io.github.mengfly.excel.report.template.TemplateManager;
 import io.github.mengfly.excel.report.util.BeanUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +18,7 @@ public class ListParser extends ContainerParser {
     private final String tagName = "List";
 
     @Override
-    public Container parse(TemplateManager manager, ContainerTreeNode node, DataContext context) {
+    public Container parse(ContainerTreeNode node, DataContext context) {
 
         final ListComponent component = new ListComponent();
 

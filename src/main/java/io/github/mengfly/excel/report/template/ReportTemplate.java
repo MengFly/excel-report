@@ -32,9 +32,6 @@ public class ReportTemplate {
     private final ContainerTreeNode rootNode;
     private StyleMap sheetStyle;
 
-    private TemplateManager templateManager;
-
-
     public ReportTemplate(InputStream stream) {
         final Document document = XmlUtil.readXML(stream);
         Element rootElement = XmlUtil.getRootElement(document);
@@ -94,7 +91,7 @@ public class ReportTemplate {
 
 
     public Container render(DataContext context) {
-        return rootNode.render(templateManager,context);
+        return rootNode.render(context);
     }
 
 

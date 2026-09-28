@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<template
+        xmlns="http://mengfly.github.io/excel-report/1.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://mengfly.github.io/excel-report/1.0.0 https://mengfly.github.io/xsd/excel-report-1.0.0.xsd"
+        name="largeExport"
+        description="大批量带样式导出模板（示例）"
+        version="1.0"
+        author="MengFly"
+        createAt="2026-09-28">
+
+    <!--  Sheet 页样式  -->
+    <sheetStyle>
+        <!--  大批量导出时不需要自动分页  -->
+        <autobreaks>false</autobreaks>
+        <!--  统一行高  -->
+        <defaultRowHeight>18</defaultRowHeight>
+    </sheetStyle>
+
+    <!--
+        样式表：可在组件 / 列上通过 id 引用，多个 id 用空格组合（后引用的覆盖先引用的）
+        例如：dataStyle="dataStyle alignRight w14 moneyFormat"
+    -->
+    <styles>
+        <!-- ==================== 标题 ==================== -->
+        <style id="titleStyle">
+            <fontBold>true</fontBold>
+            <fontHeight>16</fontHeight>
+            <fontColor>#1F4E79</fontColor>
+            <fillForegroundColor>#D9E1F2</fillForegroundColor>
+            <alignHorizontal>center</alignHorizontal>
+            <alignVertical>center</alignVertical>
+            <borderTop>thin</borderTop>
+            <borderBottom>thin</borderBottom>
+            <borderLeft>thin</borderLeft>
+            <borderRight>thin</borderRight>
+        </style>
+        <style id="subTitleStyle">
+            <fontHeight>10</fontHeight>
+            <fontColor>#595959</fontColor>
+            <alignHorizontal>left</alignHorizontal>
+            <alignVertical>center</alignVertical>
+        </style>
+
+        <!-- ==================== 表头 / 数据基础样式 ==================== -->
+        <style id="headerStyle">
+            <fontBold>true</fontBold>
+            <fontHeight>12</fontHeight>
+            <fontColor>white</fontColor>
+            <fillForegroundColor>#4472C4</fillForegroundColor>
+            <alignHorizontal>center</alignHorizontal>
+            <alignVertical>center</alignVertical>
+            <borderTop>thin</borderTop>
+            <borderBottom>thin</borderBottom>
+            <borderLeft>thin</borderLeft>
+            <borderRight>thin</borderRight>
+        </style>
+        <style id="dataStyle">
+            <fontHeight>11</fontHeight>
+            <alignVertical>center</alignVertical>
+            <borderTop>thin</borderTop>
+            <borderBottom>thin</borderBottom>
+            <borderLeft>thin</borderLeft>
+            <borderRight>thin</borderRight>
+        </style>
+
+        <!-- ==================== 对齐 ==================== -->
+        <style id="alignLeft">
+            <alignHorizontal>left</alignHorizontal>
+        </style>
+        <style id="alignCenter">
+            <alignHorizontal>center</alignHorizontal>
+        </style>
+        <style id="alignRight">
+            <alignHorizontal>right</alignHorizontal>
+        </style>
+
+        <!-- ==================== 数字 / 日期格式 ==================== -->
+        <style id="intFormat">
+            <dataFormat>#,##0</dataFormat>
+        </style>
+        <style id="moneyFormat">
+            <dataFormat>"¥"#,##0.00</dataFormat>
+        </style>
+        <style id="percentFormat">
+            <dataFormat>0.00%</dataFormat>
+        </style>
+        <style id="dateFormat">
+            <dataFormat>yyyy-mm-dd</dataFormat>
+        </style>
+
+        <!-- ==================== 特殊列样式 ==================== -->
+        <style id="statusStyle">
+            <fontColor>#1F4E79</fontColor>
+            <alignHorizontal>center</alignHorizontal>
+        </style>
+        <style id="remarkStyle">
+            <fontColor>#808080</fontColor>
+            <alignHorizontal>left</alignHorizontal>
+        </style>
+
+        <!-- ==================== 列宽（Excel 字符宽度，写固定值可避免 auto 宽度逐列测量） ==================== -->
+        <style id="w8">
+            <width>8</width>
+        </style>
+        <style id="w9">
+            <width>9</width>
+        </style>
+        <style id="w10">
+            <width>10</width>
+        </style>
+        <style id="w13">
+            <width>13</width>
+        </style>
+        <style id="w14">
+            <width>14</width>
+        </style>
+        <style id="w18">
+            <width>18</width>
+        </style>
+        <style id="w20">
+            <width>20</width>
+        </style>
+        <style id="w22">
+            <width>22</width>
+        </style>
+        <style id="w26">
+            <width>26</width>
+        </style>
+    </styles>
+
+    <!--  模板参数（仅用于文档说明，方便了解模板需要哪些数据）  -->
+    <parameters>
+        <parameter id="title" name="标题" type="java.lang.String" description="报表标题"/>
+        <parameter id="rowCount" name="数据行数" type="java.lang.Integer" description="导出的数据行数"/>
+        <parameter id="generateTime" name="生成时间" type="java.lang.String" description="数据生成时间"/>
+        <parameter id="dataList" name="表格数据" type="java.util.List" description="表格数据列表，示例为 20000 行 * 11 列"/>
+    </parameters>
+
+    <container>
+        <VLayout alignPolicy="center">
+            <!--  标题：横向占 11 列（与表格总列宽一致），纵向占 2 行  -->
+            <Text size="11,2" text="${title}" style="titleStyle"/>
+            <Text size="11,1" text="数据量：${rowCount} 行 ｜ 生成时间：${generateTime}"
+                  style="subTitleStyle"/>
+
+            <!--  表格：列宽 / 对齐 / 边框 / 数字格式 全部通过样式定义  -->
+            <Table dataList="${dataList}">
+                <column id="seq" name="序号" style="headerStyle w8"
+                        dataStyle="dataStyle alignCenter w8"/>
+                <column id="orderNo" name="订单号" style="headerStyle w20"
+                        dataStyle="dataStyle alignCenter w20"/>
+                <column id="customer" name="客户名称" style="headerStyle w18"
+                        dataStyle="dataStyle alignLeft w18"/>
+                <column id="region" name="区域" style="headerStyle w10"
+                        dataStyle="dataStyle alignCenter w10"/>
+                <column id="product" name="产品名称" style="headerStyle w22"
+                        dataStyle="dataStyle alignLeft w22"/>
+                <column id="quantity" name="数量" style="headerStyle w9"
+                        dataStyle="dataStyle alignRight w9 intFormat"/>
+                <column id="amount" name="金额" style="headerStyle w14"
+                        dataStyle="dataStyle alignRight w14 moneyFormat"/>
+                <column id="ratio" name="完成率" style="headerStyle w10"
+                        dataStyle="dataStyle alignCenter w10 percentFormat"/>
+                <column id="orderDate" name="下单日期" style="headerStyle w13"
+                        dataStyle="dataStyle alignCenter w13 dateFormat"/>
+                <column id="status" name="状态" style="headerStyle w10"
+                        dataStyle="dataStyle statusStyle w10"/>
+                <column id="remark" name="备注" style="headerStyle w26"
+                        dataStyle="dataStyle remarkStyle w26"/>
+            </Table>
+        </VLayout>
+    </container>
+</template>

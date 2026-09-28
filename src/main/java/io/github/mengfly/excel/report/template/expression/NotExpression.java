@@ -1,4 +1,4 @@
-package io.github.mengfly.excel.report.template.exepression;
+package io.github.mengfly.excel.report.template.expression;
 
 import io.github.mengfly.excel.report.template.DataContext;
 import lombok.RequiredArgsConstructor;

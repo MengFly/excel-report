@@ -1,6 +1,6 @@
 package io.github.mengfly.excel.report.template;
 
-import io.github.mengfly.excel.report.template.exepression.ExpressionHelper;
+import io.github.mengfly.excel.report.template.expression.ExpressionHelper;
 import lombok.NonNull;
 
 import java.util.HashMap;

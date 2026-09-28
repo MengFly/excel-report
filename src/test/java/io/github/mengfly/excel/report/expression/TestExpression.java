@@ -1,6 +1,6 @@
 package io.github.mengfly.excel.report.expression;
 
-import io.github.mengfly.excel.report.template.exepression.ExpressionHelper;
+import io.github.mengfly.excel.report.template.expression.ExpressionHelper;
 import org.junit.Test;
 
 public class TestExpression {

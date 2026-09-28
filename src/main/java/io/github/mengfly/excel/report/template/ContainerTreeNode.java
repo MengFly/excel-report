@@ -7,7 +7,7 @@ import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.style.CellStyles;
 import io.github.mengfly.excel.report.style.StyleMap;
 import io.github.mengfly.excel.report.style.key.StyleKey;
-import io.github.mengfly.excel.report.template.exepression.process.ProcessControl;
+import io.github.mengfly.excel.report.template.expression.process.ProcessControl;
 import io.github.mengfly.excel.report.template.parse.ParserFactory;
 import io.github.mengfly.excel.report.util.BeanUtil;
 import io.github.mengfly.excel.report.util.StyleUtil;
@@ -32,7 +32,7 @@ public class ContainerTreeNode {
      */
     private ContainerTreeNode parent;
     private Element element;
-    private Map<String, StyleMap> syleMap = new HashMap<>();
+    private Map<String, StyleMap> styleMap = new HashMap<>();
 
     public String getTagName() {
         return element.getTagName();
@@ -80,8 +80,8 @@ public class ContainerTreeNode {
     private StyleMap getStyleById(String attribute) {
         ContainerTreeNode node = this;
         while (node != null) {
-            if (node.syleMap.containsKey(attribute)) {
-                return node.syleMap.get(attribute);
+            if (node.styleMap.containsKey(attribute)) {
+                return node.styleMap.get(attribute);
             } else {
                 node = node.parent;
             }

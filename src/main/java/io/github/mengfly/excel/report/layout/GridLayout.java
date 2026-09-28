@@ -29,22 +29,22 @@ public class GridLayout extends AbstractLayout {
 
     @Override
     public Size getSize() {
-        return getContainerGrop().getSize();
+        return getContainerGroup().getSize();
     }
 
 
     @Override
     public void onMeasure(Size suggestSize) {
         measuredSize = suggestSize;
-        getContainerGrop().onMeasure(suggestSize);
+        getContainerGroup().onMeasure(suggestSize);
     }
 
     @Override
     public void onLayout(Point relativePosition) {
         position = relativePosition;
-        val containerGrop = getContainerGrop();
-        containerGrop.onMeasure(measuredSize);
-        containerGrop.onLayout(relativePosition);
+        val containerGroup = getContainerGroup();
+        containerGroup.onMeasure(measuredSize);
+        containerGroup.onLayout(relativePosition);
     }
 
     private Layout createRootLayout() {
@@ -76,7 +76,7 @@ public class GridLayout extends AbstractLayout {
         }
     }
 
-    private Layout getContainerGrop() {
+    private Layout getContainerGroup() {
         Layout rootLayout = createRootLayout();
 
         Layout groupLayout = createGroupLayout();

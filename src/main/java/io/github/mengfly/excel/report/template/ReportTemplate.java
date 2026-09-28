@@ -79,7 +79,7 @@ public class ReportTemplate {
                 }
                 final List<Element> styleKeyElements = XmlUtil.getElements(styleElement, null);
                 final StyleMap style = CellStyles.createStyle(XmlUtil.getElementNameValueMap(styleKeyElements));
-                rootNode.getSyleMap().put(id, style);
+                rootNode.getStyleMap().put(id, style);
             }
         }
     }

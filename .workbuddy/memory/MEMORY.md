@@ -16,6 +16,16 @@
 - 插件仓库 `AGENTS.md` 明确："**不要编译构建，由我来验证！**" —— 不要为插件执行 gradle 命令。
 - 已知待同步项：框架 `exepression` → `expression` 包改名（`6873074`）后，插件 `ExcelReportPreviewEngine.kt:10-12` 三行 import 需在升级依赖时同步。
 
+## 框架代码易踩点
+
+- **`ExcelCellSpan` 的 auto 宽高计算依赖三要素**：cell 的**当前内容 + 当前样式 + 是否已 `merge()`**，且结果靠 `Map.compute(max)` 累积
+  ⇒ **调用顺序本身就是语义的一部分**。框架固定顺序是 `getCellSpan`（构造 + `setStyle`，cell 空白、未 merge）→ `merge()` → `setValue()`（终态）。
+  已实测：空白未 merge ⇒ `getColumnWidth` 返回 -1；有值已 merge ⇒ 返回"整块文本 ÷ 列数"（5.39）；有值未 merge ⇒ 10.78。
+- **不能只对"带 auto 样式的 cell"之外的行做批量计算**：POI 的 `getColumnWidth(sheet, col, true, firstRow, lastRow)` 会算区间内所有 cell，
+  而框架语义是"只算带 `width=auto` 的 cell"。实测反例：只给表头设 auto 时，整列算会把列宽从 2.71 撑到 28.54。
+- 2026-09-28 已完成"延迟到终态算一次"（`ExcelCellSpan.autoSizeCalculated` + `ReportContext.cellSpans` 末尾补算），
+  三重验证（模板端到端字节比对 + 只 merge 场景 A/B + 有值场景 A/B）均等价，收益 -50%。
+
 ## 文档维护习惯
 
 - `doc/优化建议.md` 是本项目的优化台账：条目完成后改写为 `✅ 已解决`，保留原建议 + 实现说明 + **实测证据**，并同步顶部【〇、实现状态总览】表与【五、优先建议】表。

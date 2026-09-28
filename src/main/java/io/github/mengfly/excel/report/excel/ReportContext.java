@@ -35,6 +35,10 @@ public class ReportContext {
     private final XSSFSheet sheet;
     private final Map<StyleMap, CellStyle> cellStylePool = new HashMap<>();
     private final Map<StyleMap, Font> fontPool = new HashMap<>();
+    /**
+     * 本次导出创建的全部单元格区域，用于导出末尾补算宽高（见 {@link ExcelCellSpan#calculateAutoSizeIfAbsent()}）
+     */
+    private final List<ExcelCellSpan> cellSpans = new ArrayList<>();
     @Getter
     private final StyleChain styleChain = new StyleChain();
     private final Map<Integer, Double> autoWidthColumn = new HashMap<>();
@@ -47,6 +51,7 @@ public class ReportContext {
         cellSpan.setCellAutoWidth(autoWidthColumn);
         cellSpan.setCellAutoHeight(autoHeightRow);
         cellSpan.setStyle(getCellStyle(cellStyle), cellStyle);
+        cellSpans.add(cellSpan);
         return cellSpan;
     }
 
@@ -124,6 +129,10 @@ public class ReportContext {
     }
 
     public void applyCellWidthHeight(StyleMap sheetStyle) {
+        // 补算从未登记过宽高的区域：只 merge 不 setValue 的组件（Span / Chart）靠这一步兜底，
+        // 必须在下面写列宽/行高之前执行。
+        cellSpans.forEach(ExcelCellSpan::calculateAutoSizeIfAbsent);
+
         autoWidthColumn.forEach((column, width) -> sheet.setColumnWidth(column, (int) (width * 256)));
 
         autoHeightRow.forEach((row, height) -> sheet.getRow(row).setHeightInPoints(height.floatValue()));

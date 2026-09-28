@@ -29,6 +29,11 @@ public class ExcelCellSpan {
 
     private StyleMap styleMap;
 
+    /**
+     * 宽高是否已登记过（用于导出末尾的补算判定，见 {@link #calculateAutoSizeIfAbsent()}）
+     */
+    private boolean autoSizeCalculated = false;
+
     @Setter
     private Map<Integer, Double> cellAutoWidth;
     @Setter
@@ -98,6 +103,7 @@ public class ExcelCellSpan {
     }
 
     public void calculateAndRecordCellWidthHeight() {
+        autoSizeCalculated = true;
         if (styleMap != null) {
             final Optional<String> widthStyle = styleMap.getStyle(CellStyles.width);
             if (widthStyle.isPresent() && cellAutoWidth != null) {
@@ -130,6 +136,19 @@ public class ExcelCellSpan {
     }
 
 
+    /**
+     * 补算：仅供 {@link ReportContext#applyCellWidthHeight} 在导出末尾调用。
+     * <p>
+     * 只对"从未登记过宽高"的 span 执行一次 —— 例如 {@code SpanComponent} / {@code ChartComponent}
+     * 只调 {@code merge()} 而从不 {@code setValue()}，它们的 cell 始终是空白，
+     * 补算得到的值与旧实现"在 setStyle 时机计算"完全一致（实测均为 {@code -1 + 4}）。
+     */
+    void calculateAutoSizeIfAbsent() {
+        if (!autoSizeCalculated) {
+            calculateAndRecordCellWidthHeight();
+        }
+    }
+
     public void setStyle(CellStyle style, StyleMap styleMap) {
         if (style != null) {
             for (int i = 0; i < size.height; i++) {
@@ -140,7 +159,8 @@ public class ExcelCellSpan {
             }
         }
         this.styleMap = styleMap;
-        calculateAndRecordCellWidthHeight();
+        // 此处不再计算宽高：此时 cell 还没有值、也可能尚未 merge()，算出来只会是无效值（POI 返回 -1 ⇒ +4 = 3），
+        // 必然被后续 setValue 时的终态值覆盖。真正有效的一次计算在 setValue()，漏算的由导出末尾补算。
     }
 
     public ClientAnchor getFillAnchor(ClientAnchor.AnchorType anchorType) {

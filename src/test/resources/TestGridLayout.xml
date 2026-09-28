@@ -17,31 +17,38 @@
 
 
         <VLayout alignPolicy="center">
-            <GridLayout alignPolicy="center" orientation="vertical" count="4">
+            <HLayout>
+                <Text size="6,4" text="Grid Layout Row 4"/>
+                <GridLayout alignPolicy="center" orientation="vertical" count="4">
 
-                <Text size="11,1" text="震动总次数"/>
-                <Text size="11,1" text="123"/>
-                <Text size="9,1" text="单次最大能量(J)"/>
-                <Text size="9,1" text="123"/>
+                    <Text size="5,1" text="震动总次数"/>
+                    <Text size="5,1" text="123"/>
+                    <Text size="3,1" text="单次最大能量(J)"/>
+                    <Text size="3,1" text="123"/>
 
-                <Text size="11,1" text="平均能量(J)"/>
-                <Text size="11,1" text="123"/>
-                <Text size="9,1" text="总能量(J)"/>
-                <Text size="9,1" text="123"/>
+                    <Text size="5,1" text="平均能量(J)"/>
+                    <Text size="5,1" text="123"/>
+                    <Text size="3,1" text="总能量(J)"/>
+                    <Text size="3,1" text="123"/>
 
-            </GridLayout>
+                </GridLayout>
+            </HLayout>
 
+
+            <Span size="-1,2"/>
+
+            <Text text="Grid Layout Column 4" size="-1,2"/>
             <GridLayout alignPolicy="center" orientation="horizontal" count="4">
 
-                <Text size="11,1" text="震动总次数"/>
-                <Text size="11,1" text="123"/>
-                <Text size="9,1" text="单次最大能量(J)"/>
-                <Text size="9,1" text="123"/>
+                <Text size="5,1" text="震动总次数"/>
+                <Text size="5,1" text="123"/>
+                <Text size="3,1" text="单次最大能量(J)"/>
+                <Text size="3,1" text="123"/>
 
-                <Text size="11,1" text="平均能量(J)"/>
-                <Text size="11,1" text="123"/>
-                <Text size="9,1" text="总能量(J)"/>
-                <Text size="9,1" text="123"/>
+                <Text size="5,1" text="平均能量(J)"/>
+                <Text size="5,1" text="123"/>
+                <Text size="3,1" text="总能量(J)"/>
+                <Text size="3,1" text="123"/>
 
             </GridLayout>
 

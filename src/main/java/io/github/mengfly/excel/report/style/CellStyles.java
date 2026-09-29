@@ -11,7 +11,6 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -25,7 +24,7 @@ public class CellStyles {
     private static final XSSFColor BLACK = createColor(0x000000);
     private static final XSSFColor WHITE = createColor(0xffffff);
 
-    private static final Map<String, StyleKey<?>> styleMap = new HashMap<>();
+    private static final StyleRegistry REGISTRY = new StyleRegistry();
     public static final StyleMap DEFAULT_STYLE = new StyleMap();
 
     public static final StyleKey<BorderStyle> borderTop =
@@ -143,51 +142,30 @@ public class CellStyles {
         setDefaultStyle(fontFamily, FontFamily.NOT_APPLICABLE);
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> StyleKey<T> getStyleKey(String key) {
-        return (StyleKey<T>) styleMap.get(key);
+        return REGISTRY.getStyleKey(key);
     }
 
 
     private static <T> StyleKey<T> register(StyleKey<T> key) {
-        styleMap.put(key.getId(), key);
-        return key;
+        return REGISTRY.register(key);
     }
 
 
     private static <T, S> StyleKey<S> register(String id, Class<T> targetType, Class<S> styleType, BiConsumer<T, S> applier) {
-        return register(new StyleKey<>(id, targetType, styleType, applier));
+        return REGISTRY.register(id, targetType, styleType, applier);
     }
 
-
-    public static CellStyle createCellStyle(Workbook workbook, StyleMap cellStyleMap) {
-        CellStyle cellStyle = workbook.createCellStyle();
-
-        for (StyleKey<?> key : styleMap.values()) {
-            if (key.isSupportApplyTarget(cellStyle)) {
-                cellStyleMap.getStyle(key).ifPresent(style -> key.applyStyle(cellStyle, style));
-            }
-        }
-        return cellStyle;
+    public static <T> T initStyle(T target, StyleMap styleMap) {
+        return REGISTRY.initStyle(target, styleMap);
     }
 
-    public static Font createFont(Workbook workbook, StyleMap fontStyleMap) {
-        Font font = workbook.createFont();
-
-        for (StyleKey<?> key : styleMap.values()) {
-            if (key.isSupportApplyTarget(font)) {
-                fontStyleMap.getStyle(key).ifPresent(style -> key.applyStyle(font, style));
-            }
-        }
-        return font;
-    }
     public static <T> void setDefaultStyle(StyleKey<T> key, T defaultValue) {
         DEFAULT_STYLE.addStyle(key, defaultValue);
     }
 
-
     public static StyleMap filterStyle(StyleMap map, Class<?> targetType) {
-        final List<StyleKey<?>> filterStyles = styleMap.values().stream().filter(
+        final List<StyleKey<?>> filterStyles = REGISTRY.keys().stream().filter(
                 key -> key.isSupportApplyTarget(targetType)
         ).collect(Collectors.toList());
         return map.getStyleMap(filterStyles);

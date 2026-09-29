@@ -72,7 +72,7 @@ public class ReportContext {
         if (cellStylePool.containsKey(map)) {
             return cellStylePool.get(map);
         } else {
-            final CellStyle cellStyle = CellStyles.createCellStyle(workbook, map);
+            final CellStyle cellStyle = CellStyles.initStyle(workbook.createCellStyle(), map);
 
             final Font font = getFont(map);
             if (font != null) {
@@ -104,7 +104,8 @@ public class ReportContext {
         if (fontStyle.isEmpty()) {
             return null;
         }
-        return fontPool.computeIfAbsent(fontStyle, styleMap -> CellStyles.createFont(workbook, styleMap));
+        return fontPool.computeIfAbsent(fontStyle, styleMap ->
+                CellStyles.initStyle(workbook.createFont(), styleMap));
     }
 
     public XSSFDrawing createDrawingPatriarch() {

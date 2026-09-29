@@ -468,6 +468,16 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
+            <xs:element minOccurs="0" name="fillBackgroundColor" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation source="description">
+                        填充背景色
+                        仅在 fillPattern 为图案填充时可见；fillPattern 为 solid 时单元格显示的是 fillForegroundColor
+                        颜色可以是描述符，如white,black,red,green,blue,yellow,cyan等
+                        也可以是十六进制颜色代码，如#FF0000，表示红色
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
             <xs:element minOccurs="0" name="readingOrder" type="ReadingOrder">
                 <xs:annotation>
                     <xs:documentation source="description">

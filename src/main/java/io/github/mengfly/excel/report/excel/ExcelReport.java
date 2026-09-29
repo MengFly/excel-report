@@ -58,7 +58,7 @@ public class ExcelReport {
     public void exportSheet(String name, Container container, StyleMap sheetStyle) {
         XSSFSheet sheet = getSheet(name);
         StyleMap sheetStyleMap = SheetStyles.DEFAULT_STYLE.createChildStyleMap(sheetStyle);
-        SheetStyles.initSheetStyle(sheet, sheetStyleMap);
+        SheetStyles.initStyle(sheet, sheetStyleMap);
         ReportContext context = new ReportContext(workbook, sheet);
         context.getStyleChain().onStyle(CellStyles.DEFAULT_STYLE,
                 () -> {

@@ -33,6 +33,17 @@
   `SizeStyleKey`（targetType `Object.class`）会混进 `filterStyle` 的所有结果，导致 `fontPool` 因 preferredSize 差异多生成 Font。
 - **用户会与 AI 并行编辑同一批文件**：动手前先看 `ls -l --time-style=+%H:%M:%S`，不要假设工作区是自己的最后状态（本轮被覆盖过一次）。
 - 探针建议放 `target/probe/`（`mvn clean` 即清，不进 git）；`javac` 需 `-encoding UTF-8`、`java` 需 `-Dfile.encoding=UTF-8`，否则中文注释按 GBK 报错。
+- **`CellStyles` / `SheetStyles` 刻意不并表**（2026-09-29 评估后决定）：两者 key 集分别镜像 XSD 的 `Style`(32) 与 `SheetStyle`(27)，子元素交集为空；
+  共用的登记/查找逻辑抽在 package-private 的 `style/StyleRegistry.java`，两个门面**各持一份实例**，各自保留 `DEFAULT_STYLE`
+  （cell 默认 20 项 / sheet 默认 `defaultRowHeight=20f`，由 `ExcelReport:60`/`:63` 分别消费，方向不能互串）。
+  并表会让"key 写错上下文"从"查不到 ⇒ 丢弃"变成"进 `StyleMap` ⇒ 事后被类型过滤静默丢弃"，改变 `StyleMap.equals` ⇒ 影响 `cellStylePool`/`fontPool` 的池命中。
+- `SizeStyleKey` 的 targetType 是 `CellStyle.class`（POI 接口）⇒ 在对称谓词下它归入 `CellStyle` 类别：`filterStyle(map, CellStyle.class)`
+  会带上 `preferredSize`（apply 是空 lambda，无副作用）；`filterStyle(map, Font.class)` 不受影响（`Font` 与 `CellStyle` 无父子关系）。
+  若将来新增 `filterStyle(..., CellStyle.class)` 的调用点，需先决定 `preferredSize` 该不该出现在结果里。
+- 样式**应用循环已统一**为 `StyleRegistry.initStyle(T target, StyleMap)`（先按"实例属于 key 目标类型"过滤再 apply）；
+  `CellStyles.initStyle` / `SheetStyles.initStyle` 各自委托到自己的 `REGISTRY`，目标由调用方建（`workbook.createCellStyle()` / `createFont()`）。
+  `CellStyles.createCellStyle`/`createFont`/`SheetStyles.initSheetStyle` 已删除（下一个版本为 breaking）。
+- XSD `Style` 原本缺 `fillBackgroundColor`（框架侧一直注册着该 key），2026-09-29 已补；插件 `StyleKeyInfo.kt` 的镜像清单仍缺该 id，待插件侧同步。
 - POI 5.2.5 读回样式时的 API 细节：`XSSFColor` 无 `getRGBHexString()`（用 `getRGB()` + `HexUtilencodeHexStr`）；`CellStyle.getXxxBorderColor()`
   返回 short 索引，颜色要 `XSSFCellStyle.getXxxBorderXSSFColor()`；`XSSFFont.getFontHeight()` 返回 **twips**（20pt → 400）；
   `XSSFFont.getUnderline()` 返回 short（`FontUnderline.DOUBLE.valueOf()` = 2）；`Sheet` 无 `getZoom()`；`CTWorksheet` 无 `getSheetViewArray(int)`。

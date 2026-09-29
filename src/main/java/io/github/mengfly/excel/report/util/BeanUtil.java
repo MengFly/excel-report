@@ -41,7 +41,7 @@ public class BeanUtil extends cn.hutool.core.bean.BeanUtil {
             if (!propertyDescriptor.getPropertyType().isInstance(settingValue)) {
                 if (propertyDescriptor.getPropertyType().isEnum()) {
                     final Map<String, Enum<?>> enumMap = getEnumMap(propertyDescriptor.getPropertyType());
-                    String enumKey = String.valueOf(settingValue).replaceAll(" ", "").replaceAll("_", "").toLowerCase();
+                    String enumKey = String.valueOf(settingValue).replace(" ", "").replace("_", "").toLowerCase();
 
                     settingValue = enumMap.get(enumKey);
                 }

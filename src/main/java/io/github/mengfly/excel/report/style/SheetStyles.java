@@ -7,8 +7,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.BiConsumer;
 
 /**
@@ -16,7 +14,7 @@ import java.util.function.BiConsumer;
  */
 public class SheetStyles {
 
-    private static final Map<String, StyleKey<?>> styleMap = new HashMap<>();
+    private static final StyleRegistry REGISTRY = new StyleRegistry();
     /**
      * 默认的工作表样式
      */
@@ -90,26 +88,21 @@ public class SheetStyles {
         DEFAULT_STYLE.addStyle(defaultRowHeight, 20f);
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> StyleKey<T> getStyleKey(String key) {
-        return (StyleKey<T>) styleMap.get(key);
+        return REGISTRY.getStyleKey(key);
     }
 
 
     private static <T> StyleKey<T> register(StyleKey<T> key) {
-        styleMap.put(key.getId(), key);
-        return key;
+        return REGISTRY.register(key);
     }
 
 
     private static <T, S> StyleKey<S> register(String id, Class<T> targetType, Class<S> styleType, BiConsumer<T, S> applier) {
-        return register(new StyleKey<>(id, targetType, styleType, applier));
+        return REGISTRY.register(id, targetType, styleType, applier);
     }
 
-    public static void initSheetStyle(Sheet sheet, StyleMap sheetStyle) {
-
-        for (StyleKey<?> value : styleMap.values()) {
-            sheetStyle.getStyle(value).ifPresent(object -> value.applyStyle(sheet, object));
-        }
+    public static <T> void initStyle(T target, StyleMap styleMap) {
+        REGISTRY.initStyle(target, styleMap);
     }
 }

@@ -1,11 +1,11 @@
 package io.github.mengfly.excel.report.style.key;
 
 import io.github.mengfly.excel.report.entity.Size;
-import io.github.mengfly.excel.report.style.CellStyles;
+import org.apache.poi.ss.usermodel.CellStyle;
 
 public class SizeStyleKey extends StyleKey<Size> {
     public SizeStyleKey(String id) {
-        super(id, CellStyles.class, Size.class, (o, size) -> {
+        super(id, CellStyle.class, Size.class, (o, size) -> {
         });
     }
 

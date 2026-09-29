@@ -72,7 +72,7 @@ public class BeanUtil extends cn.hutool.core.bean.BeanUtil {
             return resultMap;
         }
         for (Object enumConstant : enumConstants) {
-            String identifier = ((Enum<?>) enumConstant).name().replaceAll("_", "").toLowerCase();
+            String identifier = ((Enum<?>) enumConstant).name().replace("_", "").toLowerCase();
 
             resultMap.put(identifier, (Enum<?>) enumConstant);
         }

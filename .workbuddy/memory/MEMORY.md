@@ -71,3 +71,21 @@
   全 XSD 仅 `include` 类型有一处 `xs:anyAttribute`）。⇒ **四.1（Parser SPI）/ 四.6（registerStyleKey）已取消**，不要再提；
   若真要扩展，属"改 schema 协议 + 同步插件校验"。框架运行期**不校验 XSD**（`src/main` 无 schema 引用），
   模板头的 `xsi:schemaLocation` 只被编辑器/插件使用，所以会出现"能跑但不合规"。
+
+## 项目级技能：写报表模板（2026-09-29 建）
+
+`.workbuddy/skills/excel-report-template/` —— 用户要求"编写报表模板"时先加载它，不要从零推 XSD。
+
+- 入口 `SKILL.md`（8 条铁律 + 4 步工作流：摸用户数据接口 → 选组件 → 写模板 → 跑自检脚本）；细节在
+  `references/{template-spec,components,pitfalls-checklist}.md`；**交付前必须跑 `scripts/check_template.py`**（零依赖离线校验，
+  覆盖标签/属性/style key 白名单、container 单根、样式 id 引用、枚举、必填、size 格式 + 静默坑告警）。
+- 回归基线：框架自带 7 个模板 + `examples/{standard-table,grouped-report}.xml` = 0 ERROR/0 WARN；
+  `examples/self-test-broken.xml` 必须报 19 ERROR / 5 WARN（改脚本后要重跑这两组）。
+- 用户口径：**不修改用户现有数据接口与数据结构**（除非先问），字段不匹配优先在模板侧用 SpEL 适配。
+- 用户口径：**该 skill 面向框架使用者，不得暴露框架源码结构**（Java 类名/方法名/包路径/`src/**` 路径/内部算法与实现位置都不能出现）。
+  正文只写「模板协议 + 可观察行为」；公开 API（依赖坐标、参数容器、导出/保存入口）可保留，与 README 口径一致。
+  例外仅限第三方库名（如「大批量报表改走 POI SXSSF / EasyExcel」这类替代方案建议）。
+  颜色名只写两份**名单本身**（单元格 48 个 / 图表 138 个保留 99 个常用），不写它们来自哪个内部枚举。
+- 为写该 skill 核实的框架事实（易踩点，已同步到 `references/`）：`<container>` 只取第一个元素子节点（多写静默丢弃）、
+  `for` 缺 `:` 会静默只渲染一次、颜色两套枚举（单元格 `HSSFColorPredefined` / 图表 `PresetColor`，写错静默回退）、
+  `Table`/`List` 正数 `size` 无效（只有 `-1` 生效）、`include` 子模板不继承父上下文、`TemplateManager` 有解析缓存。

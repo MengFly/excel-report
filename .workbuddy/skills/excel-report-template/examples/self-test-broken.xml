@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ⚠️ 自检夹具，不是可用的模板！故意写错，用来验证 scripts/check_template.py 有效。
+  预期结果：19 ERROR / 5 WARN，退出码 1。
+  回归方式：
+    python scripts/check_template.py examples/self-test-broken.xml   # 应报错
+    python scripts/check_template.py examples/*.xml                 # 另两个应为 0 ERROR
+-->
+<template xmlns="http://mengfly.github.io/excel-report/1.0.0"
+          name="BadTemplate">
+    <sheetStyle>
+        <defaultRowHeight>24</defaultRowHeight>
+        <defaultRowHeigt>24</defaultRowHeigt>
+    </sheetStyle>
+
+    <styles>
+        <style id="ok">
+            <alignHorizontal>middle</alignHorizontal>
+            <fontBould>true</fontBould>
+            <fontColor>grey_50_percent</fontColor>
+        </style>
+        <style id="same">
+            <width>auto</width>
+        </style>
+        <style id="same">
+            <width>auto</width>
+        </style>
+    </styles>
+
+    <container>
+        <VLayout>
+            <Text size="3" style="missingStyle" text="x"/>
+            <Text text="y" unknownAttr="1"/>
+            <Bogus/>
+            <Span size="2,1" style="{width:auto}"/>
+            <GridLayout count="0" orientation="diagonal"/>
+            <List dataList="${list}" orientation="sideways"/>
+            <Table headerVisible="false"/>
+            <Chart size="4,10">
+                <Legend position="middle"/>
+            </Chart>
+            <VLayout for="${list}">
+                <Text text="z"/>
+            </VLayout>
+            <PieData>
+                <labelAxis type="category">
+                    <data title="X" valueType="value"/>
+                </labelAxis>
+                <valueAxis title="V">
+                    <data title="V" type="bar"/>
+                </valueAxis>
+            </PieData>
+        </VLayout>
+        <VLayout/>
+    </container>
+</template>

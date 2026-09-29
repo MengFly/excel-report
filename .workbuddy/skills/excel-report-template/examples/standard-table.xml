@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  示例：标准报表（标题 + 单位 + 多级表头 + 无表头表格 + 柱状图 + 饼图）
+
+  展示要点：
+  1. <container> 下只有一个根组件（VLayout）。
+  2. 多级表头：框架没有「跨列表头」组件 ⇒ 用 HLayout/VLayout/Text 手拼表头块
+     （每个 Text 的 size 之和必须等于下面 Table 各 column@columnSpan 之和 = 11），
+     下面接 <Table headerVisible="false">。
+  3. 样式：id 复用 + 内联 JSON 混写；数字列用 dataFormat 交给 Excel 格式化。
+  4. 图表：一个 <Chart> 只能有一个数据节点，所以柱图和饼图分成两个 Chart。
+
+  对应 Java 数据：
+    ctx.put("title", "指标敏感度统计表");
+    ctx.put("dataList", List<Row>);   // Row: seq, name, minDayIndex, maxDayIndex, sensitivity
+    ctx.put("labelList", List<String>);
+    ctx.put("valueList", List<Number>);
+-->
+<template xmlns="http://mengfly.github.io/excel-report/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://mengfly.github.io/excel-report/1.0.0 https://mengfly.github.io/xsd/excel-report-1.0.0.xsd"
+          name="IndexSensitivity"
+          version="1.0"
+          author="MengFly"
+          createAt="2026-09-29"
+          description="指标敏感度统计表">
+
+    <parameters>
+        <parameter id="title" name="报表标题" type="string"/>
+        <parameter id="dataList" name="明细数据" type="List&lt;Row&gt;"/>
+        <parameter id="labelList" name="图表分类" type="List&lt;String&gt;"/>
+        <parameter id="valueList" name="图表数值" type="List&lt;Number&gt;"/>
+    </parameters>
+
+    <sheetStyle>
+        <defaultRowHeight>22</defaultRowHeight>
+        <horizontallyCenter>true</horizontallyCenter>
+        <fitToPage>true</fitToPage>
+    </sheetStyle>
+
+    <styles>
+        <!-- 标题：字体必须显式指定，框架默认是 Arial，中文会走字体回退 -->
+        <style id="titleStyle">
+            <fontName>微软雅黑</fontName>
+            <fontBold>true</fontBold>
+            <fontHeight>18</fontHeight>
+            <height>34</height>
+            <alignHorizontal>center</alignHorizontal>
+            <alignVertical>center</alignVertical>
+            <borderBottom>medium</borderBottom>
+        </style>
+
+        <style id="unitStyle">
+            <fontName>微软雅黑</fontName>
+            <fontHeight>10</fontHeight>
+            <alignHorizontal>right</alignHorizontal>
+            <alignVertical>bottom</alignVertical>
+        </style>
+
+        <!-- 多级表头：一级（跨列组）与二级共用底色，靠 fontSize/高度区分 -->
+        <style id="groupHeadStyle">
+            <fontName>微软雅黑</fontName>
+            <fontBold>true</fontBold>
+            <fontColor>white</fontColor>
+            <fillForegroundColor>#4F81BD</fillForegroundColor>
+            <alignHorizontal>center</alignHorizontal>
+            <alignVertical>center</alignVertical>
+            <wrapText>true</wrapText>
+        </style>
+
+        <style id="subHeadStyle">
+            <fontName>微软雅黑</fontName>
+            <fontBold>true</fontBold>
+            <fontColor>#1F4E79</fontColor>
+            <fillForegroundColor>#DCE6F1</fillForegroundColor>
+            <alignHorizontal>center</alignHorizontal>
+            <alignVertical>center</alignVertical>
+        </style>
+
+        <style id="dataStyle">
+            <fontName>微软雅黑</fontName>
+            <alignHorizontal>center</alignHorizontal>
+            <alignVertical>center</alignVertical>
+        </style>
+
+        <style id="dataTextStyle">
+            <fontName>微软雅黑</fontName>
+            <alignHorizontal>left</alignHorizontal>
+            <alignVertical>center</alignVertical>
+            <indention>1</indention>
+        </style>
+
+        <!-- 数字格式交给 Excel：模板不负责拼字符串 -->
+        <style id="num4">
+            <dataFormat>0.0000</dataFormat>
+        </style>
+    </styles>
+
+    <container>
+        <VLayout>
+
+            <Text size="-1,1" style="titleStyle" text="${title}"/>
+            <Text size="-1,1" style="unitStyle" text="单位：天"/>
+
+            <!-- 多级表头：2 + 3 + 4 + 2 = 11 列，与下面 Table 的 columnSpan 之和一致 -->
+            <HLayout style="groupHeadStyle">
+                <Text size="2,2" text="序号"/>
+                <Text size="3,2" text="指标名称"/>
+                <VLayout size="4,2">
+                    <Text size="4,1" text="事件排序天数"/>
+                    <HLayout>
+                        <Text size="2,1" style="subHeadStyle" text="最小值"/>
+                        <Text size="2,1" style="subHeadStyle" text="最大值"/>
+                    </HLayout>
+                </VLayout>
+                <Text size="2,2" text="敏感度"/>
+            </HLayout>
+
+            <!-- headerVisible=false：表头已由上面拼好，这里只出数据行 -->
+            <Table dataList="${dataList}" headerVisible="false">
+                <column id="seq" name="序号" columnSpan="2" dataStyle="dataStyle"/>
+                <column id="name" name="指标名称" columnSpan="3" dataStyle="dataTextStyle"/>
+                <column id="minDayIndex" name="最小值" columnSpan="2" dataStyle="dataStyle"/>
+                <column id="maxDayIndex" name="最大值" columnSpan="2" dataStyle="dataStyle"/>
+                <column id="sensitivity" name="敏感度" columnSpan="2" dataStyle="dataStyle num4"/>
+            </Table>
+
+            <!-- 用 List 铺一行图例/说明：数据是长文本，横向排列 -->
+            <List dataList="${labelList}" orientation="horizontal" span="1"
+                  style="{fontName:'微软雅黑',alignHorizontal:center,height:20}">
+                <header title="分类：" span="1" style="{fontName:'微软雅黑',fontBold:true}"/>
+            </List>
+
+            <Chart size="11,16">
+                <Title text="敏感度分布" fontSize="14" bold="true"/>
+                <Legend position="top" overlay="false"/>
+                <Marker showVal="true"/>
+                <ChartData>
+                    <labelAxis type="category" labelAlignment="center" tickLabelPosition="nextTo">
+                        <data title="分类" valueType="value" dataList="${labelList}"/>
+                    </labelAxis>
+                    <valueAxis1 title="敏感度" minimum="0" showMajorGridLines="true"
+                                numberFormat="0.00" majorTickMark="out">
+                        <data title="敏感度" type="bar" valueType="value"
+                              dataList="${valueList}" color="#4F81BD"/>
+                    </valueAxis1>
+                </ChartData>
+            </Chart>
+
+            <Chart size="11,16">
+                <Title text="分类占比" fontSize="14" bold="true"/>
+                <Legend position="right" overlay="false"/>
+                <Marker showCatName="true" showPercent="true"/>
+                <PieData>
+                    <labelAxis type="category">
+                        <data title="分类" valueType="value" dataList="${labelList}"/>
+                    </labelAxis>
+                    <valueAxis title="占比">
+                        <data title="占比" type="pie" valueType="value"
+                              dataList="${valueList}" varyColors="true"/>
+                    </valueAxis>
+                </PieData>
+            </Chart>
+
+        </VLayout>
+    </container>
+</template>

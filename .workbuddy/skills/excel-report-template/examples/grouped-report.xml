@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  示例：分组明细报表（for 分组 + if 条件 + 组内无表头表格 + 横向 List + 打印分页）
+
+  展示要点：
+  1. `<container>` 下只有一个根组件（VLayout），所有循环/条件都落在布局标签上。
+  2. `for` 只能写在 VLayout / HLayout / GridLayout 上 —— 想让一个 Table 循环，就给它套一层 VLayout。
+  3. 分组表头 + `headerVisible="false"` 的 Table 组合：分组标题占一行，组内数据不再画表头。
+  4. 内联 JSON 里含 ${} 的 value 必须加引号：{fontBold:'${gi==0?true:false}'}。
+  5. 小计/合计不要试图在模板里聚合（SpEL 能做到但不该做）——
+     请在 Java 侧算好放进数据，模板只负责排版。
+
+  对应 Java 数据：
+    ctx.put("title", "各工区指标明细表");
+    ctx.put("groups", List<List<Row>>);        // 外层分组、内层明细
+    List<String> tags = List.of("单位：天", "数据截至 2026-09-29");
+    ctx.put("tags", tags);
+
+  include 用法（需要同目录下存在被引用的模板，示例中已注释掉，按需启用）：
+    <include ref="CommonFooter" total="${group.size()}" title="分组小计"/>
+    —— 被 include 的模板拿到的是**全新的参数集合**，只含这里显式传入的属性，不继承父模板的变量。
+-->
+<template xmlns="http://mengfly.github.io/excel-report/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://mengfly.github.io/excel-report/1.0.0 https://mengfly.github.io/xsd/excel-report-1.0.0.xsd"
+          name="GroupedDetail"
+          version="1.0"
+          author="MengFly"
+          createAt="2026-09-29"
+          description="分组明细报表">
+
+    <parameters>
+        <parameter id="title" name="报表标题" type="string"/>
+        <parameter id="groups" name="分组明细数据" type="List&lt;List&lt;Row&gt;&gt;"/>
+        <parameter id="tags" name="页眉标签" type="List&lt;String&gt;"/>
+    </parameters>
+
+    <sheetStyle>
+        <defaultRowHeight>22</defaultRowHeight>
+    </sheetStyle>
+
+    <styles>
+        <style id="titleStyle">
+            <fontName>微软雅黑</fontName>
+            <fontBold>true</fontBold>
+            <fontHeight>18</fontHeight>
+            <height>34</height>
+            <alignHorizontal>center</alignHorizontal>
+            <alignVertical>center</alignVertical>
+        </style>
+
+        <style id="tagStyle">
+            <fontName>微软雅黑</fontName>
+            <fontHeight>10</fontHeight>
+            <alignHorizontal>left</alignHorizontal>
+            <alignVertical>center</alignVertical>
+        </style>
+
+        <!-- 分组标题行：横向铺满，左侧缩进 -->
+        <style id="groupTitleStyle">
+            <fontName>微软雅黑</fontName>
+            <fontBold>true</fontBold>
+            <fontColor>#1F4E79</fontColor>
+            <fillForegroundColor>#DCE6F1</fillForegroundColor>
+            <height>26</height>
+            <alignHorizontal>left</alignHorizontal>
+            <alignVertical>center</alignVertical>
+            <indention>1</indention>
+        </style>
+
+        <style id="colHeadStyle">
+            <fontName>微软雅黑</fontName>
+            <fontBold>true</fontBold>
+            <fontColor>white</fontColor>
+            <fillForegroundColor>#4F81BD</fillForegroundColor>
+            <height>24</height>
+            <alignHorizontal>center</alignHorizontal>
+            <alignVertical>center</alignVertical>
+        </style>
+
+        <style id="cellStyle">
+            <fontName>微软雅黑</fontName>
+            <alignHorizontal>center</alignHorizontal>
+            <alignVertical>center</alignVertical>
+        </style>
+
+        <style id="cellLeftStyle">
+            <fontName>微软雅黑</fontName>
+            <alignHorizontal>left</alignHorizontal>
+            <alignVertical>center</alignVertical>
+            <indention>1</indention>
+        </style>
+
+        <style id="num2">
+            <dataFormat>#,##0.00</dataFormat>
+        </style>
+    </styles>
+
+    <container>
+        <VLayout>
+
+            <Text size="-1,1" style="titleStyle" text="${title}"/>
+
+            <!-- 页眉标签：一维数据用 List 横向铺开；每项之间自动按 span/尺寸排布 -->
+            <List dataList="${tags}" orientation="horizontal" span="1" style="tagStyle"/>
+
+            <!-- 空数据保护：groups 为空时不渲染任何分组内容 -->
+            <Text size="-1,2" if="${groups == null or groups.isEmpty()}"
+                  style="{fontName:'微软雅黑',alignHorizontal:center,alignVertical:center}"
+                  text="暂无数据"/>
+
+            <!-- 分组循环：VLayout 上的 for（for 只能写在布局标签上） -->
+            <VLayout for="group,gi: ${groups}">
+
+                <!-- 分组标题：${gi + 1} 是分组序号；这里是「只有一个表达式片段」以外的拼接，结果是字符串（标题本来就该是字符串） -->
+                <Text size="-1,1" style="groupTitleStyle" text="第 ${gi + 1} 组（共 ${group.size()} 条）"/>
+
+                <!-- if 条件：只给第一组加一个说明 -->
+                <Text size="-1,1" if="${gi == 0}" style="tagStyle"
+                      text="说明：下表为本模板的分组明细示例。"/>
+
+                <!-- 组内表头：借用内联 JSON 演示「含 ${} 的 value 必须加引号」 -->
+                <HLayout>
+                    <Text size="2,1" style="colHeadStyle" text="序号"/>
+                    <Text size="6,1" style="colHeadStyle" text="名称"/>
+                    <Text size="2,1" style="colHeadStyle" text="最小"/>
+                    <Text size="2,1" style="colHeadStyle" text="最大"/>
+                    <Text size="3,1" style="colHeadStyle" text="敏感度"/>
+                </HLayout>
+
+                <!-- 组内数据：headerVisible=false，样式通过 dataStyle 指定；整组数据偶数行加粗只是示例写法 -->
+                <Table dataList="${group}" headerVisible="false">
+                    <column id="seq" name="序号" columnSpan="2" dataStyle="cellStyle"/>
+                    <column id="name" name="名称" columnSpan="6" dataStyle="cellLeftStyle"/>
+                    <column id="minDayIndex" name="最小" columnSpan="2" dataStyle="cellStyle"/>
+                    <column id="maxDayIndex" name="最大" columnSpan="2" dataStyle="cellStyle"/>
+                    <column id="sensitivity" name="敏感度" columnSpan="3"
+                            dataStyle="cellStyle num2"/>
+                </Table>
+
+                <!-- 分组之间留一个空行（Span 只合并、不写值，默认四边无边框） -->
+                <Span size="-1,1" style="{borderTop:none,borderBottom:none}"/>
+
+                <!-- 分组小计行需要小计数据时，请在 Java 侧算好放进 group 之外的参数再渲染；
+                     或在 <include ref="GroupFooter" data="${groupSummary[gi]}"/> 里复用公共模板。 -->
+
+            </VLayout>
+
+            <!-- 打印分页：放在有内容的行之后，不要在首行 -->
+            <PageRowSplit/>
+
+            <Text size="-1,1" style="tagStyle" text="报表结束"/>
+
+        </VLayout>
+    </container>
+</template>

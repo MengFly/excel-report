@@ -5,23 +5,25 @@ import cn.hutool.core.util.HexUtil;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 
+import java.util.function.BiConsumer;
+
 public class ColorStyleKey extends StyleKey<XSSFColor> {
     private static final HSSFColor.HSSFColorPredefined defaultColor = HSSFColor.HSSFColorPredefined.BLACK;
 
-    public ColorStyleKey(String id, String methodName) {
-        super(id, methodName, XSSFColor.class);
+    public <T> ColorStyleKey(String id, Class<T> targetType, BiConsumer<T, XSSFColor> styleApplier) {
+        super(id, targetType, XSSFColor.class, styleApplier);
     }
 
     @Override
-    public XSSFColor getStyle(String property) {
+    public XSSFColor getStyle(String styleString) {
         byte[] colorArray;
-        if (property == null) {
+        if (styleString == null) {
             colorArray = toByteArray(defaultColor);
         } else {
-            if (property.startsWith("#")) {
-                colorArray = getColorArray(property);
+            if (styleString.startsWith("#")) {
+                colorArray = getColorArray(styleString);
             } else {
-                colorArray = getDefinitionColor(property);
+                colorArray = getDefinitionColor(styleString);
             }
         }
 
@@ -30,8 +32,8 @@ public class ColorStyleKey extends StyleKey<XSSFColor> {
 
 
     @Override
-    public String toString(XSSFColor property) {
-        return "#" + HexUtil.encodeHexStr(property.getRGB());
+    public String toString(XSSFColor style) {
+        return "#" + HexUtil.encodeHexStr(style.getRGB());
     }
 
     private byte[] getDefinitionColor(String property) {

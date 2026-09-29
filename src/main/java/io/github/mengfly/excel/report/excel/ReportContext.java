@@ -100,7 +100,7 @@ public class ReportContext {
         if (map == null) {
             return null;
         }
-        final StyleMap fontStyle = CellStyles.toFontStyle(map);
+        final StyleMap fontStyle = CellStyles.filterStyle(map, Font.class);
         if (fontStyle.isEmpty()) {
             return null;
         }

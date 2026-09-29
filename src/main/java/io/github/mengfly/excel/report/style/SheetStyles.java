@@ -1,15 +1,15 @@
 package io.github.mengfly.excel.report.style;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import io.github.mengfly.excel.report.style.key.ColorStyleKey;
+import io.github.mengfly.excel.report.style.key.SheetMarginStyleKey;
+import io.github.mengfly.excel.report.style.key.StyleKey;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
-import io.github.mengfly.excel.report.style.key.ColorStyleKey;
-import io.github.mengfly.excel.report.style.key.SheetMarginStyleKey;
-import io.github.mengfly.excel.report.style.key.StyleKey;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
 
 /**
  * 工作表样式定义类
@@ -27,132 +27,67 @@ public class SheetStyles {
      * 当设置 displayGuts 为 true 时。
      * 在打印或预览 Sheet 时，会在单元格中显示其属性和样式。
      * 例如单元格的合并范围、背景颜色、字体样式等信息。这有助于在设计和调试 Sheet 时进行检查和调整。
-     *
-     * @see Sheet#setDisplayGuts(boolean)
      */
-    public static StyleKey<Boolean> displayGuts = register("displayGuts", "setDisplayGuts", Boolean.class);
+    public static StyleKey<Boolean> displayGuts =
+            register("displayGuts", Sheet.class, Boolean.class, Sheet::setDisplayGuts);
+
     /**
      * 用于控制是否在单元格中显示零值
-     *
-     * @see Sheet#setDisplayZeros(boolean)
      */
-    public static StyleKey<Boolean> displayZeros = register("displayZeros", "setDisplayZeros", Boolean.class);
+    public static StyleKey<Boolean> displayZeros =
+            register("displayZeros", Sheet.class, Boolean.class, Sheet::setDisplayZeros);
     /**
      * 用于控制是否在下方显示行的总和
-     *
-     * @see Sheet#setRowSumsRight(boolean)
      */
-    public static StyleKey<Boolean> rowSumsBelow = register("rowSumsBelow", "setRowSumsBelow", Boolean.class);
-    /**
-     * @see Sheet#setRowSumsRight(boolean)
-     */
-    public static StyleKey<Boolean> rowSumsRight = register("rowSumsRight", "setRowSumsRight", Boolean.class);
-    /**
-     * @see Sheet#setDisplayGridlines(boolean)
-     */
-    public static StyleKey<Boolean> displayGridlines = register("displayGridlines", "setDisplayGridlines", Boolean.class);
-    /**
-     * @see Sheet#setPrintGridlines(boolean)
-     */
-    public static StyleKey<Boolean> printGridlines = register("printGridlines", "setPrintGridlines", Boolean.class);
-    /**
-     * @see Sheet#setPrintRowAndColumnHeadings(boolean)
-     */
-    public static StyleKey<Boolean> printRowAndColumnHeadings = register("printRowAndColumnHeadings", "setPrintRowAndColumnHeadings", Boolean.class);
-    /**
-     * @see Sheet#setAutobreaks(boolean)
-     */
-    public static StyleKey<Boolean> autobreaks = register("autobreaks", "setAutobreaks", Boolean.class);
-    /**
-     * @see Sheet#setForceFormulaRecalculation(boolean)
-     */
-    public static StyleKey<Integer> forceFormulaRecalculation = register("forceFormulaRecalculation", "setForceFormulaRecalculation", Integer.class);
-    /**
-     * @see Sheet#setDefaultColumnWidth(int)
-     */
-    public static StyleKey<Integer> defaultColumnWidth = register("defaultColumnWidth", "setDefaultColumnWidth", Integer.class);
-    /**
-     * @see XSSFSheet#setDefaultRowHeight(short)
-     */
-    public static StyleKey<Float> defaultRowHeight = register("defaultRowHeight", "setDefaultRowHeightInPoints", Float.class);
-    /**
-     * @see Sheet#setDisplayRowColHeadings(boolean)
-     */
-    public static StyleKey<Boolean> displayRowColHeadings = register("displayRowColHeadings", "setDisplayRowColHeadings", Boolean.class);
-    /**
-     * @see Sheet#setDisplayFormulas(boolean)
-     */
-    public static StyleKey<Boolean> displayFormulas = register("displayFormulas", "setDisplayFormulas", Boolean.class);
-    /**
-     * @see Sheet#setFitToPage(boolean)
-     */
-    public static StyleKey<Boolean> fitToPage = register("fitToPage", "setFitToPage", Boolean.class);
-    /**
-     * @see Sheet#setHorizontallyCenter(boolean)
-     */
-    public static StyleKey<Boolean> horizontallyCenter = register("horizontallyCenter", "setHorizontallyCenter", Boolean.class);
-    /**
-     * @see Sheet#setVerticallyCenter(boolean)
-     */
-    public static StyleKey<Boolean> verticallyCenter = register("verticallyCenter", "setVerticallyCenter", Boolean.class);
-    /**
-     * @see Sheet#setZoom(int)
-     */
-    public static StyleKey<Integer> zoom = register("zoom", "setZoom", Integer.class);
-    /**
-     * @see XSSFSheet#setTabColor(XSSFColor)
-     */
-    public static StyleKey<XSSFColor> tabColor = register(new ColorStyleKey("tabColor", "setTabColor"));
-    /**
-     * @see XSSFSheet#setCommitted(boolean)
-     */
-    public static StyleKey<Boolean> committed = register("committed", "setCommitted", Boolean.class);
-    /**
-     * @see Sheet#setMargin(short, double)
-     */
-    public static StyleKey<Double> margin = register(new SheetMarginStyleKey("margin", null));
-    /**
-     * @see Sheet#setMargin(short, double)
-     * @see Sheet#LeftMargin
-     */
-    public static StyleKey<Double> marginLeft = register(new SheetMarginStyleKey("marginLeft", Sheet.LeftMargin));
-    /**
-     * @see Sheet#setMargin(short, double)
-     * @see Sheet#RightMargin
-     */
-    public static StyleKey<Double> marginRight = register(new SheetMarginStyleKey("marginRight", Sheet.RightMargin));
-    /**
-     * @see Sheet#setMargin(short, double)
-     * @see Sheet#TopMargin
-     */
-    public static StyleKey<Double> marginTop = register(new SheetMarginStyleKey("marginTop", Sheet.TopMargin));
-    /**
-     * @see Sheet#setMargin(short, double)
-     * @see Sheet#BottomMargin
-     */
-    public static StyleKey<Double> marginBottom = register(new SheetMarginStyleKey("marginBottom", Sheet.BottomMargin));
-    /**
-     * @see Sheet#setMargin(short, double)
-     * @see Sheet#HeaderMargin
-     */
-    public static StyleKey<Double> marginHeader = register(new SheetMarginStyleKey("marginHeader", Sheet.HeaderMargin));
-    /**
-     * @see Sheet#setMargin(short, double)
-     * @see Sheet#FooterMargin
-     */
-    public static StyleKey<Double> marginFooter = register(new SheetMarginStyleKey("marginFooter", Sheet.FooterMargin));
-    /**
-     * @see Sheet#protectSheet(String)
-     */
-    public static StyleKey<String> password = register("password", "protectSheet", String.class);
+    public static StyleKey<Boolean> rowSumsBelow =
+            register("rowSumsBelow", Sheet.class, Boolean.class, Sheet::setRowSumsBelow);
+    public static StyleKey<Boolean> rowSumsRight =
+            register("rowSumsRight", Sheet.class, Boolean.class, Sheet::setRowSumsRight);
+    public static StyleKey<Boolean> displayGridlines =
+            register("displayGridlines", Sheet.class, Boolean.class, Sheet::setDisplayGridlines);
 
+    public static StyleKey<Boolean> printGridlines =
+            register("printGridlines", Sheet.class, Boolean.class, Sheet::setPrintGridlines);
+
+    public static StyleKey<Boolean> printRowAndColumnHeadings =
+            register("printRowAndColumnHeadings", Sheet.class, Boolean.class, Sheet::setPrintRowAndColumnHeadings);
+    public static StyleKey<Boolean> autobreaks =
+            register("autobreaks", Sheet.class, Boolean.class, Sheet::setAutobreaks);
+    public static StyleKey<Boolean> forceFormulaRecalculation =
+            register("forceFormulaRecalculation", Sheet.class, Boolean.class, Sheet::setForceFormulaRecalculation);
+    public static StyleKey<Integer> defaultColumnWidth =
+            register("defaultColumnWidth", Sheet.class, Integer.class, Sheet::setDefaultColumnWidth);
+
+    public static StyleKey<Float> defaultRowHeight =
+            register("defaultRowHeight", XSSFSheet.class, Float.class, XSSFSheet::setDefaultRowHeightInPoints);
+    public static StyleKey<Boolean> displayRowColHeadings =
+            register("displayRowColHeadings", Sheet.class, Boolean.class, Sheet::setDisplayRowColHeadings);
+    public static StyleKey<Boolean> displayFormulas =
+            register("displayFormulas", Sheet.class, Boolean.class, Sheet::setDisplayFormulas);
+    public static StyleKey<Boolean> fitToPage =
+            register("fitToPage", Sheet.class, Boolean.class, Sheet::setFitToPage);
+    public static StyleKey<Boolean> horizontallyCenter =
+            register("horizontallyCenter", Sheet.class, Boolean.class, Sheet::setHorizontallyCenter);
+    public static StyleKey<Boolean> verticallyCenter =
+            register("verticallyCenter", Sheet.class, Boolean.class, Sheet::setVerticallyCenter);
+    public static StyleKey<Integer> zoom =
+            register("zoom", Sheet.class, Integer.class, Sheet::setZoom);
+    public static StyleKey<XSSFColor> tabColor =
+            register(new ColorStyleKey("tabColor", XSSFSheet.class, XSSFSheet::setTabColor));
+    public static StyleKey<Boolean> committed =
+            register("committed", XSSFSheet.class, Boolean.class, XSSFSheet::setCommitted);
+
+    public static StyleKey<Double> margin = register(new SheetMarginStyleKey("margin", null));
+    public static StyleKey<Double> marginLeft = register(new SheetMarginStyleKey("marginLeft", Sheet.LeftMargin));
+    public static StyleKey<Double> marginRight = register(new SheetMarginStyleKey("marginRight", Sheet.RightMargin));
+    public static StyleKey<Double> marginTop = register(new SheetMarginStyleKey("marginTop", Sheet.TopMargin));
+    public static StyleKey<Double> marginBottom = register(new SheetMarginStyleKey("marginBottom", Sheet.BottomMargin));
+    public static StyleKey<Double> marginHeader = register(new SheetMarginStyleKey("marginHeader", Sheet.HeaderMargin));
+    public static StyleKey<Double> marginFooter = register(new SheetMarginStyleKey("marginFooter", Sheet.FooterMargin));
+    public static StyleKey<String> password = register("password", Sheet.class, String.class, Sheet::protectSheet);
 
     static {
         DEFAULT_STYLE.addStyle(defaultRowHeight, 20f);
-    }
-
-    public static <T> void setDefaultStyle(StyleKey<T> key, T defaultValue) {
-        DEFAULT_STYLE.addStyle(key, defaultValue);
     }
 
     @SuppressWarnings("unchecked")
@@ -160,13 +95,15 @@ public class SheetStyles {
         return (StyleKey<T>) styleMap.get(key);
     }
 
-    private static <T> StyleKey<T> register(String id, String methodName, Class<T> type) {
-        return register(new StyleKey<>(id, methodName, type));
-    }
 
     private static <T> StyleKey<T> register(StyleKey<T> key) {
         styleMap.put(key.getId(), key);
         return key;
+    }
+
+
+    private static <T, S> StyleKey<S> register(String id, Class<T> targetType, Class<S> styleType, BiConsumer<T, S> applier) {
+        return register(new StyleKey<>(id, targetType, styleType, applier));
     }
 
     public static void initSheetStyle(Sheet sheet, StyleMap sheetStyle) {

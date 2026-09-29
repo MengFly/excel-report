@@ -1,49 +1,57 @@
 package io.github.mengfly.excel.report.style.key;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
+import io.github.mengfly.excel.report.style.StyleApplier;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-import java.lang.reflect.Method;
+import java.util.function.BiConsumer;
 
-@Slf4j
-@RequiredArgsConstructor
-public class StyleKey<T> {
+public class StyleKey<S> {
     @Getter
     private final String id;
-    private final String methodName;
-    private final Class<T> type;
+
+    private final StyleApplier<?, S> styleApplier;
+
+    public boolean isSupportApplyTarget(Object target) {
+        if (target == null) {
+            return false;
+        }
+        return isSupportApplyTarget(target.getClass());
+    }
+
+    public boolean isSupportApplyTarget(Class<?> targetType) {
+        return targetType.isAssignableFrom(styleApplier.getTargetType())
+                || styleApplier.getTargetType().isAssignableFrom(targetType);
+    }
+
+    public <T> StyleKey(String id, Class<T> targetType, Class<S> styleType, BiConsumer<T, S> applier) {
+        this.id = id;
+        this.styleApplier = new StyleApplier<T, S>(targetType, styleType) {
+            @Override
+            public void apply(T target, S style) {
+                applier.accept(target, style);
+            }
+        };
+    }
 
 
-    public T getStyle(String property) {
+    public S getStyle(String property) {
         if (property == null) {
             return null;
         }
-        if (type.isEnum()) {
+        if (styleApplier.getStyleType().isEnum()) {
             property = property.toUpperCase();
         }
-        return Convert.convert(type, property);
+        return Convert.convert(styleApplier.getStyleType(), property);
     }
 
-    public String toString(T property) {
+    public String toString(S property) {
         return StrUtil.toString(property);
     }
 
 
     public void applyStyle(Object target, Object style) {
-        if (target == null) {
-            return;
-        }
-        try {
-            Method method = ReflectUtil.getMethod(target.getClass(), methodName, type);
-            ReflectUtil.invoke(target, method, style);
-        } catch (Exception e) {
-            log.error("Can't set style property {} for cell value [{}]{}",
-                    getId(), style.getClass().getSimpleName(), style);
-        }
+        styleApplier.applyStyle(target, style);
     }
-
 }

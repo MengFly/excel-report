@@ -13,8 +13,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 模板管理器（单例）。
  * <p>
- * <b>校验模式</b>：默认<b>宽松</b>——模板解析后照常可用，校验发现的问题只在第一次渲染时汇总成一条 WARN，
- * 静默失效的行为与历史版本保持一致。设为严格模式（{@code setStrict(true)}，由 Lombok 生成）后，
+ * <b>校验模式</b>：默认<b>宽松</b>——模板解析后照常可用，校验发现的问题只在第一次渲染时汇总成一条 WARN。
+ * 设为严格模式（{@code setStrict(true)}，由 Lombok 生成）后，
  * 模板存在 ERROR 级问题时直接抛 {@link TemplateValidationException}，适合开发期 / CI 尽早暴露问题。
  */
 @Getter

@@ -49,13 +49,15 @@ import java.util.Set;
  * </ul>
  * <b>本类不抛异常</b>：XSD 加载失败、模板没有命名空间、模板本身很破，都只体现为 issue 条目。
  * 是否中断由调用方决定（见 {@code TemplateManager#setStrict(boolean)}）。
- * <p>
- * 已实测的静默行为与规则的对应关系见 {@code doc/优化建议.md} 二.2。
  *
  * @see ValidationIssue
  */
 @Slf4j
 public final class TemplateValidator {
+
+    /*
+     * 每条规则对应的静默失效行为、实测证据与取舍过程，见 doc/优化建议.md 二.2。
+     */
 
     /**
      * 模板 XSD 的 targetNamespace，也是模板头部 {@code xmlns} 应有的值。

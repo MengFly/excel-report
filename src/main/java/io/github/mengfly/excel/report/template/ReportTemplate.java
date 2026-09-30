@@ -70,7 +70,7 @@ public class ReportTemplate {
     /**
      * 模板校验结果（汇总 issue）。
      * <p>
-     * 框架默认<b>宽松</b>：这里只返回问题、不抛异常，渲染照常进行（静默失效的行为与历史版本一致）。
+     * 默认<b>宽松</b>：只返回问题、不抛异常，渲染照常进行。
      * 需要"发现错误就中断"时用 {@code TemplateManager#setStrict(boolean)}。
      *
      * @return 问题清单，空表示没发现问题

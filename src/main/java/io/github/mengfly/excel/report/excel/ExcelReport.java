@@ -29,7 +29,21 @@ import java.util.Map;
 @Slf4j
 @Getter
 public class ExcelReport {
+
+    /**
+     * 匿名 Sheet（{@code name} 为空）的基名
+     */
+    private static final String DEFAULT_SHEET_NAME = "sheet";
+
     private final XSSFWorkbook workbook = new XSSFWorkbook();
+
+    /*
+     * Sheet 基名 -> 已用掉的下一个序号。
+     *
+     * 只在 getSheet 的同步块内访问，所以 HashMap 就够：命名与 createSheet 必须整体互斥，
+     * 单把 Map 换成并发容器解决不了这段的 TOCTOU；真正不能并发的其实是 XSSFWorkbook 本身，
+     * 即"并行单元是 workbook 不是 sheet"（依据见 doc/优化建议.md 四.4）。
+     */
     private final Map<String, Integer> sheetNameSequence = new HashMap<>();
 
     /**
@@ -88,20 +102,29 @@ public class ExcelReport {
         return  container;
     }
 
-    private XSSFSheet getSheet(String name) {
-        String sheetName;
-        if (StrUtil.isEmpty(name)) {
-            sheetName = "sheet";
-        } else {
-            sheetName = name;
+    /**
+     * 取一个 Sheet，名称重复时自动追加 {@code _序号}（{@code name} 为空时基名为 {@code sheet}）。
+     */
+    private synchronized XSSFSheet getSheet(String name) {
+        /*
+         * 计数器必须以「基名」为 key。这里曾经用 name 读、用补过后缀的 sheetName 写，
+         * 于是同一基名的计数器永远停在 1 ⇒ 第 3 个同名 Sheet、或第 2 个匿名 Sheet 会抛
+         * IllegalArgumentException: The workbook already contains a sheet named 'X'。
+         */
+        final String baseName = StrUtil.isEmpty(name) ? DEFAULT_SHEET_NAME : name;
+
+        final Integer used = sheetNameSequence.get(baseName);
+        int seq = used == null ? 0 : used;
+
+        String sheetName = seq == 0 ? baseName : baseName + "_" + seq;
+        // 生成的序号名可能已被占用（用户自己起的名，或并发下另一个线程刚建过），依次往后找
+        while (workbook.getSheet(sheetName) != null) {
+            seq++;
+            sheetName = baseName + "_" + seq;
         }
-        final int seq = sheetNameSequence.computeIfAbsent(name, s -> 0);
-        if (seq > 0) {
-            sheetName = name + "_" + seq;
-        }
-        final XSSFSheet sheet = workbook.createSheet(sheetName);
-        sheetNameSequence.put(sheetName, seq + 1);
-        return sheet;
+
+        sheetNameSequence.put(baseName, seq + 1);
+        return workbook.createSheet(sheetName);
     }
 
 

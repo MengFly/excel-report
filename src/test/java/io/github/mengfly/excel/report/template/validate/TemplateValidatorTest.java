@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * {@link TemplateValidator} 语义规则（L2）的回归测试。
  * <p>
- * 每条规则都对应一个<b>已实测</b>的静默失效行为：写错不报错，只是被丢弃、回退或只渲染一次。
+ * 每条规则都对应一种静默失效的模板写法：写错不报错，只是被丢弃、回退或只渲染一次。
  * 这里用最小模板逐条固定下来，避免以后改动把"能发现问题"的能力弄丢。
  */
 public class TemplateValidatorTest {

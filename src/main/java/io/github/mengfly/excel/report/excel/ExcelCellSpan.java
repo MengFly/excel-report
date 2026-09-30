@@ -21,6 +21,13 @@ import java.util.Map;
 import java.util.Optional;
 
 
+/**
+ * 一个矩形单元格区域（Sheet 上 {@code point, size} 覆盖的范围）。
+ * <p>
+ * 区域内的行与 cell 在构造时无条件建好；{@link #setStyle(CellStyle, StyleMap)} 只负责刷样式。
+ * <p>
+ * 注意本类不保证"整块区域都有值"：{@link #setValue(Object)} 只写左上角一格，其余格子仅作为合并区的一部分存在。
+ */
 public class ExcelCellSpan {
 
     private final Point point;
@@ -43,6 +50,9 @@ public class ExcelCellSpan {
         this.context = context;
         this.point = point;
         this.size = size;
+        // 这一遍遍历与 setStyle 的遍历逐格重复，是刻意保留的：它让"区域已建好"这个不变量与样式无关。
+        // 曾把它合并进 setStyle（省掉一遍遍历），实测收益在噪声内（n=20 万 span，best-of-5：457ms vs 447/457ms），
+        // 却让该不变量变成"依赖样式非 null"（漏了就 NPE，见 ExcelCellSpanTest）⇒ 判定为负收益，已回退。
         for (int i = 0; i < size.height; i++) {
             final Row row = ExcelUtil.getRow(context.getSheet(), point.getY() + i);
             for (int j = 0; j < size.width; j++) {
@@ -140,16 +150,24 @@ public class ExcelCellSpan {
      * 补算：仅供 {@link ReportContext#applyCellWidthHeight} 在导出末尾调用。
      * <p>
      * 只对"从未登记过宽高"的 span 执行一次 —— 例如 {@code SpanComponent} / {@code ChartComponent}
-     * 只调 {@code merge()} 而从不 {@code setValue()}，它们的 cell 始终是空白，
-     * 补算得到的值与旧实现"在 setStyle 时机计算"完全一致（实测均为 {@code -1 + 4}）。
+     * 只调 {@code merge()} 而从不 {@code setValue()}，它们的 cell 始终是空白。
      */
     void calculateAutoSizeIfAbsent() {
         if (!autoSizeCalculated) {
+            // 结果与旧实现"在 setStyle 时机计算"一致（实测均为 -1 + 4），语义由上述契约保证
             calculateAndRecordCellWidthHeight();
         }
     }
 
+    /**
+     * 给本区域内的每个 cell 应用样式。
+     *
+     * @param style    要应用的 Cell 样式；为 null 时只记录 {@code styleMap}，不刷样式
+     * @param styleMap 本区域生效的样式表，供后续富文本解析与宽高计算使用
+     */
     public void setStyle(CellStyle style, StyleMap styleMap) {
+        // 本区域的行 / cell 由构造器无条件建好（与样式无关），这里只负责刷样式 ——
+        // 故意不把"建 cell"合并进来省一遍遍历：那会让该不变量变成依赖 style 非 null（详见构造器注释与 ExcelCellSpanTest）
         if (style != null) {
             for (int i = 0; i < size.height; i++) {
                 final Row row = ExcelUtil.getRow(getSheet(), point.getY() + i);

@@ -11,10 +11,8 @@ import org.junit.Test;
 import java.util.List;
 
 /**
- * 严格 / 宽松两种模式的行为。
- * <p>
- * 默认必须<b>宽松</b>：静默失效的行为与历史版本一致，只是多一条汇总 WARN —— 否则存量模板
- * （尤其是没声明命名空间的模板）会在升级依赖后直接跑不起来。严格模式是显式选择。
+ * 严格 / 宽松两种模式的行为：默认<b>宽松</b>（只汇总 issue、渲染照常），
+ * 严格（{@code TemplateManager#setStrict(true)}）才中断；已缓存的模板在严格模式下同样被拦住。
  * <p>
  * 夹具 {@code BrokenTemplate.xml} 只含一个 ERROR（引用未定义的样式 id），但结构合法、能正常渲染。
  */

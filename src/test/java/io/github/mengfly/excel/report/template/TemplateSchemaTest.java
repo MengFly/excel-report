@@ -96,9 +96,9 @@ public class TemplateSchemaTest {
     /**
      * 负向对照：证明上面的"全部通过"不是因为校验器空转。
      * <p>
-     * 这三种写法在运行期都是<b>静默失效</b>（见 {@code doc/优化建议.md} 二.2）：
-     * 未知属性被 {@code BeanUtil} 忽略、未注册的样式 key 被 {@code CellStyles} 丢弃、
-     * 未知标签要到渲染时才抛异常。XSD 是唯一能在离线阶段一次抓住它们的手段。
+     * 这三种写法在运行期都是<b>静默失效</b>：未知属性被 {@code BeanUtil} 忽略、
+     * 未注册的样式 key 被 {@code CellStyles} 丢弃、未知标签要到渲染时才抛异常。
+     * XSD 是唯一能在离线阶段一次抓住它们的手段。
      */
     @Test
     public void invalidTemplatesShouldBeRejected() throws Exception {
@@ -115,12 +115,11 @@ public class TemplateSchemaTest {
 
     /**
      * 正向对照：{@code Span} 支持 {@code style}（运行期确实生效），XSD 必须允许它。
-     * <p>
-     * 回归背景：XSD 的 {@code Span} 曾漏掉 {@code AttrContainerDefault}（id / style / if），
-     * 导致合法的 {@code <Span style="...">} 被误判为非法。
      */
     @Test
     public void spanStyleShouldBeAccepted() throws Exception {
+        // 回归背景：XSD 的 Span 曾漏掉 AttrContainerDefault（id / style / if），
+        // 导致合法的 <Span style="..."> 被误判为非法
         List<String> errors = validate(newSchema(),
                 parse(template("<container><Span size=\"2,1\" style=\"{borderTop:none}\"/></container>")));
         Assert.assertTrue("Span 的 style/id/if 应当被允许，实际报错: " + errors, errors.isEmpty());

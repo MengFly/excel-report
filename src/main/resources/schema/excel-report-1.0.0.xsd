@@ -870,7 +870,7 @@
             </xs:documentation>
         </xs:annotation>
         <xs:group ref="LayoutGroupContainer"/>
-        <xs:attribute name="count" type="xs:int">
+        <xs:attribute name="count">
             <xs:annotation>
                 <xs:documentation source="description">
                     GridLayout的列数或者行数
@@ -965,7 +965,7 @@
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="headerHeight" default="true" type="xs:int">
+        <xs:attribute name="headerHeight" default="1" type="xs:int">
             <xs:annotation>
                 <xs:documentation source="description">
                     表头高度
@@ -1122,6 +1122,7 @@
             </xs:documentation>
         </xs:annotation>
         <xs:attributeGroup ref="AttrSize"/>
+        <xs:attributeGroup ref="AttrContainerDefault"/>
     </xs:complexType>
     <xs:complexType name="Chart">
 
@@ -1778,11 +1779,6 @@
         <xs:sequence>
             <xs:element name="data" maxOccurs="unbounded">
                 <xs:complexType>
-                    <xs:attribute name="title" use="required">
-                        <xs:annotation>
-                            <xs:documentation>数据名称</xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
                     <xs:attribute name="type" use="required">
                         <xs:simpleType>
                             <xs:restriction base="xs:string">
@@ -1807,11 +1803,6 @@
         <xs:sequence>
             <xs:element name="data" maxOccurs="unbounded">
                 <xs:complexType>
-                    <xs:attribute name="title" use="required">
-                        <xs:annotation>
-                            <xs:documentation>数据名称</xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
                     <xs:attribute name="type" use="required">
                         <xs:simpleType>
                             <xs:restriction base="xs:string">

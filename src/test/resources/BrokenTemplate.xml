@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  测试夹具：故意引用了一个未定义的样式 id。
+  它不是可用模板的范例，只用于验证 TemplateManager 的严格 / 宽松模式：
+    - 宽松（默认）：能正常解析与渲染，样式静默落空；
+    - 严格：getTemplate 抛 TemplateValidationException。
+  对应用例：TemplateStrictModeTest。
+-->
+<template xmlns="http://mengfly.github.io/excel-report/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://mengfly.github.io/excel-report/1.0.0 https://mengfly.github.io/xsd/excel-report-1.0.0.xsd"
+          name="BrokenTemplate"
+          description="严格模式测试夹具：引用了未定义的样式 id"
+          version="1.0">
+
+    <styles>
+        <style id="titleStyle">
+            <fontBold>true</fontBold>
+        </style>
+    </styles>
+
+    <container>
+        <VLayout>
+            <Text size="-1,1" style="titleStyle" text="这一行样式正常"/>
+            <Text size="-1,1" style="notDefinedStyle" text="这一行的样式 id 未定义，样式会静默落空"/>
+        </VLayout>
+    </container>
+</template>

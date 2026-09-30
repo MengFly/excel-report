@@ -9,6 +9,7 @@ import io.github.mengfly.excel.report.util.BeanUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,7 +37,11 @@ public class ListParser extends ContainerParser {
 
     @Override
     protected List<String> getIgnoreProperties() {
-        return Collections.singletonList("dataList");
+        // style 必须在这里忽略：<header> 的样式已在 parse 里显式 addStyle 应用，
+        // 而 ListHeader 继承 StyleHolder，其 style 是 final 的只读属性（StyleMap），
+        // 让 BeanUtil 去写它只会抛 ConvertException（被 catch 吞掉）。其它 Parser 都靠
+        // ContainerParser.IGNORE_PROPERTIES 忽略了 style，这里原本漏了。
+        return Arrays.asList("dataList", "style");
     }
 
     private List<?> getDataList(ContainerTreeNode element, DataContext context) {

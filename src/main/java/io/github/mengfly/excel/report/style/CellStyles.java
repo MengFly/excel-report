@@ -186,8 +186,10 @@ public class CellStyles {
             if (styleKey != null) {
                 try {
                     styleMap.addStyle(styleKey, styleKey.getStyle(value));
-                } catch (Exception ignore) {
-
+                } catch (Exception e) {
+                    // 不再静默吞掉：转换失败意味着这条样式在运行期被丢弃。
+                    // 模板解析期已由 TemplateValidator 汇总（规则 style.unparsable-value），这里是兜底可见性。
+                    log.warn("样式解析失败，该样式将被丢弃: {} = {}", key, value, e);
                 }
             }
         });

@@ -1,6 +1,5 @@
 package io.github.mengfly.excel.report.exapmle;
 
-import cn.hutool.core.swing.DesktopUtil;
 import io.github.mengfly.excel.report.excel.ExcelReport;
 import io.github.mengfly.excel.report.exapmle.util.TestDataUtil;
 import io.github.mengfly.excel.report.exapmle.util.TestTemplateUtil;
@@ -26,7 +25,9 @@ public class TestTemplate {
     @AfterClass
     public static void after() throws IOException {
         report.save(new File("example/test-template.xlsx"));
-        DesktopUtil.open(new File("example/test-template.xlsx"));
+        // 不要在这里用系统默认程序打开生成的 xlsx：窗口会一直持有文件句柄，
+        // 下一次 mvn test 的 save 会因"文件被另一进程占用"失败（CI/无桌面环境也会失败）。
+        // 需要肉眼检查时手动打开 example/test-template.xlsx 即可。
     }
 
     @Test

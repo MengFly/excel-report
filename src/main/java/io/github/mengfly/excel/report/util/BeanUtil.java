@@ -56,8 +56,10 @@ public class BeanUtil extends cn.hutool.core.bean.BeanUtil {
             } else {
                 ReflectUtil.setFieldValue(bean, propertyDescriptor.getName(), settingValue);
             }
-        } catch (Exception ignore) {
-
+        } catch (Exception e) {
+            // 不再静默吞掉：属性没设上，组件会以默认值渲染出来，排查成本很高。
+            // 模板解析期已由 TemplateValidator 覆盖"属性名写错"（规则 schema.xsd），这里是兜底可见性。
+            log.warn("设置属性失败，该属性将被忽略: {} = {}", propertyDescriptor.getName(), settingValue, e);
         }
 
     }

@@ -1,6 +1,7 @@
 package io.github.mengfly.excel.report.template;
 
 import io.github.mengfly.excel.report.exception.TemplateNotFoundException;
+import io.github.mengfly.excel.report.exception.TemplateValidationException;
 import io.github.mengfly.excel.report.template.factory.ClasspathTemplateFactory;
 import io.github.mengfly.excel.report.template.factory.TemplateFactory;
 import lombok.Getter;
@@ -9,7 +10,13 @@ import lombok.Setter;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
+/**
+ * 模板管理器（单例）。
+ * <p>
+ * <b>校验模式</b>：默认<b>宽松</b>——模板解析后照常可用，校验发现的问题只在第一次渲染时汇总成一条 WARN，
+ * 静默失效的行为与历史版本保持一致。设为严格模式（{@code setStrict(true)}，由 Lombok 生成）后，
+ * 模板存在 ERROR 级问题时直接抛 {@link TemplateValidationException}，适合开发期 / CI 尽早暴露问题。
+ */
 @Getter
 @Setter
 public class TemplateManager {
@@ -30,11 +37,21 @@ public class TemplateManager {
     private final Map<String, ReportTemplate> templateCache = new ConcurrentHashMap<>();
 
     /**
+     * 严格模式开关（默认 false = 宽松）。
+     * <p>
+     * Lombok 生成的 {@code isStrict()} / {@code setStrict(boolean)} 即对外入口。
+     * 打开后，{@link #getTemplate(String)} 遇到 ERROR 级校验问题会抛
+     * {@link TemplateValidationException}（每次调用都判定，与模板是否已被缓存无关）。
+     */
+    private volatile boolean strict = false;
+
+    /**
      * 获取模板（带缓存）
      *
      * @param id 模板Id
      * @return 模板信息
-     * @throws TemplateNotFoundException 如果找不到模板，抛出异常
+     * @throws TemplateNotFoundException   如果找不到模板，抛出异常
+     * @throws TemplateValidationException 严格模式下模板校验不通过
      */
     public ReportTemplate getTemplate(String id) throws TemplateNotFoundException {
         if (id == null) {
@@ -44,7 +61,12 @@ public class TemplateManager {
             throw new IllegalStateException("No Setting Template Factory");
         }
         // computeIfAbsent 对同一 key 加锁，不同 key 可并发解析；映射函数抛出的异常会原样传播
-        return templateCache.computeIfAbsent(id, templateFactory::getTemplate);
+        ReportTemplate template = templateCache.computeIfAbsent(id, templateFactory::getTemplate);
+        // 判定放在缓存之外：严格模式在运行期打开时，已缓存的模板同样要被拦住
+        if (strict && template.hasErrors()) {
+            throw new TemplateValidationException(id, template.validate());
+        }
+        return template;
     }
 
     /**

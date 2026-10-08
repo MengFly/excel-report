@@ -4,6 +4,8 @@
 
 版本更新日志: [version log](VERSION.md)
 
+> V1.6.0 包含破坏性变更（包名修正、样式系统重构），从 1.5.x 升级前请先阅读 [V1.6.0 更新详情](version/V1.6.0.md)。
+
 ## 特点
 
 1. 几乎完全屏蔽POI操作，提供类UI框架的操作接口、定义报表极其简单
@@ -11,6 +13,7 @@
 3. 提供类似于 Themleaf 的 If, For 标签，更方便定义模板
 4. 自动计算组件位置
 5. 简化CellStyle设置
+6. 内置模板校验，开发期即可发现"能跑但静默失效"的模板写法（标签、样式写错不再无感）
 
 ## 使用方式（模板方式、推荐）
 
@@ -21,7 +24,7 @@
 <dependency>
     <groupId>io.github.mengfly</groupId>
     <artifactId>excel-report</artifactId>
-    <version>1.5.1</version>
+    <version>1.6.0</version>
 </dependency>
 ```
 
@@ -109,3 +112,30 @@ public static void main(String[] args) {
 
 ### 4. 最终效果
 ![导出图片结果](img/export.jpg)
+
+## 模板校验（可选）
+
+模板写错时框架长期是"静默"的：标签、属性、样式 key 写错不会报错，只是被丢弃或忽略，
+结果就是导出的文件里少了一块内容，还不容易查出原因。
+
+现在模板解析时会自动做一次校验，默认**宽松**：不影响渲染，问题只在第一次渲染时汇总成一条 WARN 日志。
+开发期或 CI 可以切换成**严格**模式，模板有问题直接中断：
+
+```java
+// 建议只在开发期或 CI 打开，生产环境保持默认的宽松模式
+TemplateManager.getInstance().setStrict(true);
+```
+
+也可以主动获取校验结果，自行决定怎么处理：
+
+```java
+ReportTemplate template = new ReportTemplate(stream);
+
+// 校验发现的问题（标签/属性/样式 key 写错、样式 id 未定义、for 缺少变量绑定等）
+List<ValidationIssue> issues = template.validate();
+if (template.hasErrors()) {
+    throw new IllegalStateException("模板校验未通过：" + issues);
+}
+```
+
+校验规则与更多说明见 [V1.6.0 更新详情](version/V1.6.0.md)。

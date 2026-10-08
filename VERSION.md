@@ -1,3 +1,29 @@
+## V1.6.0
+[更新详情](version/V1.6.0.md)
+
+### 新增
+- 新增模板校验能力：默认宽松模式（问题只在首次渲染时汇总成一条 WARN 日志），
+  执行 `TemplateManager.getInstance().setStrict(true)` 切换为严格模式后，模板存在 ERROR 级问题时直接抛 `TemplateValidationException`
+- `TemplateManager` 新增模板解析缓存，同一模板只解析一次；新增 `clearCache()` / `clearCache(id)` 用于清缓存
+- 内置 XSD 补充单元格样式 key `fillBackgroundColor`
+
+### 优化
+- 表达式缓存改为全局共享，减少重复解析
+- 样式链（StyleChain）重构，样式装配过程更轻量
+- `width/height=auto` 的自动宽高计算延迟到组件终态统一进行（实测计算量约减少一半）
+
+### 修复
+- 修复同名 Sheet / 匿名 Sheet 超过 2 个时报 `The workbook already contains a sheet named ...` 的 bug
+- 修复网络图片加载线程可能无限阻塞的问题
+- 修复行高默认值失效的问题
+- 修复模板 XSD 的语法错误及 `BeanUtil` 枚举名替换的正则错误
+
+### ⚠️ 破坏性变更
+- 包 `io.github.mengfly.excel.report.template.exepression` 更名为 `...template.expression`（拼写修正），引用该包的类型需要同步改 import
+- 样式系统重构：`StyleKey` 构造与注册改为函数式（`targetType + styleType + applier`），移除 `CellWidthHeightKey`；
+  `CellStyles` / `SheetStyles` 的样式应用统一为 `initStyle(target, styleMap)`（原 `createCellStyle` / `createFont` / `initSheetStyle` 已移除）
+- `ContainerTreeNode#getSyleMap()` 更名为 `getStyleMap()`；`ReportTemplate` 不再持有 `TemplateManager`
+
 ## V1.5.1
 - pref: 优化组件内部逻辑，便于后续功能扩展
 

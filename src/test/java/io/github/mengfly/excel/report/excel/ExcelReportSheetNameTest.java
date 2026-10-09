@@ -1,6 +1,6 @@
 package io.github.mengfly.excel.report.excel;
 
-import io.github.mengfly.excel.report.component.TextComponent;
+import io.github.mengfly.excel.report.component.text.TextComponent;
 import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.style.StyleMap;
 import org.junit.After;

@@ -1,5 +1,6 @@
-package io.github.mengfly.excel.report.component;
+package io.github.mengfly.excel.report.component.text;
 
+import io.github.mengfly.excel.report.component.AbstractComponent;
 import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.excel.ExcelCellSpan;
 import io.github.mengfly.excel.report.excel.ReportContext;

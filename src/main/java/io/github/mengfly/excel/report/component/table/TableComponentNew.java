@@ -1,7 +1,7 @@
 package io.github.mengfly.excel.report.component.table;
 
 import io.github.mengfly.excel.report.Container;
-import io.github.mengfly.excel.report.component.TextComponent;
+import io.github.mengfly.excel.report.component.text.TextComponent;
 import io.github.mengfly.excel.report.entity.Orientation;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.entity.Size;

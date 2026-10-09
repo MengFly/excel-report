@@ -45,4 +45,23 @@ public interface StyleAble {
      * @return 样式信息
      */
     StyleMap getStyle();
+
+    /**
+     * 获取本次导出合并完成的完整样式（含从父组件继承的样式）。
+     * <p>
+     * 仅在导出流程执行完成后有效；未导出时返回 {@code null}。
+     *
+     * @return 合并后的完整样式
+     */
+    default StyleMap getFinalStyle() {
+        return null;
+    }
+
+    /**
+     * 记录本次导出合并完成的完整样式。由导出流程自动调用，调用方无需设置。
+     *
+     * @param styleMap 合并后的完整样式
+     */
+    default void setFinalStyle(StyleMap styleMap) {
+    }
 }

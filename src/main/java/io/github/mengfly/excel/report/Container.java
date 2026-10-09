@@ -5,6 +5,7 @@ import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.excel.ReportContext;
 import io.github.mengfly.excel.report.style.StyleAble;
+import io.github.mengfly.excel.report.style.StyleMap;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 
 public interface Container extends StyleAble {
@@ -54,8 +55,14 @@ public interface Container extends StyleAble {
     void onLayout(Point relativePosition);
 
     default void export(ReportContext context) {
-        context.getStyleChain().onStyle(getStyle(), () -> onExport(context));
+        context.getStyleChain().onStyle(getStyle(), () -> {
+            // 合并结果每层都是 StyleChain 新建的 StyleMap 实例，直接持有引用即可，无需拷贝。
+            // 放在 onStyle 回调内取，才能拿到“祖先链 + 自身”的完整样式。
+            setFinalStyle(context.getStyleChain().getStyle());
+            onExport(context);
+        });
     }
+
 
     /**
      * 子组件必须实现该方法实现导出逻辑

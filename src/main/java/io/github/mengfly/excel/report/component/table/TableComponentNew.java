@@ -105,7 +105,7 @@ public class TableComponentNew extends AbstractLayout {
             for (int i = 0; i < columns.size(); i++) {
                 final TableColumn column = columns.get(i);
                 final Container container = childContainers.get(i);
-                context.getStyleChain().onStyle(column.getStyle(), () -> container.onExport(context));
+                context.getStyleChain().onStyle(column.getStyle(), () -> container.export(context));
             }
             offset = columns.size();
         }
@@ -116,7 +116,7 @@ public class TableComponentNew extends AbstractLayout {
             // 找到对应的Column
             final TableColumn column = columns.get(i % columns.size());
             context.getStyleChain()
-                    .onStyle(column.getDataStyle().getStyle(), () -> container.onExport(context));
+                    .onStyle(column.getDataStyle().getStyle(), () -> container.export(context));
         }
     }
 }

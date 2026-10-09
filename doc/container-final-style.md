@@ -1,5 +1,6 @@
 ---
 date: 2026-10-09
+complete: true
 description: 在 Container 上记录导出期合并后的完整样式（finalStyle），供后续从 Container 树反推完整带样式的 Excel 结构
 ---
 
@@ -94,5 +95,44 @@ description: 在 Container 上记录导出期合并后的完整样式（finalSty
 - `finalStyle` 仅在**导出（measure → layout → export）之后**有效，反推须在导出完成后进行。
 - `GridLayout` 在 `onLayout/onExport` 期间动态构造临时包装布局（不进入 `getContainers()`）；反推走 `getContainers()` 返回的用户节点，其 `finalStyle` 已由真实导出路径记录，正确。
 - `TableComponentNew` 的子 `TextComponent` 自身样式为空是任务 3 等价性的前提；若后续给其注入非空样式，`onExport → export` 的等价性需重新评估。
+- **已知边界（List 内部样式）**：`ListComponent` 的表头/数据单元格通过 `context.getCurrentChildStyle(header.getStyle())` 在叶子内部额外叠加样式，`ListHeader` 不是 `Container`，无节点可挂 ⇒ 该附加样式**不进入** `finalStyle`。反推侧取值方式：`ListComponent.getFinalStyle()` 仅代表组件自身（含祖先），表头附加样式需另行读取 `ListHeader.getStyle()` 后与之一并合并。
 - 插件影响：任务 1 为接口纯新增 default 方法 + 基类字段；`../excel-report-plugin` 仅走模板渲染、不进入导出链路 ⇒ 预期零影响，实现时确认插件未实现 `Container`/未覆写相关方法。
 - 注释规范：契约写 `/** */`；"为何改 onExport→export""finalStyle 的有效期"等变更说明用 `//` 写在改动旁。
+
+## 7. Complements
+
+### 1. 新增 finalStyle 承载字段与契约
+- **状态**：✅ 已完成
+- **修改文件**：
+  - `src/main/java/io/github/mengfly/excel/report/Container.java` — 新增 `getFinalStyle()/setFinalStyle()` 两个 default 方法（零破坏）
+  - `src/main/java/io/github/mengfly/excel/report/style/StyleHolder.java` — 新增 `finalStyle` 字段并实现上述方法
+- **审查结果**：编译通过（JDK 1.8）
+- **完成时间**：2026-10-09
+
+### 2. 导出期回填 finalStyle
+- **状态**：✅ 已完成
+- **修改文件**：
+  - `src/main/java/io/github/mengfly/excel/report/Container.java` — `export()` 默认方法内取 `styleChain.getStyle()` 回填
+- **审查结果**：`FinalStyleTest` 继承/覆盖用例通过
+- **完成时间**：2026-10-09
+
+### 3. 补齐 TableComponentNew 直连 onExport 路径
+- **状态**：✅ 已完成
+- **修改文件**：
+  - `src/main/java/io/github/mengfly/excel/report/component/table/TableComponentNew.java` — 108/119 行 `container.onExport(context)` → `container.export(context)`
+- **审查结果**：`FinalStyleTest.tableColumnStyleShouldReachChildContainer` 通过（列样式/数据列样式均被记录）
+- **完成时间**：2026-10-09
+
+### 4. List 内部样式边界确认
+- **状态**：✅ 已完成
+- **修改文件**：
+  - `doc/container-final-style.md` — 在「边界与风险」写明 List 边界及反推侧取值方式（不改 ListComponent/ListHeader 行为）
+- **审查结果**：文档记录完整
+- **完成时间**：2026-10-09
+
+### 5. 测试与回归
+- **状态**：✅ 已完成
+- **修改文件**：
+  - `src/test/java/io/github/mengfly/excel/report/excel/FinalStyleTest.java` — 新增 4 个用例（继承/覆盖/导出前为 null/Table 列样式）
+- **审查结果**：全量 `mvn test` 43 项全绿，BUILD SUCCESS
+- **完成时间**：2026-10-09

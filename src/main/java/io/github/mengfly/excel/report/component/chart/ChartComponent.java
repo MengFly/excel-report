@@ -1,8 +1,9 @@
 package io.github.mengfly.excel.report.component.chart;
 
 import io.github.mengfly.excel.report.component.AbstractComponent;
-import io.github.mengfly.excel.report.component.chart.data.ChartMarker;
-import io.github.mengfly.excel.report.component.chart.data.ChartTitle;
+import io.github.mengfly.excel.report.component.chart.component.ChartMarker;
+import io.github.mengfly.excel.report.component.chart.component.ChartTitle;
+import io.github.mengfly.excel.report.component.chart.component.Legend;
 import io.github.mengfly.excel.report.component.chart.type.ChartDataType;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.entity.Size;

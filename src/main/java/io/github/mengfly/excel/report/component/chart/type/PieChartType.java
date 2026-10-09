@@ -5,7 +5,7 @@ import io.github.mengfly.excel.report.component.chart.axis.ChartLabelAxis;
 import io.github.mengfly.excel.report.component.chart.axis.ChartValueAxis;
 import io.github.mengfly.excel.report.component.chart.data.ChartDataContext;
 import io.github.mengfly.excel.report.component.chart.data.ChartValueAxisData;
-import io.github.mengfly.excel.report.component.chart.data.ChartMarker;
+import io.github.mengfly.excel.report.component.chart.component.ChartMarker;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.excel.ReportContext;
 import lombok.Data;

@@ -1,7 +1,9 @@
 package io.github.mengfly.excel.report.component.chart.axis;
 
-import io.github.mengfly.excel.report.component.chart.AxisType;
 import io.github.mengfly.excel.report.component.chart.data.*;
+import io.github.mengfly.excel.report.component.chart.data.resolver.AxisDataResolver;
+import io.github.mengfly.excel.report.component.chart.data.resolver.RelationAxisDataResolver;
+import io.github.mengfly.excel.report.component.chart.data.resolver.ValueAxisDataResolver;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.poi.ss.util.CellRangeAddress;

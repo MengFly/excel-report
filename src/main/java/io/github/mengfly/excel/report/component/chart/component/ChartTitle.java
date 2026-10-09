@@ -1,4 +1,4 @@
-package io.github.mengfly.excel.report.component.chart.data;
+package io.github.mengfly.excel.report.component.chart.component;
 
 import lombok.Data;
 import org.apache.poi.xddf.usermodel.text.*;

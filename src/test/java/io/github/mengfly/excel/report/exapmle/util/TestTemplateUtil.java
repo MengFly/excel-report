@@ -4,6 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.swing.DesktopUtil;
 import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.excel.ExcelReport;
+import io.github.mengfly.excel.report.excel.ExportResult;
 import io.github.mengfly.excel.report.template.DataContext;
 import io.github.mengfly.excel.report.template.ReportTemplate;
 import io.github.mengfly.excel.report.template.TemplateManager;
@@ -16,8 +17,8 @@ public class TestTemplateUtil {
 
     public static void exportTemplate(ExcelReport report, DataContext context, String templatePath) {
         ReportTemplate template = templateManager.getTemplate(templatePath);
-        final Container container = report.exportTemplate(template, FileUtil.mainName(templatePath), context);
-        System.out.println(container.print());
+        final ExportResult exportResult = report.exportTemplate(template, FileUtil.mainName(templatePath), context);
+        System.out.println(exportResult.getContainer().print());
     }
 
     public static void saveReport(ExcelReport report, String name) throws IOException {

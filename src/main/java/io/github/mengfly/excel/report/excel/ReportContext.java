@@ -10,6 +10,7 @@ import io.github.mengfly.excel.report.style.StyleChain;
 import io.github.mengfly.excel.report.style.StyleMap;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.*;
@@ -35,6 +36,9 @@ public class ReportContext {
     private final XSSFSheet sheet;
     private final Map<StyleMap, CellStyle> cellStylePool = new HashMap<>();
     private final Map<StyleMap, Font> fontPool = new HashMap<>();
+    @Getter
+    @Setter
+    private StyleMap sheetStyle = null;
     /**
      * 本次导出创建的全部单元格区域，用于导出末尾补算宽高（见 {@link ExcelCellSpan#calculateAutoSizeIfAbsent()}）
      */

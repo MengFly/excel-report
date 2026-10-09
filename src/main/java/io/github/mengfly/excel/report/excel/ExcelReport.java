@@ -74,6 +74,7 @@ public class ExcelReport {
         StyleMap sheetStyleMap = SheetStyles.DEFAULT_STYLE.createChildStyleMap(sheetStyle);
         SheetStyles.initStyle(sheet, sheetStyleMap);
         ReportContext context = new ReportContext(workbook, sheet);
+        context.setSheetStyle(sheetStyleMap);
         context.getStyleChain().onStyle(CellStyles.DEFAULT_STYLE,
                 () -> {
                     // 在导出数据之前，先进行测量

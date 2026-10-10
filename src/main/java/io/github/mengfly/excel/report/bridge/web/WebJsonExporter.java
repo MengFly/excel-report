@@ -405,7 +405,7 @@ public final class WebJsonExporter implements BridgeExporter<WebExcel> {
                 return tagName;
             }
         }
-        return container.getTypeName();
+        return container.getClass().getSimpleName();
     }
 
     private static String toDataUrl(Image image) {

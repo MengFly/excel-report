@@ -23,7 +23,8 @@ public class BridgeExportTest {
     @Test
     public void testWebJsonExport() {
         final WebExcel excel = BridgeExporter.export(WebJsonExporter.instance, export);
-        System.out.println(JSONUtil.toJsonPrettyStr(excel));
+        final String jsonPrettyStr = JSONUtil.toJsonPrettyStr(excel);
+        System.out.println(jsonPrettyStr);
     }
 
     @Test

@@ -5,7 +5,6 @@ import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.excel.ReportContext;
 import io.github.mengfly.excel.report.style.StyleAble;
-import io.github.mengfly.excel.report.style.StyleMap;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 
 public interface Container extends StyleAble {
@@ -70,8 +69,4 @@ public interface Container extends StyleAble {
      * @param context 导出上下文
      */
     void onExport(ReportContext context);
-
-    default String getTypeName() {
-        return getClass().getSimpleName();
-    }
 }

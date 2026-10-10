@@ -2,7 +2,7 @@ package io.github.mengfly.excel.report.excel;
 
 import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.component.table.TableColumn;
-import io.github.mengfly.excel.report.component.table.TableComponentNew;
+import io.github.mengfly.excel.report.component.table.TableComponent;
 import io.github.mengfly.excel.report.component.table.TableObjFieldColumn;
 import io.github.mengfly.excel.report.component.text.TextComponent;
 import io.github.mengfly.excel.report.entity.Size;
@@ -87,7 +87,7 @@ public class FinalStyleTest {
         column.addDataStyle(CellStyles.fontHeight, 9.);
 
         Map<String, Object> row = new HashMap<>();
-        TableComponentNew table = new TableComponentNew(
+        TableComponent table = new TableComponent(
                 Collections.singletonList(row),
                 Collections.<TableColumn>singletonList(column));
 

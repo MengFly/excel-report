@@ -2,7 +2,7 @@ package io.github.mengfly.excel.report.template.parse;
 
 import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.component.table.TableColumn;
-import io.github.mengfly.excel.report.component.table.TableComponentNew;
+import io.github.mengfly.excel.report.component.table.TableComponent;
 import io.github.mengfly.excel.report.component.table.TableObjFieldColumn;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
@@ -28,7 +28,7 @@ public class TableParser extends ContainerParser {
     @Override
     public Container parse(ContainerTreeNode node, DataContext context) {
 
-        return new TableComponentNew(
+        return new TableComponent(
                 getDataList(node, context),
                 getColumns(node, context),
                 getHeaderHeight(node, context),

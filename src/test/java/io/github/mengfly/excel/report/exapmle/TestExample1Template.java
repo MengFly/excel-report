@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Example1 {
+public class TestExample1Template {
 
 
     private static List<List<DataStat>> getData() {
@@ -31,7 +31,7 @@ public class Example1 {
     public static void main(String[] args) throws IOException {
 
         DataContext context = new DataContext();
-        context.put("data", Example1.getData());
+        context.put("data", TestExample1Template.getData());
 
         ExcelReport report = new ExcelReport();
         TestTemplateUtil.exportTemplate(report, context, "Example1Template.xml");

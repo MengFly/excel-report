@@ -15,7 +15,7 @@ import java.util.List;
 
 @Setter
 @Getter
-public class TableComponentNew extends AbstractLayout {
+public class TableComponent extends AbstractLayout {
     /**
      * 表格布局
      */
@@ -26,15 +26,15 @@ public class TableComponentNew extends AbstractLayout {
     private final int headerHeight;
     private final boolean headerVisible;
 
-    public TableComponentNew(List<?> dataList,
-                             List<TableColumn> columns) {
+    public TableComponent(List<?> dataList,
+                          List<TableColumn> columns) {
         this(dataList, columns, 1, true);
     }
 
-    public TableComponentNew(List<?> dataList,
-                             List<TableColumn> columns,
-                             int headerHeight,
-                             boolean headerVisible) {
+    public TableComponent(List<?> dataList,
+                          List<TableColumn> columns,
+                          int headerHeight,
+                          boolean headerVisible) {
         this.dataList = dataList;
         this.columns = columns;
         this.gridLayout = new GridLayout();

@@ -71,15 +71,6 @@ public interface Container extends StyleAble {
      */
     void onExport(ReportContext context);
 
-    /**
-     * 打印组件信息
-     *
-     * @return 组件信息
-     */
-    default String print() {
-        return String.format("%s[%s]", getClass().getSimpleName(), getMeasuredSize());
-    }
-
     default String getTypeName() {
         return getClass().getSimpleName();
     }

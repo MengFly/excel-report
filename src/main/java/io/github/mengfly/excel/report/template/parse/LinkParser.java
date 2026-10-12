@@ -1,7 +1,7 @@
 package io.github.mengfly.excel.report.template.parse;
 
 import io.github.mengfly.excel.report.Container;
-import io.github.mengfly.excel.report.component.LinkComponent;
+import io.github.mengfly.excel.report.component.text.LinkComponent;
 import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;

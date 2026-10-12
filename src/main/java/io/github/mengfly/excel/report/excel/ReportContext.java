@@ -10,6 +10,7 @@ import io.github.mengfly.excel.report.style.StyleChain;
 import io.github.mengfly.excel.report.style.StyleMap;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.*;
@@ -21,6 +22,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +37,9 @@ public class ReportContext {
     private final XSSFSheet sheet;
     private final Map<StyleMap, CellStyle> cellStylePool = new HashMap<>();
     private final Map<StyleMap, Font> fontPool = new HashMap<>();
+    @Getter
+    @Setter
+    private StyleMap sheetStyle = null;
     /**
      * 本次导出创建的全部单元格区域，用于导出末尾补算宽高（见 {@link ExcelCellSpan#calculateAutoSizeIfAbsent()}）
      */
@@ -160,6 +165,28 @@ public class ReportContext {
             }
         });
 
+    }
+
+    /**
+     * 本次导出已计算出的列宽（列号 -> 列宽，单位：字符数），在导出流程结束后可用。
+     * <p>
+     * 仅包含显式设置过 {@code width} 样式的列（含 {@code auto} 的实测结果）；其余列按默认列宽渲染。
+     *
+     * @return 列号到列宽的映射（只读）
+     */
+    public Map<Integer, Double> getColumnWidths() {
+        return Collections.unmodifiableMap(autoWidthColumn);
+    }
+
+    /**
+     * 本次导出已计算出的行高（行号 -> 行高，单位：磅），在导出流程结束后可用。
+     * <p>
+     * 仅包含显式设置过 {@code height} 样式的行；其余行按默认行高（{@code sheetStyle} 的 defaultRowHeight）渲染。
+     *
+     * @return 行号到行高的映射（只读）
+     */
+    public Map<Integer, Double> getRowHeights() {
+        return Collections.unmodifiableMap(autoHeightRow);
     }
 
     /**

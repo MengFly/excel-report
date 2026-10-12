@@ -1,5 +1,6 @@
 package io.github.mengfly.excel.report.component.chart.data;
 
+import io.github.mengfly.excel.report.component.chart.data.resolver.AxisDataResolver;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.apache.poi.xddf.usermodel.chart.XDDFDataSource;
@@ -16,6 +17,7 @@ public abstract class ChartAxisData<T extends XDDFDataSource<?>> {
         return resolver.dataCount();
     }
 
+    @SuppressWarnings("unchecked")
     public T createDataSource(ChartDataContext context) {
         return ((T) resolver.createDataSource(context));
     }

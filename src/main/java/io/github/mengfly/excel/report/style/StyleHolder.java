@@ -2,12 +2,19 @@ package io.github.mengfly.excel.report.style;
 
 import lombok.Getter;
 import io.github.mengfly.excel.report.style.key.StyleKey;
+import lombok.Setter;
 
 import java.util.Optional;
 
 @Getter
 public class StyleHolder implements StyleAble {
     private final StyleMap style = new StyleMap();
+
+    /**
+     * 本次导出合并后的完整样式（含父级继承），仅在导出流程执行完成后有效。
+     */
+    @Setter
+    private StyleMap finalStyle;
 
 
     public <T> void addStyle(StyleKey<T> key, T value) {

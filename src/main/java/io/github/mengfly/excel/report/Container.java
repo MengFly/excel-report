@@ -54,8 +54,14 @@ public interface Container extends StyleAble {
     void onLayout(Point relativePosition);
 
     default void export(ReportContext context) {
-        context.getStyleChain().onStyle(getStyle(), () -> onExport(context));
+        context.getStyleChain().onStyle(getStyle(), () -> {
+            // 合并结果每层都是 StyleChain 新建的 StyleMap 实例，直接持有引用即可，无需拷贝。
+            // 放在 onStyle 回调内取，才能拿到“祖先链 + 自身”的完整样式。
+            setFinalStyle(context.getStyleChain().getStyle());
+            onExport(context);
+        });
     }
+
 
     /**
      * 子组件必须实现该方法实现导出逻辑
@@ -63,17 +69,4 @@ public interface Container extends StyleAble {
      * @param context 导出上下文
      */
     void onExport(ReportContext context);
-
-    /**
-     * 打印组件信息
-     *
-     * @return 组件信息
-     */
-    default String print() {
-        return String.format("%s[%s]", getClass().getSimpleName(), getMeasuredSize());
-    }
-
-    default String getTypeName() {
-        return getClass().getSimpleName();
-    }
 }

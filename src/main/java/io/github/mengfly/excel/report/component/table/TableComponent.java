@@ -1,47 +1,97 @@
 package io.github.mengfly.excel.report.component.table;
 
-import io.github.mengfly.excel.report.component.AbstractComponent;
+import io.github.mengfly.excel.report.Container;
+import io.github.mengfly.excel.report.component.text.TextComponent;
+import io.github.mengfly.excel.report.entity.Orientation;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.entity.Size;
-import io.github.mengfly.excel.report.excel.ExcelCellSpan;
 import io.github.mengfly.excel.report.excel.ReportContext;
-import io.github.mengfly.excel.report.style.StyleMap;
+import io.github.mengfly.excel.report.layout.AbstractLayout;
+import io.github.mengfly.excel.report.layout.GridLayout;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @Setter
 @Getter
-@NoArgsConstructor
-public class TableComponent extends AbstractComponent {
-    private List<?> dataList;
-    private List<TableColumn> columns;
-    private int headerHeight = 1;
-    private boolean headerVisible = true;
+public class TableComponent extends AbstractLayout {
+    /**
+     * 表格布局
+     */
+    private final GridLayout gridLayout;
+    private final List<?> dataList;
+    private final List<TableColumn> columns;
 
-    public TableComponent(List<?> dataList, List<TableColumn> columns) {
+    private final int headerHeight;
+    private final boolean headerVisible;
+
+    public TableComponent(List<?> dataList,
+                          List<TableColumn> columns) {
+        this(dataList, columns, 1, true);
+    }
+
+    public TableComponent(List<?> dataList,
+                          List<TableColumn> columns,
+                          int headerHeight,
+                          boolean headerVisible) {
         this.dataList = dataList;
         this.columns = columns;
+        this.gridLayout = new GridLayout();
+        this.gridLayout.setOrientation(Orientation.HORIZONTAL);
+        this.gridLayout.setCount(columns.size());
+        this.headerHeight = headerHeight;
+        this.headerVisible = headerVisible;
+        // 开始添加子组件
+        if (headerVisible) {
+            for (TableColumn column : columns) {
+                gridLayout.addItem(
+                        new TextComponent(
+                                Size.of(column.getColumnSpan(), headerHeight),
+                                column.getName()
+                        )
+                );
+            }
+        }
+        for (Object d : dataList) {
+            for (TableColumn column : columns) {
+                gridLayout.addItem(
+                        new TextComponent(
+                                Size.of(column.getColumnSpan(), 1),
+                                column.getValue(d)
+                        )
+                );
+            }
+        }
+    }
+
+    @Override
+    public <T extends Container> T addItem(T item, Object constraint) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void onMeasure(Size suggestSize) {
+        this.measuredSize = suggestSize;
+        gridLayout.onMeasure(suggestSize);
+    }
+
+    @Override
+    public void onLayout(Point relativePosition) {
+        this.position = relativePosition;
+        gridLayout.onLayout(relativePosition);
+    }
+
+    @Override
+    public List<Container> getContainers() {
+        return gridLayout.getContainers();
     }
 
     @Override
     public Size getSize() {
-        int width = 0;
-        int height = 0;
-        if (headerVisible) {
-            height += headerHeight;
-        }
-
-        if (columns != null) {
-            for (TableColumn column : columns) {
-                width += column.getColumnSpan();
-            }
-        }
-        height += this.dataList == null ? 0 : this.dataList.size();
-        return new Size(width, height);
+        return gridLayout.getSize();
     }
+
 
     @Override
     public void onExport(ReportContext context) {
@@ -49,39 +99,24 @@ public class TableComponent extends AbstractComponent {
         if (columns == null) {
             return;
         }
-        Point point = getPosition();
-        int curColumn = 0;
-        for (TableColumn column : columns) {
-            StyleMap style = context.getCurrentChildStyle(column.getStyle());
+        final List<Container> childContainers = gridLayout.getContainers();
+        int offset = 0;
+        if (headerVisible) {
+            for (int i = 0; i < columns.size(); i++) {
+                final TableColumn column = columns.get(i);
+                final Container container = childContainers.get(i);
+                context.getStyleChain().onStyle(column.getStyle(), () -> container.export(context));
+            }
+            offset = columns.size();
+        }
 
-            // draw header
-            if (headerVisible) {
-                final ExcelCellSpan headerCellSpan = context.getCellSpan(
-                        point.add(curColumn, 0),
-                        Size.of(column.getColumnSpan(), getHeaderHeight()),
-                        style
-                );
-                headerCellSpan.merge().setValue(column.getName());
-            }
-            if (dataList == null) {
-                continue;
-            }
-            // draw data
-            int curRow = 0;
-            if (headerVisible) {
-                curRow += getHeaderHeight();
-            }
-            for (Object d : dataList) {
-                final ExcelCellSpan dataCellSpan = context.getCellSpan(
-                        point.add(curColumn, curRow),
-                        Size.of(column.getColumnSpan(), 1),
-                        context.getCurrentChildStyle(column.getDataStyle().getStyle())
-                );
-                curRow += 1;
-                dataCellSpan.merge().setValue(column.getValue(d));
-            }
-
-            curColumn += column.getColumnSpan();
+        // 开始导出数据
+        for (int i = offset; i < childContainers.size(); i++) {
+            final Container container = childContainers.get(i);
+            // 找到对应的Column
+            final TableColumn column = columns.get(i % columns.size());
+            context.getStyleChain()
+                    .onStyle(column.getDataStyle().getStyle(), () -> container.export(context));
         }
     }
 }

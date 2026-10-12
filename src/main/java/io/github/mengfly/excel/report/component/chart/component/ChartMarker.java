@@ -1,4 +1,4 @@
-package io.github.mengfly.excel.report.component.chart.data;
+package io.github.mengfly.excel.report.component.chart.component;
 
 import lombok.Data;
 import org.openxmlformats.schemas.drawingml.x2006.chart.CTDLbls;

@@ -1,4 +1,4 @@
-package io.github.mengfly.excel.report.component.chart;
+package io.github.mengfly.excel.report.component.chart.component;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

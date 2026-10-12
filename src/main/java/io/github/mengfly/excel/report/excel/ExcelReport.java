@@ -69,11 +69,12 @@ public class ExcelReport {
      * @param container  要导出的组件
      * @param sheetStyle Sheet页面的样式
      */
-    public void exportSheet(String name, Container container, StyleMap sheetStyle) {
+    public ExportResult exportSheet(String name, Container container, StyleMap sheetStyle) {
         XSSFSheet sheet = getSheet(name);
         StyleMap sheetStyleMap = SheetStyles.DEFAULT_STYLE.createChildStyleMap(sheetStyle);
         SheetStyles.initStyle(sheet, sheetStyleMap);
         ReportContext context = new ReportContext(workbook, sheet);
+        context.setSheetStyle(sheetStyleMap);
         context.getStyleChain().onStyle(CellStyles.DEFAULT_STYLE,
                 () -> {
                     // 在导出数据之前，先进行测量
@@ -82,6 +83,7 @@ public class ExcelReport {
                     container.export(context);
                 });
         context.applyCellWidthHeight(sheetStyleMap);
+        return new ExportResult(container, context);
     }
 
     /**
@@ -92,14 +94,13 @@ public class ExcelReport {
      * @param context  模板数据
      * @return 导出的组件
      */
-    public Container exportTemplate(ReportTemplate template, String name, DataContext context) {
+    public ExportResult exportTemplate(ReportTemplate template, String name, DataContext context) {
         Container container = template.render(context);
         if (container == null) {
             log.warn("This template has not found any container.");
             return null;
         }
-        exportSheet(name, container, template.getSheetStyle());
-        return  container;
+        return exportSheet(name, container, template.getSheetStyle());
     }
 
     /**

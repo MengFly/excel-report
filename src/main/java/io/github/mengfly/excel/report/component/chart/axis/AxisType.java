@@ -1,4 +1,4 @@
-package io.github.mengfly.excel.report.component.chart;
+package io.github.mengfly.excel.report.component.chart.axis;
 
 import org.apache.poi.xddf.usermodel.chart.AxisPosition;
 import org.apache.poi.xddf.usermodel.chart.XDDFChartAxis;

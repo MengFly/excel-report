@@ -2,7 +2,7 @@ package io.github.mengfly.excel.report.template.parse.chart;
 
 import io.github.mengfly.excel.report.component.chart.axis.ChartLabelAxis;
 import io.github.mengfly.excel.report.component.chart.axis.ChartValueAxis;
-import io.github.mengfly.excel.report.component.chart.data.AxisDataResolver;
+import io.github.mengfly.excel.report.component.chart.data.resolver.AxisDataResolver;
 import io.github.mengfly.excel.report.component.chart.data.ChartValueAxisData;
 import io.github.mengfly.excel.report.component.chart.type.ChartDataType;
 import io.github.mengfly.excel.report.component.chart.type.DefaultChartDataType;

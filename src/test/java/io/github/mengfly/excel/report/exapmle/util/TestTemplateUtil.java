@@ -2,7 +2,9 @@ package io.github.mengfly.excel.report.exapmle.util;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.swing.DesktopUtil;
+import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.excel.ExcelReport;
+import io.github.mengfly.excel.report.excel.ExportResult;
 import io.github.mengfly.excel.report.template.DataContext;
 import io.github.mengfly.excel.report.template.ReportTemplate;
 import io.github.mengfly.excel.report.template.TemplateManager;
@@ -13,15 +15,23 @@ import java.io.IOException;
 public class TestTemplateUtil {
     private static final TemplateManager templateManager = new TemplateManager();
 
-    public static void exportTemplate(ExcelReport report, DataContext context, String templatePath) {
+
+    public static ExportResult export(String templatePath, DataContext context) throws IOException {
+        ExcelReport report = new ExcelReport();
+        final ExportResult exportResult = exportTemplate(report, context, templatePath);
+        saveReport(report, templatePath.replace(".xml", ""));
+        return exportResult;
+    }
+
+    public static ExportResult exportTemplate(ExcelReport report, DataContext context, String templatePath) {
         ReportTemplate template = templateManager.getTemplate(templatePath);
-        report.exportTemplate(template, FileUtil.mainName(templatePath), context);
+        return report.exportTemplate(template, FileUtil.mainName(templatePath), context);
     }
 
     public static void saveReport(ExcelReport report, String name) throws IOException {
         File file = new File("example/" + name + ".xlsx");
         report.save(file);
-        DesktopUtil.open(file);
+        //DesktopUtil.open(file);
     }
 
 }

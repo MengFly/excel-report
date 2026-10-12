@@ -1,6 +1,7 @@
-package io.github.mengfly.excel.report.component.chart.data;
+package io.github.mengfly.excel.report.component.chart.data.resolver;
 
-import io.github.mengfly.excel.report.component.chart.AxisType;
+import io.github.mengfly.excel.report.component.chart.axis.AxisType;
+import io.github.mengfly.excel.report.component.chart.data.ChartDataContext;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,7 +1,6 @@
 package io.github.mengfly.excel.report.component.chart.axis;
 
 import cn.hutool.core.util.StrUtil;
-import io.github.mengfly.excel.report.component.chart.AxisType;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.poi.xddf.usermodel.chart.*;

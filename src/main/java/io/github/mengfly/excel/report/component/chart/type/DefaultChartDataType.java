@@ -1,11 +1,11 @@
 package io.github.mengfly.excel.report.component.chart.type;
 
 import cn.hutool.core.collection.CollectionUtil;
-import io.github.mengfly.excel.report.component.chart.AxisType;
+import io.github.mengfly.excel.report.component.chart.axis.AxisType;
 import io.github.mengfly.excel.report.component.chart.axis.ChartLabelAxis;
 import io.github.mengfly.excel.report.component.chart.axis.ChartValueAxis;
 import io.github.mengfly.excel.report.component.chart.data.ChartDataContext;
-import io.github.mengfly.excel.report.component.chart.data.ChartMarker;
+import io.github.mengfly.excel.report.component.chart.component.ChartMarker;
 import io.github.mengfly.excel.report.component.chart.data.ChartValueAxisData;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.excel.ReportContext;

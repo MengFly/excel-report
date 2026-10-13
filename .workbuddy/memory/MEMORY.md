@@ -104,3 +104,20 @@
 - 维护纪律：终态条目的**结论文本一经写入不再改写**（要补只加"补充（日期）"行或改依据指针）——台账是决策历史，
   改写等于抹掉"当时为什么不做"。台账只在状态变化时改动。
 - 待办：`二、待办` 里仍留着 二.2（已采纳）的小节未移入"三、备查"，与文档自身约定不一致。
+
+## 布局陷阱：弹性高度会把子元素挤出容器（2026-10-13 实测）
+
+- **`size="-1,-1"` 的高度 `-1` = 弹性（`preferredSize.height < 0`），父级 VLayout 按 `weight`（默认 1）均分剩余高度，
+  不是"高度随内容自适应"**。多个弹性兄弟节点的**内容高度不等**时，内容更高的那个分到的行数 < 内容所需行数，
+  VLayout **既不裁剪也不报错**，子元素继续顺序排下去溢出到下一个兄弟节点的行区间 ⇒
+  两张合并区相交 ⇒ POI `addMergedRegion` 抛
+  `IllegalStateException: Cannot add merged region X ... overlaps with an existing merged region (Y)`。
+  排查特征：报错在**导出阶段**（不是模板解析阶段），坐标与模板位置无关；只在"多个弹性兄弟节点内容不等"时发生。
+- **VLayout 省略 `size` 时**：`preferredSize` 取 `container.getSize()`，而 `getSize().width = max(0, 子宽度)`
+  —— 子元素宽度为 `-1` 时按 0 计入 ⇒ 包裹层宽度塌成 0，其子元素被测量成 0 宽（图片会变 0 宽）。
+  ⇒ 框架里**"宽度自适应 + 高度随内容"用 `size` 表达不出来**（`Size.of` 必须给 `width,height` 两个值，
+  单值抛 `size must be width,height`）。可行写法：宽度写具体列数（如整表 31 列）。
+- 内联 style 里塞表达式不可靠：`style="{weight: ${list.size() * 16}}"` 实测**没生效**（仍按等权重均分），
+  不要用这种方式调整弹性权重。
+- 验证手段：`target/probe/{Probe,ExportProbe}.java` —— 前者走 `render → onMeasure → onLayout` 打印每个组件矩形并两两判交
+  （能直接指出是哪个模板节点），后者走真实 POI 导出链验异常/合并区；比只看异常信息高效得多。

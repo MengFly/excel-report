@@ -14,7 +14,8 @@ public class TestTemplate {
 
     @Test
     public void testTemplate() throws IOException {
-        TestTemplateUtil.export("TestTemplate.xml", createTemplateContext());
+        DataContext templateContext = createTemplateContext();
+        TestTemplateUtil.export("TestTemplate.xml", templateContext);
     }
 
     public static DataContext createTemplateContext() {

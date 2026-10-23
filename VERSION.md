@@ -1,3 +1,29 @@
+## V1.6.1
+[更新详情](version/V1.6.1.md)
+
+### 新增
+- 新增 `bridge` 导出能力：`WebJsonExporter` 把导出结果转成"前端可回显的扁平单元格网格"（`WebExcel`），
+  含行列与合并跨度、归一化样式、内容（文本 / 富文本 / 图片 dataURL / 图表数据）以及列宽行高；
+  `TextStructExporter` 输出组件树的文本结构，用于调试
+- 导出入口 `exportTemplate` / `exportSheet` 返回 `ExportResult`（渲染后的组件树 + 导出上下文）
+- 新增 `StyleAble#getFinalStyle()`：导出期间记录"祖先链 + 自身"合并后的完整样式
+- `ReportContext` 暴露已算出的列宽 / 行高与 sheet 级样式
+
+### 重构
+- 文本组件拆分到 `component.text` 包，与其它组件保持一致
+- 图表轴数据解析拆分出 `data.resolver` 包；`AxisType` 移入 `chart.axis`，`ChartMarker` / `ChartTitle` / `Legend` 移入 `chart.component`
+
+### ⚠️ 破坏性变更
+- 文本组件包迁移：`component.TextComponent` / `LinkComponent` / `SpanComponent` → `component.text.*`
+- **`TableComponent` 语义替换（不一定能被编译器发现）**：原 `TableComponent`（`dataList` + `columns` 数据驱动表，自带导出逻辑）已删除，
+  `TableComponentNew`（布局式，内部用 `GridLayout` 承载 `Text` 子组件）改名为 `TableComponent`。
+  `new TableComponent(dataList, columns)` 这个签名在新旧两个类上都存在、代码仍可编译，但导出走的是标准组件链路；
+  无参构造与 `setDataList` / `setColumns` / `setHeaderHeight` / `setHeaderVisible` 已不存在（字段改为 final）。
+  模板标签 `<Table>` 指向新类，模板无需改动
+- 图表包迁移：`chart.AxisType` → `chart.axis.AxisType`；`chart.data.{ChartMarker,ChartTitle}` 与 `chart.Legend` → `chart.component.*`；
+  `chart.data.{AxisDataResolver,ValueAxisDataResolver,RelationAxisDataResolver}` → `chart.data.resolver.*`
+- 移除 `Container#print()`、`Container#getTypeName()`、`Layout#print()`；需要打印组件树时改用 `TextStructExporter`
+
 ## V1.6.0
 [更新详情](version/V1.6.0.md)
 

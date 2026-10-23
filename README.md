@@ -4,7 +4,7 @@
 
 版本更新日志: [version log](VERSION.md)
 
-> V1.6.0 包含破坏性变更（包名修正、样式系统重构），从 1.5.x 升级前请先阅读 [V1.6.0 更新详情](version/V1.6.0.md)。
+> V1.6.0、V1.6.1 均包含破坏性变更（包名修正、样式系统重构、组件包迁移），从 1.5.x 及更早版本升级前请先阅读 [V1.6.0 更新详情](version/V1.6.0.md) 与 [V1.6.1 更新详情](version/V1.6.1.md)。
 
 ## 特点
 
@@ -14,6 +14,7 @@
 4. 自动计算组件位置
 5. 简化CellStyle设置
 6. 内置模板校验，开发期即可发现"能跑但静默失效"的模板写法（标签、样式写错不再无感）
+7. 可把报表导出为前端可回显的结构（1.6.1 起），便于网页端还原带样式的表格
 
 ## 使用方式（模板方式、推荐）
 
@@ -24,7 +25,7 @@
 <dependency>
     <groupId>io.github.mengfly</groupId>
     <artifactId>excel-report</artifactId>
-    <version>1.6.0</version>
+    <version>1.6.1</version>
 </dependency>
 ```
 
@@ -112,6 +113,27 @@ public static void main(String[] args) {
 
 ### 4. 最终效果
 ![导出图片结果](img/export.jpg)
+
+## 导出为前端 JSON（可选）
+
+1.6.1 起，导出结果可以转成"前端可回显"的结构：一张扁平单元格网格，含每个单元格的行列与合并跨度、
+归一化后的样式、内容（文本 / 富文本 / 图片 dataURL / 图表数据），以及列宽与行高。
+
+```java
+// 1. 导出（与导出 Excel 是同一条链路，返回值就是导出结果）
+ExportResult result = report.exportTemplate(template, "sheet1", context);
+
+// 2. 转成前端可回显的结构
+WebExcel webExcel = WebJsonExporter.instance.export(result);
+
+// 3. 序列化成 JSON 文本（框架不做序列化，用项目已有的 JSON 库即可）
+String json = JSONUtil.toJsonStr(webExcel);
+```
+
+两点注意：
+
+- 必须在 `export*` **之后**调用：样式与列宽/行高是导出过程中算出来的，提前调用只会拿到空样式；
+- 框架只提供结构、不绑定序列化库——`webExcel` 是带标准 getter 的普通对象，hutool / Jackson / Gson 均可。
 
 ## 模板校验（可选）
 

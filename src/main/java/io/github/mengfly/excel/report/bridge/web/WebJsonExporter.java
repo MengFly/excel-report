@@ -42,8 +42,9 @@ import java.util.*;
  * 把导出结果 {@link ExportResult} 转换为可前端传输的 {@link WebExcel}（扁平单元格网格），
  * 用于在前端回显匹配样式的 Excel。
  * <p>
- * 取值约定（全程不读取 Sheet 的 POI 属性）：
+ * 取值约定（除工作表名称外，不读取 Sheet 的 POI 属性）：
  * <ul>
+ *     <li>工作表名称：取导出时 Sheet 的名称（{@code Sheet#getSheetName()}）；</li>
  *     <li>几何：来自 Container 的 {@code position}（x=列, y=行）与 {@code measuredSize}（宽=列跨度, 高=行跨度）；</li>
  *     <li>样式：来自 Container 的 {@link Container#getFinalStyle()}（合并后完整样式）与
  *         {@code ReportContext#getSheetStyle()}，经 {@link WebStyleNormalizer} 值归一化；</li>
@@ -52,6 +53,10 @@ import java.util.*;
  *     <li>图片：内嵌 base64 dataURL + 渲染参数；图表：结构化类型/坐标轴/数据；富文本：分片输出。</li>
  * </ul>
  * 需在导出（measure → layout → export）完成后调用，否则 {@code finalStyle} 与宽高均为空。
+ * <p>
+ * 本类只产出结构化对象，不做 JSON 序列化：{@link WebExcel} 及其内部模型都是带标准 getter 的普通 POJO，
+ * 用项目已有的任意 JSON 库序列化即可得到前端可消费的 JSON 文本。
+ * 典型链路：{@code report.exportTemplate(...)} → {@code WebJsonExporter.instance.export(result)} → 序列化。
  *
  * @author Mengfly
  */
@@ -63,7 +68,7 @@ public final class WebJsonExporter implements BridgeExporter<WebExcel> {
     public static final WebJsonExporter instance = new WebJsonExporter();
 
     /**
-     * 导出为结构化对象，工作表名缺省为空。
+     * 导出为结构化对象；导出成功时工作表名称取自 Sheet 名称。
      *
      * @param result 导出结果
      * @return 扁平单元格网格结构；入参为 null 时返回空结构，不抛异常

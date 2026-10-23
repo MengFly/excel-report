@@ -11,7 +11,8 @@ import java.util.Map;
 /**
  * 一张可由前端回显的 Excel 工作表结构（扁平单元格网格）。
  * <p>
- * 由 {@link WebJsonExporter} 从 Container 树反推得到，不依赖 Sheet 的 POI 属性。
+ * 由 {@link WebJsonExporter} 从 Container 树的 position / measuredSize / finalStyle 反推得到；
+ * 工作表名称取自导出 Sheet 的名称。
  *
  * @author Mengfly
  */
@@ -20,7 +21,7 @@ import java.util.Map;
 public class WebExcel {
 
     /**
-     * 工作表名称；框架不主动从 POI 读取，需由调用方通过 {@link WebJsonExporter#export(io.github.mengfly.excel.report.excel.ExportResult, String)} 传入，缺省为空。
+     * 工作表名称，取自导出时 Sheet 的名称；导出结果为空时为空。
      */
     private String sheetName;
 

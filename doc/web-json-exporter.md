@@ -138,7 +138,7 @@ description: 新增 bridge 包下的 WebJsonExporter，把 ExportResult 转成�
 ### 3. WebJsonExporter 主遍历
 - **状态**：✅ 已完成
 - **修改文件**：
-  - `src/main/java/io/github/mengfly/excel/report/bridge/WebJsonExporter.java` — 新增：`export(ExportResult)` / `export(ExportResult, String)`；Layout 递归、叶子产单元格；几何取 position/measuredSize、样式取 finalStyle、类型取模板标签名（回退类简名）；(row,col) 排序与轻量去重；rowCount/colCount 计算
+  - `src/main/java/io/github/mengfly/excel/report/bridge/WebJsonExporter.java` — 新增：`export(ExportResult)`（记录中的 `export(ExportResult, String)` 重载实际未实现，2026-10-23 已在 [frontend-json-docs.md](frontend-json-docs.md) 更正）；Layout 递归、叶子产单元格；几何取 position/measuredSize、样式取 finalStyle、类型取模板标签名（回退类简名）；(row,col) 排序与轻量去重；rowCount/colCount 计算
 - **审查结果**：审查通过
 - **完成时间**：2026-10-10 10:25
 

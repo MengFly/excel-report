@@ -27,6 +27,7 @@ public class VLayout extends AbstractLayout {
     public void onMeasure(Size suggestSize) {
         measuredSize = suggestSize;
         measure(getContainers(), suggestSize);
+        reportOverflow(WeightSizeHelper.SIZE_TYPE_HEIGHT);
     }
 
     @Override

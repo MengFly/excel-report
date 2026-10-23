@@ -28,6 +28,7 @@ public class HLayout extends AbstractLayout {
         // 测量自身
         measuredSize = suggestSize;
         measure(getContainers(), suggestSize);
+        reportOverflow(WeightSizeHelper.SIZE_TYPE_WIDTH);
     }
 
     @Override

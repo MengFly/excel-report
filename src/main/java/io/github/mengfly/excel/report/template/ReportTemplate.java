@@ -12,6 +12,7 @@ import io.github.mengfly.excel.report.style.key.StyleKey;
 import io.github.mengfly.excel.report.template.validate.TemplateValidator;
 import io.github.mengfly.excel.report.template.validate.ValidationIssue;
 import io.github.mengfly.excel.report.util.XmlUtil;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +50,16 @@ public class ReportTemplate {
      * 汇总日志只打印一次（同一个模板会被反复 render）。
      */
     private final AtomicBoolean issuesLogged = new AtomicBoolean(false);
+
+    /*
+     * 模板由 TemplateManager 单例缓存后跨线程共享，而底层 DOM 不是线程安全的：
+     * JDK 8 Xerces 的 getChildNodes().item() 共用节点上的 fNodeListCache、getTextContent() 共用 fBufferStr，
+     * 并发遍历会抛 NPE / IllegalArgumentException（实测仅关闭 defer-node-expansion 仍会失败），
+     * 且异常会被渲染链路吞掉，产出一份缺块却“看起来正常”的报表。
+     * 因此 render 期间按实例串行；锁不覆盖 POI 导出阶段，不同模板之间互不阻塞。
+     */
+    @Getter(AccessLevel.NONE)
+    private final Object renderLock = new Object();
 
     public ReportTemplate(InputStream stream) {
         // 先读成字节：DOM 不保留行号，结构校验需要原始字节才能报出准确行号
@@ -137,9 +148,19 @@ public class ReportTemplate {
     }
 
 
+    /**
+     * 渲染模板。
+     * <p>
+     * 同一实例可被多个线程并发调用：渲染阶段会按实例串行，不同模板之间不受影响。
+     *
+     * @param context 模板数据
+     * @return 渲染后的根组件
+     */
     public Container render(DataContext context) {
-        logIssuesOnce();
-        return rootNode.render(context);
+        synchronized (renderLock) {
+            logIssuesOnce();
+            return rootNode.render(context);
+        }
     }
 
     /**

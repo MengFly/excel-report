@@ -6,9 +6,9 @@
 
 | ID | 严重等级 | 文件 | 行号 | 描述 | 风险 | 建议方案 |
 |----|---------|------|------|------|------|---------|
-| 001 | 高 | `D:\job\b_project\b_backend\portal\src\main\resources\excel\WarningDayReport.xml` | 355, 360, 365 | 三个图片循环包裹层写 `<VLayout size="-1,-1" for="img: ...">`，高度 `-1` 是"弹性/按权重分剩余高度"而非内容自适应；父级按等权重均分得到 37/37/38 行，而三组内容实际为 32/48/32 行，3 条那组溢出 11 行压到下一个兄弟节点 | 导出直接失败：`IllegalStateException: Cannot add merged region A114:AE114 ... overlaps ... (A110:AE124)`；只要三组列表条数不等就必崩（2/3/2 崩、2/2/2 正常、4/3/3 崩） | 去掉包裹层的 `size="-1,-1"`，并把循环体内 `Text`/`Image` 宽度写成 `31`（整表 A..AE）。**不可只删 `size` 而不动子元素宽度**（见 003） |
+| 001 | 高 | `D:\job\b_project\b_backend\portal\src\main\resources\excel\WarningDayReport.xml` | 355, 360, 365 | 三个图片循环包裹层写 `<VLayout size="-1,-1" for="img: ...">`，高度 `-1` 是"弹性/按权重分剩余高度"而非内容自适应；父级按等权重均分得到 37/37/38 行，而三组内容实际为 32/48/32 行，3 条那组溢出 11 行压到下一个兄弟节点 | 导出直接失败：`IllegalStateException: Cannot add merged region A114:AE114 ... overlaps ... (A110:AE124)`；只要三组列表条数不等就必崩（2/3/2 崩、2/2/2 正常、4/3/3 崩） | **首选**：只去掉包裹层的 `size="-1,-1"`，子元素宽度保持 `-1` 即可继承父级可用宽度（003 已于 2026-10-26 修复，原先"不可只删 `size`"的限制不再成立）。**旧版本框架**退化为：删 `size` 后把循环体内 `Text`/`Image` 宽度写成 `31`（整表 A..AE） |
 | 002 | 高 | `src/main/java/io/github/mengfly/excel/report/layout/VLayout.java` | 65-76（配合 `util/WeightSizeHelper.java:65-83`） | 弹性子节点（`preferredSize.height < 0`）按 `weight`（默认 1）均分剩余高度；当分配值小于该节点的内容高度时，VLayout 既不裁剪也不告警，子元素继续顺序排布、溢出到下一个兄弟节点的行区间 | 两张合并区相交，POI 在 `addMergedRegion` 抛 `IllegalStateException`；报错发生在**导出阶段**且信息里只有单元格坐标、与模板位置无关，定位成本高（本次靠探针才定位到模板行） | ✅ **已修（2026-10-23）**：`WeightSizeHelper` 改为"内容尺寸保底 + 剩余按 weight 分配 / 放不下按内容比例压缩"，`VLayout`/`HLayout` 分配后对"分配 < 内容"的子节点打 WARN。详见下方「002 修复记录」与 `doc/flex-layout-allocation.md` |
-| 003 | 中 | `src/main/java/io/github/mengfly/excel/report/layout/VLayout.java` | 49-63（`sumContainerSize`）、78-91（`getChildContainerSuggestSize`） | 省略 `size` 时 `preferredSize` 取 `container.getSize()`，而 `getSize().width = max(0, 子宽度)`，宽度为 `-1` 的子元素按 0 计入 ⇒ 包裹层自然宽度塌成 0，其子元素被测量成 0 宽 | 用户想表达"宽度自适应 + 高度随内容"时（`Size.of` 必须给两个值，写不出来）只能删 `size`，结果图片变成 0 宽；属静默错误，无任何提示 | `getSize()` 的宽度按"子元素全为 `-1` 则返回 `-1`"处理（或让 `sumContainerSize` 把 `-1` 透传），使省略 `size` 的包裹层宽度能继承父级可用宽度 |
+| 003 | 中 | `src/main/java/io/github/mengfly/excel/report/layout/VLayout.java` | 58-82（`sumContainerSize`）、97-110（`getChildContainerSuggestSize`），2026-10-26 修复后行号 | 省略 `size` 时 `preferredSize` 取 `container.getSize()`，而 `getSize().width = max(0, 子宽度)`，宽度为 `-1` 的子元素按 0 计入 ⇒ 包裹层自然宽度塌成 0，其子元素被测量成 0 宽 | 用户想表达"宽度自适应 + 高度随内容"时（`Size.of` 必须给两个值，写不出来）只能删 `size`，结果图片变成 0 宽；属静默错误，无任何提示 | ✅ **已修（2026-10-26）**：`VLayout.sumContainerSize` 宽度、`HLayout.sumContainerSize` 高度改为"子项非空且该轴全 `< 0` 时返回 `-1`，否则原 max"，省略 `size` 的布局因此继承父级可用尺寸。详见下方「003 修复记录」与 `doc/layout-cross-axis-auto-size.md` |
 
 ## 详情
 
@@ -69,4 +69,56 @@
 - `size` 声明的高度**对 layout 类子节点不生效**（`VLayout`/`HLayout` 的 `getSize()` 覆盖了 `preferredSize`，父级拿到的是内容累加值），
   所以"把高度写死写小"这条溢出路径只对叶子组件成立。这也是 001 的"备选方案（写死高度）"不稳定的原因之一。
 - 横向同源风险已一并处理（`HLayout` 走同一算法）。
+
+### 003 修复记录（2026-10-26）
+
+**根因**：布局类 `getSize()` 的交叉轴是 `max(0, 子项该轴...)`，子项该轴全为 `-1`（弹性）时得到 0；
+`ContainerParser` 在省略 `size` 时把这个 0 原样写入 `preferredSize`，父级 `getChildContainerSuggestSize`
+看到 `0 >= 0` 便按"确定 0"处理、不再回退父级可用尺寸 ⇒ 子树被测量成 0 宽/0 高，且无异常无告警。
+
+**改动**（2 个文件，无签名变更，模板协议不变）：
+
+| 文件 | 改动 |
+|---|---|
+| `layout/VLayout` | `sumContainerSize` 宽度：子项非空且全部 `< 0` 时返回 -1，否则保持原 max；子项 `getSize()` 只取一次 |
+| `layout/HLayout` | `sumContainerSize` 高度：与 VLayout 对称 |
+
+**判定边界**：
+
+- 仅严格全 `< 0` 才返回 -1；含 0（`size="0,0"` 占位、`PageRowSplit`）保持 0，不被相邻弹性项带成 -1。
+- 空布局返回 0（"全为负数"不适用于空集合）。
+- 含正数时保持原 max；主轴（`VLayout` 高度求和 / `HLayout` 宽度求和）不变。
+
+**行为变化**：
+
+- 仅"交叉轴子项全为负"的布局由 0 变 -1，从而走父级"继承可用尺寸"的弹性分支；其余输入结果不变。
+- `GridLayout` / `TableComponent` 间接变化：`getSize()` 委托合成布局，全弹性交叉轴时对应轴由 0 变为组数量
+  （横向 `(2,0)→(2,2)`、纵向 `(0,2)→(2,2)`），**不是直接继承父级**（合成根布局该轴走求和/取正，不会产出 -1）。
+- **交叉轴 -1 落在父级主轴时按弹性分配**：交替嵌套（`VLayout` 在 `HLayout` 内、`HLayout` 在 `VLayout` 内）时，
+  该 -1 是父级的主轴取值，`WeightSizeHelper.isFlexSize` 会把它判为弹性 ⇒ 按 `basis=1` + `weight` 分配，
+  声明/内容尺寸不再直接生效（改动前是固定 0；实测父宽 100、固定兄弟 10 时，inner 由 `measured=(0,2)` 变 `(90,2)`）。
+  与"继承父级"不同，需要在模板侧知道这是权重语义。
+
+**实测（`target/probe`，JDK8）**：
+
+| 用例 | 改动前 | 改动后 |
+|---|---|---|
+| 内层 `VLayout` 省略 size，父宽 31 | `getSize=(0,16)`、`measured=(0,16)`；子 `0,1` / `0,15` | `getSize=(-1,16)`、`measured=(31,16)`；子 `31,1` / `31,15` |
+| 内层 `HLayout` 省略 size，父高 31 | `getSize=(16,0)`、`measured=(16,0)`；子 `1,0` / `15,0` | `getSize=(16,-1)`、`measured=(16,31)`；子 `1,31` / `15,31` |
+| 子项 0 与 -1 混合 | `(0,2)` / `(2,0)` | 不变 |
+| 空布局 | `(0,0)` | 不变 |
+| `GridLayout` 子项全 `(-1,-1)` | 横向 `(2,0)`、纵向 `(0,2)` | `(2,2)` / `(2,2)` |
+| `VLayout` 嵌在 `HLayout` 内（父宽 100，另有固定宽 10 的兄弟） | `getSize=(0,2)`、`measured=(0,2)` | `getSize=(-1,2)`、`measured=(90,2)` |
+| `TestLayoutReport.xml` 导出 `sheet1.xml` | 3519 字节 | 逐字节相同 |
+| 现有测试套件 60 例 | — | 1 error，仍为既有的 `SimpleTemplateTest.testLayoutReport`（缺 `TestLayoutReport.xlsx.xml`） |
+
+**已知边界**：
+
+- 只改 `VLayout`/`HLayout` 交叉轴；`GridLayout`/`Table` 的合成布局经主轴求和后得到正数，不继承父级。
+  若确需"网格宽度自适应"，需另立议题（改 `GridLayout` 的合成/取尺寸逻辑）。
+- 交替嵌套时该 -1 落在父级主轴，会按弹性/权重分配（见上一条行为变化），不保证"等于内容尺寸"。
+- 省略 `size` 的布局在交叉轴现在等价于写了 `-1`；外部若直接把 `getSize()` 当正数做算术，需要容忍负数
+  （框架内 `WeightSizeHelper.contentSizeOf` 已按最小 1 处理，`getChildContainerSuggestSize` 已判 `< 0`）。
+- 真实模板（`WarningDayReport.xml` 删除包裹层 `size`）的端到端导出版式由用户验证，见
+  `doc/layout-cross-axis-auto-size.md` 任务 3。
 

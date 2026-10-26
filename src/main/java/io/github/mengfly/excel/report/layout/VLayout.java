@@ -47,18 +47,36 @@ public class VLayout extends AbstractLayout {
         }
     }
 
+    /**
+     * 计算布局的内容尺寸：宽度取子节点最大值，高度为子节点高度之和（弹性子节点至少占 1 行）。
+     * <p>
+     * 子节点非空且宽度全为负数（弹性）时，宽度返回 -1，表示自身无固有宽度、由父级可用宽度决定。
+     *
+     * @param containers 子节点
+     * @return 内容尺寸
+     */
     public static Size sumContainerSize(List<Container> containers) {
         Size size = new Size();
+        // 子节点全为弹性宽度时若返回 0，省略 size 的布局会被父级当成"确定 0 宽"而塌陷；
+        // 返回 -1 才能走"继承父级可用宽度"的弹性分支（见 getChildContainerSuggestSize）。
+        boolean allFlexWidth = !containers.isEmpty();
         for (Container container : containers) {
-            size.width = Math.max(size.width, container.getSize().width);
+            final Size childSize = container.getSize();
+            if (childSize.width >= 0) {
+                allFlexWidth = false;
+            }
+            size.width = Math.max(size.width, childSize.width);
 
-            final int height = container.getSize().height;
+            final int height = childSize.height;
             if (height > 0) {
                 size.height += height;
             } else if (height < 0) {
                 // 至少占一行
                 size.height += 1;
             }
+        }
+        if (allFlexWidth) {
+            size.width = -1;
         }
         return size;
     }

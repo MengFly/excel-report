@@ -57,17 +57,34 @@ public class HLayout extends AbstractLayout {
         }
     }
 
+    /**
+     * 计算布局的内容尺寸：高度取子节点最大值，宽度为子节点宽度之和（弹性子节点至少占 1 列）。
+     * <p>
+     * 子节点非空且高度全为负数（弹性）时，高度返回 -1，表示自身无固有高度、由父级可用高度决定。
+     *
+     * @param containers 子节点
+     * @return 内容尺寸
+     */
     public static Size sumContainerSize(List<Container> containers) {
         Size size = new Size();
+        // 与 VLayout 对称：子节点全为弹性高度时返回 -1（由父级决定），而不是塌成 0。
+        boolean allFlexHeight = !containers.isEmpty();
         for (Container container : containers) {
-            final int width = container.getSize().width;
+            final Size childSize = container.getSize();
+            final int width = childSize.width;
             if (width > 0) {
                 size.width += width;
             } else if (width < 0) {
                 // 最少占一个宽度
                 size.width += 1;
             }
-            size.height = Math.max(size.height, container.getSize().height);
+            if (childSize.height >= 0) {
+                allFlexHeight = false;
+            }
+            size.height = Math.max(size.height, childSize.height);
+        }
+        if (allFlexHeight) {
+            size.height = -1;
         }
         return size;
     }

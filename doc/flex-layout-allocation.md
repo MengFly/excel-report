@@ -119,13 +119,15 @@ if (remaining >= sumBasis) {                   // 放得下：保底 + 剩余按
    本次算法在顶层必然刚好放下。因此溢出告警实际只会在两种情况下触发：调用方直接 `onMeasure(Size)` 给了更小的可用尺寸、
    或父级自身被上层压小（`HLayout` 给子节点的高度永远是父级自高度）。
 3. **`size` 声明的高度对 layout 类子节点不生效**：`VLayout`/`HLayout`/`GridLayout`/`TableComponent` 的 `getSize()`
-   都覆盖成"内容累加"，父级 `WeightSizeHelper` 拿到的是内容值而非声明值 ⇒ "把高度写死写小"只会对叶子组件成立。
+   都覆盖成"主轴内容累加、交叉轴取最大"（2026-10-26 起交叉轴在子项全为弹性负数时返回 -1，表示继承父级），
+   父级 `WeightSizeHelper` 拿到的是内容值而非声明值 ⇒ "把高度写死写小"只会对叶子组件成立。
    这也是 `code-review.md` 001「备选方案（写死高度）不推荐」的另一个原因：连"写死"都不一定按写的值生效。
 4. **重复 render 会重复告警**：告警按布局实例去重，同一模板批量导出 N 次仍是 N 条（与"逐节点"口径一致，符合预期）。
 
 ### 4.5 不在本次范围
 
-- `code-review.md` 003（省略 `size` 时宽度塌成 0）：需改 `sumContainerSize` 的宽度语义，与 §4.4-1 一起评估。
+- ~~`code-review.md` 003（省略 `size` 时宽度塌成 0）~~：已由 `doc/layout-cross-axis-auto-size.md`（2026-10-26）修复——
+  `VLayout`/`HLayout` 的 `sumContainerSize` 交叉轴在"子项非空且全为负"时返回 -1，省略 `size` 的布局因此继承父级可用尺寸。
 - 新增"内容自适应"显式语义（如 `size` 高度写 `-2` / 新 style key）：属改 XSD 协议 + 同步插件校验（见台账"扩展面口径"），本次用"改默认分配算法"达成同样效果。
 - 导出期 `addMergedRegion` 失败时补模板节点信息（可做但会把模板树塞进 `ReportContext`，另立议题）。
 

@@ -55,8 +55,13 @@ public class ForExpression extends ProcessExpression {
         try {
             final Object target = context.doExpression(targetObjExpression);
 
+            /*
+             * 2026-10-27：求值为 null（键缺失同样得到 null）时不再用父上下文渲染一次循环体。
+             * 旧行为会让循环体里的 ${item.xxx} 以 null 求值，报出与数据无关的异常；只摆文字时则多出一行空白，
+             * 与空列表的 0 行表现不一致。这里和空列表对齐：不渲染，只留一条告警。
+             */
             if (target == null) {
-                dataConsumer.accept(context);
+                log.warn("for 表达式 [{}] 求值为 null，跳过循环体", targetObjExpression);
                 return;
             }
 
@@ -76,11 +81,11 @@ public class ForExpression extends ProcessExpression {
                     dataConsumer.accept(createForEnv(objects.get(i), i));
                 }
             } else {
-                log.error("Un support target type {}", target.getClass());
-                dataConsumer.accept(context);
+                log.warn("for 表达式 [{}] 的求值结果不是集合（{}），跳过循环体", targetObjExpression,
+                        target.getClass().getName());
             }
         } catch (Exception e) {
-            dataConsumer.accept(context);
+            // 求值异常也不再回退渲染一次：父上下文里没有循环变量，只会再抛一条无关错误
             log.error("Can't eval expression : {}", targetObjExpression, e);
         }
 

@@ -4,6 +4,7 @@ import cn.hutool.core.util.RandomUtil;
 import io.github.mengfly.excel.report.exapmle.util.TestTemplateUtil;
 import io.github.mengfly.excel.report.excel.ExcelReport;
 import io.github.mengfly.excel.report.template.DataContext;
+import io.github.mengfly.excel.report.template.TemplateManager;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

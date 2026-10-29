@@ -1,12 +1,12 @@
 package io.github.mengfly.excel.report.exapmle;
 
 import cn.hutool.core.util.RandomUtil;
-import io.github.mengfly.excel.report.excel.ExcelReport;
 import io.github.mengfly.excel.report.exapmle.util.TestTemplateUtil;
+import io.github.mengfly.excel.report.excel.ExcelReport;
 import io.github.mengfly.excel.report.template.DataContext;
+import io.github.mengfly.excel.report.template.TemplateManager;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,9 +17,7 @@ public class IndexSensitivityTemplateReportTest {
 
     @Test
     public void testIndexSensitivityTemplateReport() throws IOException {
-        final ExcelReport report = new ExcelReport();
-        TestTemplateUtil.exportTemplate(report, createDataContext(), "IndexSensitivityTemplate.xml");
-        report.save(new File("example/IndexSensitivityTemplate.xlsx"));
+        TestTemplateUtil.export( "IndexSensitivityTemplate.xml", createDataContext());
     }
 
 

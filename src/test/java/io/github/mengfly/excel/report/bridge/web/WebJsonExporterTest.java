@@ -335,8 +335,8 @@ public class WebJsonExporterTest {
         Assert.assertEquals("H", text(header).getValue());
         Assert.assertEquals("表头应跨 2 列", 2, header.getColSpan());
         Assert.assertEquals("类型应取组件类简名", "ListComponent", header.getType());
-        // 纵向表头在框架里未叠加 header.getStyle()，回显须保持一致（DEFAULT_STYLE 的 fontBold=false）
-        Assert.assertEquals("纵向表头不应叠加 header 样式", Boolean.FALSE, header.getStyle().get("fontBold"));
+        // 纵向表头同样叠加 header.getStyle()
+        Assert.assertEquals("纵向表头应叠加 header 样式", Boolean.TRUE, header.getStyle().get("fontBold"));
 
         WebCell first = findCell(web, 1, 0);
         Assert.assertNotNull(first);

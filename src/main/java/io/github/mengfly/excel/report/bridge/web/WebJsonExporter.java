@@ -186,9 +186,9 @@ public final class WebJsonExporter implements BridgeExporter<WebExcel> {
         if (list.getOrientation() == Orientation.VERTICAL) {
             int startRow = 0;
             if (header != null) {
-                // 纵向表头在 ListComponent#exportVerticalList 里未额外叠加 header.getStyle()，此处保持一致
+                // 纵向表头与横向一致，叠加 header.getStyle()
                 out.add(listCell(position.getY(), position.getX(), header.getSpan(), span,
-                        header.getTitle(), baseStyle, type));
+                        header.getTitle(), mergeStyle(baseStyle, header.getStyle()), type));
                 startRow += header.getSpan();
             }
             for (Object data : dataList) {

@@ -75,7 +75,8 @@ public class ListComponent extends AbstractComponent {
 
         // export header
         if (header != null) {
-            final ExcelCellSpan headerCellSpan = context.getCellSpan(point, Size.of(span, header.getSpan()));
+            final ExcelCellSpan headerCellSpan = context.getCellSpan(point, Size.of(span, header.getSpan()),
+                    context.getCurrentChildStyle(header.getStyle()));
             headerCellSpan.merge().setValue(header.getTitle());
 
             startRow += header.getSpan();

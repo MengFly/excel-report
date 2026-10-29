@@ -82,9 +82,9 @@ description: 新增 bridge 包下的 WebJsonExporter，把 ExportResult 转成�
 
 | 属性 | 值 |
 |------|-----|
-| **描述** | 对 `ListComponent` 特判展开（与 `onExport` 坐标规则一致，[ListComponent.java](file:///d:/job/excel-report/excel-report/src/main/java/io/github/mengfly/excel/report/component/list/ListComponent.java#L49-L91)）：`VERTICAL` 时表头 `(x, y)` 跨度 `(span, header.span)`、数据逐行 `(x, y+startRow)` 跨度 `(span, 1)`；`HORIZONTAL` 时表头 `(x, y)` 跨度 `(header.span, span)`、数据逐列 `(x+startCol, y)` 跨度 `(1, span)`。表头样式对齐框架实际行为：**仅 `HORIZONTAL` 分支叠加 `header.getStyle()`**（`exportHorizontalList` 才叠加，`exportVerticalList` 未叠加）；数据单元格样式一律用 `getFinalStyle()`。`value` 取 `header.getTitle()` / 各数据元素。单元格 `type` 同样遵循"模板标签名优先、否则类简名"规则。 |
+| **描述** | 对 `ListComponent` 特判展开（与 `onExport` 坐标规则一致，[ListComponent.java](file:///d:/job/excel-report/excel-report/src/main/java/io/github/mengfly/excel/report/component/list/ListComponent.java#L49-L91)）：`VERTICAL` 时表头 `(x, y)` 跨度 `(span, header.span)`、数据逐行 `(x, y+startRow)` 跨度 `(span, 1)`；`HORIZONTAL` 时表头 `(x, y)` 跨度 `(header.span, span)`、数据逐列 `(x+startCol, y)` 跨度 `(1, span)`。表头样式对齐框架实际行为：**横纵两个分支均叠加 `header.getStyle()`**；数据单元格样式一律用 `getFinalStyle()`。`value` 取 `header.getTitle()` / 各数据元素。单元格 `type` 同样遵循"模板标签名优先、否则类简名"规则。 |
 | **依赖关系** | 依赖任务 3 |
-| **验收标准** | 含 `List`（横/纵）的模板导出后，表头与各数据单元格均出现在正确行列、跨度正确；横向表头样式含 `Header` 附加样式，纵向表头不含（与框架一致）。 |
+| **验收标准** | 含 `List`（横/纵）的模板导出后，表头与各数据单元格均出现在正确行列、跨度正确；横向与纵向表头样式均含 `Header` 附加样式。 |
 
 ### 任务 6：测试与回归
 
@@ -152,8 +152,8 @@ description: 新增 bridge 包下的 WebJsonExporter，把 ExportResult 转成�
 ### 5. ListComponent 单元格展开特判
 - **状态**：✅ 已完成
 - **修改文件**：
-  - `src/main/java/io/github/mengfly/excel/report/bridge/WebJsonExporter.java` — 新增 `expandList`：横/纵表头与数据单元格坐标/跨度对齐 `ListComponent#onExport`；表头样式仅横向叠加 `header.getStyle()`
-- **审查结果**：审查通过，并按审查意见修正"纵向表头误叠加 header 样式"（改为仅横向叠加，与框架 `exportVerticalList` 一致）
+  - `src/main/java/io/github/mengfly/excel/report/bridge/WebJsonExporter.java` — 新增 `expandList`：横/纵表头与数据单元格坐标/跨度对齐 `ListComponent#onExport`；表头样式横纵均叠加 `header.getStyle()`
+- **审查结果**：审查通过。后续修正："纵向表头误叠加"的结论已推翻——框架 `exportVerticalList` 现同样叠加 `header.getStyle()`，JSON 回显同步叠加
 - **完成时间**：2026-10-10 10:25
 
 ### 6. 测试与回归

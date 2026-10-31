@@ -14,6 +14,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFDataFormat;
 import org.apache.poi.xssf.usermodel.XSSFDrawing;
 import org.apache.poi.xssf.usermodel.XSSFHyperlink;
@@ -30,6 +31,10 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 public class ReportContext {
+
+    // Excel 单列列宽范围（字符数），超出后 POI 的 XSSFSheet#setColumnWidth 会抛异常
+    private static final double MIN_COLUMN_WIDTH = 1;
+    private static final double MAX_COLUMN_WIDTH = 255;
 
     @Getter
     private final Workbook workbook;
@@ -139,7 +144,7 @@ public class ReportContext {
         // 必须在下面写列宽/行高之前执行。
         cellSpans.forEach(ExcelCellSpan::calculateAutoSizeIfAbsent);
 
-        autoWidthColumn.forEach((column, width) -> sheet.setColumnWidth(column, (int) (width * 256)));
+        autoWidthColumn.forEach(this::applyColumnWidth);
 
         autoHeightRow.forEach((row, height) -> sheet.getRow(row).setHeightInPoints(height.floatValue()));
 
@@ -165,6 +170,19 @@ public class ReportContext {
             }
         });
 
+    }
+
+    // Excel 单列列宽上限 255 字符：POI 的 XSSFSheet#setColumnWidth 超过 255*256 会抛 IllegalArgumentException，
+    // 而这里处于导出收尾阶段，一次异常会让前面渲染好的整份报表无法保存。
+    // 所以先把列宽钳制到 1~255 再写入，被钳制的列打一条带列号的告警便于定位模板。
+    private void applyColumnWidth(int column, double width) {
+        final double clamped = Math.max(MIN_COLUMN_WIDTH, Math.min(MAX_COLUMN_WIDTH, width));
+        if (clamped != width) {
+            // 必须先在字符单位上钳制（并保证 <= 255）再乘 256，否则 255.x 字符乘完仍会超过 POI 的 255*256 上限
+            log.warn("列 {}（第 {} 列）列宽 {} 字符超出 Excel 允许的 1~255 字符范围，已按 {} 字符写入",
+                    CellReference.convertNumToColString(column), column, width, clamped);
+        }
+        sheet.setColumnWidth(column, (int) (clamped * 256));
     }
 
     /**

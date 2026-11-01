@@ -1,3 +1,15 @@
+## V1.6.2
+
+### 修复
+- 图片按区域适配（`FIT_START` / `FIT_END` / `CENTER`）不再纵向拉伸：`ExcelCellSpan#cellSpanDimension()` 的区域高度
+  由磅改为按像素返回（96 DPI 下 `1 pt = 4/3 px`），与图片像素、列宽像素统一到同一量纲
+- 图片 `padding` 的横向折算改用 `EMU_PER_PIXEL`（原为 `EMU_PER_POINT`，横向 2px 实际渲染成 2.67px）
+
+### ⚠️ 行为变更（编译器发现不了）
+- `ExcelCellSpan#cellSpanDimension()` 返回的**高度单位由磅改为像素**；`CellUtils#scaleCell` 不再按行/列区分单位
+  （`isRow` 参数仅为签名兼容保留）。外部若有代码把该返回值当磅使用，需要自行换算
+- 使用 `FIT_START` / `FIT_END` / `CENTER` 的存量模板，导出的图片尺寸会变化（纵向回落到正确比例）；`FIT_XY` 不受影响
+
 ## V1.6.1
 [更新详情](version/V1.6.1.md)
 

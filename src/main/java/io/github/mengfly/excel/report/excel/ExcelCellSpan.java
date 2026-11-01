@@ -20,6 +20,8 @@ import java.awt.geom.Dimension2D;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.apache.poi.util.Units.EMU_PER_PIXEL;
+import static org.apache.poi.util.Units.EMU_PER_POINT;
 
 /**
  * 一个矩形单元格区域（Sheet 上 {@code point, size} 覆盖的范围）。
@@ -189,6 +191,13 @@ public class ExcelCellSpan {
         return anchor;
     }
 
+    /**
+     * 本区域覆盖的矩形尺寸。
+     * <p>
+     * 宽与高<b>统一为像素</b>（96 DPI 约定：1 inch = 72 pt = 96 px），可直接与图片的像素尺寸做比例运算。
+     *
+     * @return 宽 = 各列 {@link #getColumnWidthInPixels(int)} 之和，高 = 各列 {@link #getRowHeightInPixels(int)} 之和
+     */
     public Dimension2D cellSpanDimension() {
         double widthPixel = 0;
         double heightPixel = 0;
@@ -197,8 +206,10 @@ public class ExcelCellSpan {
             widthPixel += getColumnWidthInPixels(point.getX() + i);
         }
 
+        // 曾直接累加 getRowHeightInPoints（磅）却存在 heightPixel 里：图片按区域适配时，
+        // 「图片像素 × scale」算出的纵向目标值被 CellUtils 当成磅消费 ⇒ 纵向被放大 4/3，图片变瘦高。
         for (int i = 0; i < size.height; i++) {
-            heightPixel += getRowHeightInPoints(point.getY() + i);
+            heightPixel += getRowHeightInPixels(point.getY() + i);
         }
         return new Dimension2DDouble(widthPixel, heightPixel);
     }
@@ -209,6 +220,17 @@ public class ExcelCellSpan {
 
     public double getRowHeightInPoints(int row) {
         return getSheet().getRow(row).getHeightInPoints();
+    }
+
+    /**
+     * 行高，单位像素 —— 与 {@link #getColumnWidthInPixels(int)} 同量纲。
+     *
+     * @param row 行号
+     * @return 行高像素值（96 DPI 下 1 pt = 4/3 px）
+     */
+    public double getRowHeightInPixels(int row) {
+        // 用 POI 的 EMU 常量取比值（12700 / 9525 = 4/3），不硬编码，与 CellUtils 的换算同源
+        return getRowHeightInPoints(row) * EMU_PER_POINT / EMU_PER_PIXEL;
     }
 
 }

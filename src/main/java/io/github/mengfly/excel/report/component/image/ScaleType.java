@@ -27,7 +27,7 @@ public enum ScaleType {
                     anchor::setCol2, anchor::setDx2, cellSpan::getColumnWidthInPixels, false);
 
             CellUtils.scaleCell(targetY, anchor.getRow1(), anchor.getDy1(),
-                    anchor::setRow2, anchor::setDy2, cellSpan::getRowHeightInPoints, true);
+                    anchor::setRow2, anchor::setDy2, cellSpan::getRowHeightInPixels, true);
         }
     },
     FIT_END {
@@ -47,7 +47,7 @@ public enum ScaleType {
                     anchor::setCol1, anchor::setDx1, cellSpan::getColumnWidthInPixels, false);
 
             CellUtils.scaleCell(targetY, anchor.getRow1(), 0,
-                    anchor::setRow1, anchor::setDy1, cellSpan::getRowHeightInPoints, true);
+                    anchor::setRow1, anchor::setDy1, cellSpan::getRowHeightInPixels, true);
         }
     },
     FIT_XY,
@@ -75,7 +75,7 @@ public enum ScaleType {
                     anchor::setCol1, anchor::setDx1, cellSpan::getColumnWidthInPixels, false);
 
             CellUtils.scaleCell(startTargetY, startRow, 0,
-                    anchor::setRow1, anchor::setDy1, cellSpan::getRowHeightInPoints, true);
+                    anchor::setRow1, anchor::setDy1, cellSpan::getRowHeightInPixels, true);
 
             double endTargetX = startTargetX + targetImageWidth;
             double endTargetY = startTargetY + targetImageHeight;
@@ -84,7 +84,7 @@ public enum ScaleType {
                     anchor::setCol2, anchor::setDx2, cellSpan::getColumnWidthInPixels, false);
 
             CellUtils.scaleCell(endTargetY, startRow, 0,
-                    anchor::setRow2, anchor::setDy2, cellSpan::getRowHeightInPoints, true);
+                    anchor::setRow2, anchor::setDy2, cellSpan::getRowHeightInPixels, true);
         }
     };
 

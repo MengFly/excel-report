@@ -47,11 +47,14 @@ public class ImageComponent extends AbstractComponent {
                     scaleType.onAnchor(fillAnchor, cellSpan, imageDimension);
                     Border padding = Border.of(getPadding());
 
+                    // padding 的单位是像素，四个方向都按 EMU_PER_PIXEL 折算 —— 这是"唯一一把尺子"。
+                    // 历史实现纵向用 EMU_PER_PIXEL、横向用 EMU_PER_POINT：纵向恰好正确
+                    // （2px × EMU_PER_PIXEL ≡ 2px→1.5pt × EMU_PER_POINT），横向 2px 会被渲染成 2.67px。
                     int top = padding.getTop() * Units.EMU_PER_PIXEL;
                     int bottom = -padding.getBottom() * Units.EMU_PER_PIXEL;
 
-                    int left = padding.getLeft() * Units.EMU_PER_POINT;
-                    int right = -padding.getRight() * Units.EMU_PER_POINT;
+                    int left = padding.getLeft() * Units.EMU_PER_PIXEL;
+                    int right = -padding.getRight() * Units.EMU_PER_PIXEL;
 
                     fillAnchor.setDx1(fillAnchor.getDx1() + left);
                     fillAnchor.setDx2(fillAnchor.getDx2() + right);

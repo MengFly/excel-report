@@ -117,17 +117,6 @@ public abstract class AbstractLayout extends StyleHolder implements Layout {
     // 模板节点自底向上的标签链（带上该节点的 size 属性），用于在日志里点名病灶而不必再写探针。
     private static String nodePath(Container container) {
         final ContainerTreeNode node = container.templateNode();
-        if (node == null) {
-            return container.getClass().getSimpleName();
-        }
-        final StringBuilder path = new StringBuilder();
-        for (ContainerTreeNode current = node; current != null; current = current.getParent()) {
-            if (path.length() > 0) {
-                path.insert(0, " > ");
-            }
-            final String size = current.getAttribute("size");
-            path.insert(0, size.isEmpty() ? current.getTagName() : current.getTagName() + "[size=" + size + "]");
-        }
-        return path.toString();
+        return node == null ? container.getClass().getSimpleName() : node.nodePath();
     }
 }

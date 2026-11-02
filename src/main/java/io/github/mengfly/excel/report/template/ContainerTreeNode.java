@@ -42,14 +42,57 @@ public class ContainerTreeNode {
      * 渲染组件
      *
      * @param context 组件数据
-     * @return 组件
+     * @return 组件；当前节点渲染失败时返回 {@code null}，只跳过当前节点、不影响兄弟节点
      */
     public Container render(DataContext context) {
-        final Container container = ParserFactory.doParseElement(this, context);
-        if (container != null) {
-            container.templateNode(this);
+        try {
+            final Container container = ParserFactory.doParseElement(this, context);
+            if (container != null) {
+                container.templateNode(this);
+            }
+            return container;
+        } catch (Exception e) {
+            /*
+             * parse 之后的属性/样式/size 表达式求值也在这里收口。过去这些异常会冒泡到父节点的
+             * 表达式捕获处：父容器整块被跳过，日志却指向父节点，几十个组件的模板根本对不上号。
+             */
+            reportRenderError(context, null, e);
+            return null;
         }
-        return container;
+    }
+
+    /**
+     * 报告当前节点的一次渲染失败（同一次导出内按节点去重，只报一次）。
+     *
+     * @param context    组件数据
+     * @param expression 出错的表达式，未知时传 {@code null}
+     * @param e          渲染异常
+     */
+    public void reportRenderError(DataContext context, String expression, Exception e) {
+        if (!context.markRenderWarned(this)) {
+            return;
+        }
+        final String expressionPart = StrUtil.isEmpty(expression) ? "" : "；表达式：" + expression;
+        log.warn("渲染组件失败，跳过该节点：{}{}", nodePath(), expressionPart, e);
+    }
+
+    /**
+     * 当前节点自底向上的标签链（带上各节点的 {@code size} 属性），用于在日志中定位模板节点。
+     * <p>
+     * 格式与布局溢出告警一致，例如：{@code vl[size=31,-1] > text[size=20,1]}。
+     *
+     * @return 标签链
+     */
+    public String nodePath() {
+        final StringBuilder path = new StringBuilder();
+        for (ContainerTreeNode current = this; current != null; current = current.getParent()) {
+            if (path.length() > 0) {
+                path.insert(0, " > ");
+            }
+            final String size = current.getAttribute("size");
+            path.insert(0, size.isEmpty() ? current.getTagName() : current.getTagName() + "[size=" + size + "]");
+        }
+        return path.toString();
     }
 
     public String getAttribute(String key) {
@@ -141,7 +184,7 @@ public class ContainerTreeNode {
     }
 
     public ProcessControl getProcessControl(DataContext context, String tagName) {
-        return ProcessControl.create(tagName, getElement().getAttribute(tagName), context);
+        return ProcessControl.create(tagName, getElement().getAttribute(tagName), context, this);
     }
 
     public Map<String, String> getAttributeMap(String... ignoreProperties) {

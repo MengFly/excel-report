@@ -19,6 +19,10 @@ import re
 import sys
 import xml.etree.ElementTree as ET
 
+# Windows 控制台默认 GBK，消息里的 ⇒ / … 等字符会让 print 直接抛 UnicodeEncodeError。
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(errors="replace")
+
 LAYOUT_TAGS = {"VLayout", "HLayout", "GridLayout"}
 COMPONENT_TAGS = {"VLayout", "HLayout", "GridLayout", "Text", "Table", "Image",
                   "List", "Span", "Link", "Chart"}
@@ -82,8 +86,8 @@ ATTRS = {
     "ChartData": set(),
     "Chart3dData": set(),
     "PieData": set(),
-    "PageColSplit": {"if", "for"},
-    "PageRowSplit": {"if", "for"},
+    "PageColSplit": {"if"},
+    "PageRowSplit": {"if"},
     "include": None,  # None = 除 ref 外允许任意附加属性
 }
 AXIS = {"title", "numberFormat", "logBase", "majorUnit", "minorUnit", "minimum",

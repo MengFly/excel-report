@@ -165,11 +165,44 @@ style="idA {dataFormat:0.00 分}"        <!-- 混合，顺序即优先级 -->
 ## 7. `if` / `for`
 
 - `if="${cond}"` —— 计算结果转 boolean，false 则该组件**整个不渲染**。条件取不到值时会按真处理，慎用易失败的表达式。
-- `for="item,index: ${list}"` / `for="item: ${list}"` / `for="k,v: ${map}"` —— 循环渲染该组件（每次一个子级变量环境）。
+- `for="item,index: ${list}"` / `for="item: ${list}"` / `for="k,v: ${map}"` —— 把**该布局的子节点**循环渲染 N 次，**布局本身只创建 1 个**。
   - **冒号必须存在**，否则退化成「只渲染一次」（不报错）。
-  - 列表：第 1 个变量是元素、第 2 个是下标；Map：第 1 个是 key、第 2 个是 value。
-  - **只有布局类标签支持 `for`**：`VLayout` `HLayout` `GridLayout`，以及图表里的 `valueAxis1` / `valueAxis2`。
-    ⇒ 要让一个 `Text` 或 `Table` 循环，外面套一层带 `for` 的 `VLayout`。
+  - 列表：第 1 个变量是元素、第 2 个是下标；Map：第 1 个是 key、第 2 个是 value。循环变量对**被循环的子节点及其后代**可见，对布局自身的属性不可见。
+  - **只有布局类标签支持 `for`**：`VLayout` `HLayout` `GridLayout`（图表里是 `valueAxis1` / `valueAxis2` 上的 `for` 循环其 `<data>` 子节点）。
+    写到 `Text` / `Table` / `Chart` / `include` / `PageRowSplit` / `PageColSplit` 上会被**静默忽略**，只渲染一次。
+    ⇒ 要让一个 `Text` 或 `Table` 循环，外面套一层带 `for` 的 `VLayout`（结果是 1 个 VLayout 里装 N 个 Text/Table）。
+  - 布局自身的属性（`style` / `size` / `alignPolicy` / `id`）只在**外层上下文**求值一次，取不到循环变量；
+    需要逐项变化的值只能写在**子节点**的属性上。
+  - 同一个布局上的 `if` 也在迭代前求值一次，`if="${index == 0}"` 这类逐项条件必须写**子节点**上。
+
+**关键区别（最容易误解）**：`for` 复制的是**子节点**，不是带 `for` 的布局标签。
+
+```xml
+<VLayout for="item,index: ${list}">
+    <Text size="-1,1" text="${index}: ${item}"/>
+</VLayout>
+```
+
+渲染结果 = **1 个 VLayout** 里装了 N 个 Text：
+
+```
+<VLayout>
+    <Text/><Text/>…<Text/>
+</VLayout>
+```
+
+**不是** N 个 VLayout。想每个元素各包一层（各自有边框/间距/独立尺寸），就在 `for` 布局里再放一层布局当子节点——它会在每次迭代中新建：
+
+```xml
+<VLayout for="group: ${groups}">            <!-- 只创建 1 个 -->
+    <VLayout size="-1,-1" style="itemBox">  <!-- 每个 group 各创建 1 个 -->
+        <Text size="-1,1" text="${group.title}"/>
+    </VLayout>
+</VLayout>
+```
+
+- `GridLayout` 的 `for`：所有迭代产生的子节点**流进同一个网格**，按 `count` / `orientation` 连续排布，不是每个元素一个网格。
+- 布局没有子节点时，`for` 不会产出任何内容。
 
 ## 8. 富文本
 

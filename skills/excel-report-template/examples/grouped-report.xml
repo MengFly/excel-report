@@ -4,7 +4,8 @@
 
   展示要点：
   1. `<container>` 下只有一个根组件（VLayout），所有循环/条件都落在布局标签上。
-  2. `for` 只能写在 VLayout / HLayout / GridLayout 上 —— 想让一个 Table 循环，就给它套一层 VLayout。
+  2. `for` 只能写在 VLayout / HLayout / GridLayout 上 —— 想让一个 Table 循环，就给它套一层 VLayout；
+     循环复制的是布局的**子节点**，外面这层 VLayout 本身只创建 1 个（详见 template-spec §7）。
   3. 分组表头 + `headerVisible="false"` 的 Table 组合：分组标题占一行，组内数据不再画表头。
   4. 内联 JSON 里含 ${} 的 value 必须加引号：{fontBold:'${gi==0?true:false}'}。
   5. 小计/合计不要试图在模板里聚合（SpEL 能做到但不该做）——
@@ -109,7 +110,7 @@
                   style="{fontName:'微软雅黑',alignHorizontal:center,alignVertical:center}"
                   text="暂无数据"/>
 
-            <!-- 分组循环：VLayout 上的 for（for 只能写在布局标签上） -->
+            <!-- 分组循环：for 写在 VLayout 上，复制的是下面的子节点；这个 VLayout 本身只创建 1 个 -->
             <VLayout for="group,gi: ${groups}">
 
                 <!-- 分组标题：${gi + 1} 是分组序号；这里是「只有一个表达式片段」以外的拼接，结果是字符串（标题本来就该是字符串） -->

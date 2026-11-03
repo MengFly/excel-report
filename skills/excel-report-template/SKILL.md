@@ -27,6 +27,8 @@ agent_created: true
 7. **不要给 `Table` / `List` 设正数 `size`**：这两者按数据自算格数，正数会被忽略。只有 `-1`（撑满）对它们有效。
    `Text`/`Link`/`Span`/`Image`/`Chart` 的 `size` 才是真正生效的占格数。
 8. **模板解析结果会被缓存**：改了模板文件却看不出变化，先清理模板缓存 / 重新部署再验证，不要怀疑写法。
+9. **`for` 复制的是子节点，不是带 `for` 的标签**：`<VLayout for="item: ${list}"><Text/></VLayout>` = 1 个 VLayout 装 N 个 Text；
+   布局自身的 `style`/`size`/`if` 只在外层上下文求值一次（取不到循环变量）。要让每个元素各包一层，就在里面再放一层布局。详见 `references/template-spec.md §7`。
 
 ## 工作流
 
@@ -52,7 +54,7 @@ agent_created: true
 | 图片 | `Image`（文件 / 流 / URL / Base64，`scaleType` 控制适配） | — |
 | 超链接 | `Link` | 模板层给 `Text` 加链接（做不到） |
 | 多 Sheet / 复用版式 | 多次导出（每次一个 Sheet）；或用 `include` 抽公共模板 | 复制粘贴整份 XML |
-| 重复结构 | `for` 属性 | 复制 N 份节点 |
+| 重复结构 | 布局上的 `for`（循环其**子节点**，布局本身只有 1 个） | 复制 N 份节点 |
 | 条件显示 | `if` 属性 | 在 Java 侧过滤数据 |
 | 规则网格 | `GridLayout count= orientation=` | 手搓 HLayout/VLayout 矩阵 |
 | 组合排版 / 多级表头 | `HLayout` / `VLayout`（中级，只在需要拼装时用） | — |

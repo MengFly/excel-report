@@ -11,7 +11,7 @@
 | `style` | 样式引用（id 列表 / 内联 JSON / 混合） |
 | `if` | 表达式条件，false 则不渲染 |
 | `size` | `宽,高`，见 `template-spec.md §5` |
-| `for` | 仅布局类（`VLayout`/`HLayout`/`GridLayout`）与图表的 `valueAxis1`/`valueAxis2` 支持 |
+| `for` | 仅布局类（`VLayout`/`HLayout`/`GridLayout`）与图表的 `valueAxis1`/`valueAxis2` 支持；循环的是**子节点**，标签本身只有 1 个（见 `template-spec.md §7`） |
 
 ## 1. 布局容器
 
@@ -25,6 +25,7 @@
 ```
 
 - 属性：`alignPolicy`（`start` 默认 / `center` / `end`，控制子组件在**水平方向**的落位）、通用属性、`for`。
+  带 `for` 时：VLayout 实例只有 1 个，循环的是它的子节点。
 - 子元素：任意组件 + `include` + `PageRowSplit` + `PageColSplit`。
 - 语义：竖向堆叠；子组件 `size` 高度为 `-1` 时按 `weight` 分配剩余高度。
 
@@ -149,7 +150,7 @@
 
 - `<labelAxis>`：只放一个 `<data>`。`type` = `category` / `date` / `values`；`labelAlignment` = `center` / `left` / `right`。
 - `<valueAxis1>` / `<valueAxis2>`：可放多个 `<data>`，每个 = 一个系列；**双轴**就是分别挂在 axis1 / axis2 上。
-  两个轴都支持 `for`，可以在模板里循环生成系列。
+  两个轴都支持 `for`：循环的是轴下的 `<data>` 子节点，结果是**同一个轴里的 N 个系列**，不是 N 个轴。
 - 轴共有属性：`title` `numberFormat` `logBase` `majorUnit` `minorUnit` `minimum` `maximum` `orientation`
   （`minMax` / `maxMin`）`majorTickMark` `minorTickMark`（`none` `cross` `in` `out`）
   `tickLabelPosition`（`nextTo` `none` `high` `low`）。

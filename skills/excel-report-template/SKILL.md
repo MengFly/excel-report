@@ -1,6 +1,6 @@
 ---
 name: excel-report-template
-description: 为 excel-report 框架（io.github.mengfly:excel-report）编写/修改 Excel 报表模板 XML。当用户要求「写报表模板 / 生成报表模板 / 根据这份数据做个 Excel 报表 / 加个 Sheet / 模板不生效帮我看看」时使用。含模板规范白名单（标签、属性、样式 key、颜色名）、SpEL 表达式、for/if、组件选型（Table/List/Chart/Image/include 优先）、尺寸与布局规则、用户数据接口对接方法、以及可离线运行的自检脚本。
+description: 为 excel-report 框架（io.github.mengfly:excel-report）编写/修改 Excel 报表模板 XML。当用户要求「写报表模板 / 生成报表模板 / 根据这份数据做个 Excel 报表 / 加个 Sheet / 模板不生效帮我看看」时使用。含模板规范白名单（标签、属性、样式 key、颜色名）、SpEL 表达式、for/if、组件选型（Table/List/Chart/Image/include 优先）、尺寸与布局规则、用户数据接口对接方法、IDEA 插件预览参数（.idea/excel-report-preview）、以及可离线运行的自检脚本。
 agent_created: true
 ---
 
@@ -145,7 +145,23 @@ agent_created: true
 - `dataFormat` 直接用 Excel 格式串：`0.0000`、`#,##0`、`0.00 分`、`0%`。
 - 中文报表建议显式设 `fontName`（默认字体是 `Arial`，中文会走字体回退，观感不稳）。
 
-### 步骤 4 · 自检（交付前必做）
+### 步骤 4 · 同步 IDEA 插件预览参数（项目有 `.idea/excel-report-preview` 时）
+
+如果项目根存在 `.idea/excel-report-preview/` 目录（说明模板会用 `excel-report-plugin` 预览 / 导出），
+按镜像路径新建或更新一份样本参数 JSON：
+
+```
+<项目根>/.idea/excel-report-preview/<模板相对路径去掉 .xml>.json
+```
+
+- key = 模板里的**顶层变量名**，逐字一致；值用真实类型（数字用数字、集合给 1~2 条样本，元素字段与 `${item.xxx}` / `column@id` 对齐）。
+- 纯 JSON（无注释、无尾逗号）；缺 key 时预览会原样显示 `${xxx}`。
+- 模板改了参数就同步改这份 JSON。
+- 目录**不存在时不要创建**，跳过本步骤。
+
+细节、示例和骨架推断规则见 `references/plugin-preview.md`。
+
+### 步骤 5 · 自检（交付前必做）
 
 ```bash
 python "<skill_dir>/scripts/check_template.py" path/to/Template.xml
@@ -175,6 +191,7 @@ python "<skill_dir>/scripts/check_template.py" path/to/Template.xml
 - `references/template-spec.md` — 完整骨架、`sheetStyle`(27 key) / `Style`(32 key) 名单与取值、颜色名单、`size` 语义、表达式、`include`、默认样式与默认尺寸。
 - `references/components.md` — 14 个标签逐个说明（属性、子元素、默认尺寸、语义、示例）+ 布局规则。
 - `references/pitfalls-checklist.md` — 静默失效「症状 → 根因 → 规避」索引 + 交付前 / 数据对接 Checklist。
+- `references/plugin-preview.md` — `excel-report-plugin` 预览参数文件（`.idea/excel-report-preview/*.json`）的路径、内容规则与坑。
 - `examples/standard-table.xml` — 标题 + 单位 + 多级表头 + 表格 + 柱图 + 饼图。
 - `examples/grouped-report.xml` — `for` 分组 + `if` 条件 + 组内表格 + 横向 `List` + 打印分页 + `include` 用法（注释形式）。
 - `examples/self-test-broken.xml` — 自检脚本的负向夹具，**不是可用模板**。

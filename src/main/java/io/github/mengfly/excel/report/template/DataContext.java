@@ -18,6 +18,12 @@ public class DataContext extends HashMap<String, Object> {
      */
     private final Set<ContainerTreeNode> renderWarnedNodes;
 
+    /*
+     * 根对象。表达式里取不到的变量和方法会回落到该对象上解析（见 TemplateExpression.MapAccessor）。
+     * 随子上下文传递：子上下文除了多出循环变量外，其余查找行为与父上下文一致。
+     */
+    private Object root;
+
     public DataContext() {
         this(null, new ExpressionHelper());
     }
@@ -30,6 +36,27 @@ public class DataContext extends HashMap<String, Object> {
         this.renderWarnedNodes = data instanceof DataContext
                 ? ((DataContext) data).renderWarnedNodes
                 : Collections.newSetFromMap(new IdentityHashMap<ContainerTreeNode, Boolean>());
+        this.root = data instanceof DataContext ? ((DataContext) data).getRoot() : null;
+    }
+
+    /**
+     * 根对象：表达式里在 map 中取不到的变量与方法，会继续在该对象上按属性 / 方法解析。
+     *
+     * @return 根对象，未设置时为 {@code null}
+     */
+    public Object getRoot() {
+        return root;
+    }
+
+    /**
+     * 设置根对象。map 中已有的同名键优先，取不到时才回落到根对象。
+     *
+     * @param root 根对象，{@code null} 表示不启用回落
+     * @return 当前上下文，便于链式调用
+     */
+    public DataContext setRoot(Object root) {
+        this.root = root;
+        return this;
     }
 
     public DataContext createChildContext(Map<String, Object> data) {
@@ -63,6 +90,7 @@ public class DataContext extends HashMap<String, Object> {
 
     public static class Builder {
         private final Map<String, Object> data = new HashMap<>();
+        private Object root;
 
         public Builder put(String key, Object value) {
             data.put(key, value);
@@ -79,13 +107,21 @@ public class DataContext extends HashMap<String, Object> {
             return this;
         }
 
+        /**
+         * 设置根对象，语义同 {@link DataContext#setRoot(Object)}。
+         */
+        public Builder root(Object root) {
+            this.root = root;
+            return this;
+        }
+
 
         public DataContext build() {
             return build(new ExpressionHelper());
         }
 
         public DataContext build(ExpressionHelper expressionHelper) {
-            return new DataContext(data, expressionHelper);
+            return new DataContext(data, expressionHelper).setRoot(root);
         }
     }
 }

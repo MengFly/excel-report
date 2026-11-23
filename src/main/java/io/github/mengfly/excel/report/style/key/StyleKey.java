@@ -1,7 +1,6 @@
 package io.github.mengfly.excel.report.style.key;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.StrUtil;
 import io.github.mengfly.excel.report.style.StyleApplier;
 import lombok.Getter;
 
@@ -47,7 +46,7 @@ public class StyleKey<S> {
     }
 
     public String toString(S property) {
-        return StrUtil.toString(property);
+        return property == null ? null : property.toString();
     }
 
 

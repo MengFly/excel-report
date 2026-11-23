@@ -1,7 +1,7 @@
 package io.github.mengfly.excel.report.component.image;
 
 import cn.hutool.core.img.ImgUtil;
-import cn.hutool.core.io.IoUtil;
+import io.github.mengfly.excel.report.util.IoUtil;
 
 import java.io.InputStream;
 
@@ -11,7 +11,7 @@ public class StreamImage implements Image {
 
 
     public StreamImage(InputStream stream) {
-        this.image = ImgUtil.toImage(IoUtil.readBytes(stream, true));
+        this.image = ImgUtil.toImage(IoUtil.readBytes(stream));
     }
 
     @Override

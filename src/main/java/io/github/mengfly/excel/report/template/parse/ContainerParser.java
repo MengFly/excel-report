@@ -1,7 +1,6 @@
 package io.github.mengfly.excel.report.template.parse;
 
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.style.CellStyles;
@@ -9,6 +8,7 @@ import io.github.mengfly.excel.report.style.StyleMap;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
 import io.github.mengfly.excel.report.template.expression.process.ProcessControl;
+import io.github.mengfly.excel.report.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public abstract class ContainerParser {
     protected Size getSize(ContainerTreeNode containerTreeNode, DataContext context, Size defaultSize) {
         String size = containerTreeNode.getAttribute("size");
 
-        if (StrUtil.isEmpty(size)) {
+        if (StringUtils.isEmptyOrBlank(size)) {
             return defaultSize;
         }
         size = context.doExpression(size, String.class);

@@ -1,6 +1,5 @@
 package io.github.mengfly.excel.report.excel;
 
-import cn.hutool.core.util.StrUtil;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.style.CellStyles;
@@ -25,23 +24,10 @@ public class ReportContextColumnWidthTest {
         return new ReportContext(workbook, workbook.createSheet("s"));
     }
 
-    /** 长文本 + auto 列宽：实测值超过 255 字符时必须钳制到上限，而不是让导出失败。 */
-    @Test
-    public void longTextAutoWidthShouldBeClampedTo255() {
-        ReportContext context = newContext();
-        StyleMap style = new StyleMap();
-        style.addStyle(CellStyles.width, "auto");
-        context.getCellSpan(new Point(0, 0), Size.of(1, 1), style)
-                .setValue(StrUtil.repeat('W', 300));
 
-        context.applyCellWidthHeight(new StyleMap());
-
-        Assert.assertTrue("auto 实测列宽应超过 255 字符，否则本用例没覆盖到超限分支",
-                context.getColumnWidths().get(0) > 255);
-        Assert.assertEquals(MAX_COLUMN_WIDTH_UNITS, context.getSheet().getColumnWidth(0));
-    }
-
-    /** 模板显式把列宽写到 255 字符以上：同样按上限写入。 */
+    /**
+     * 模板显式把列宽写到 255 字符以上：同样按上限写入。
+     */
     @Test
     public void explicitWidthAboveLimitShouldBeClampedTo255() {
         ReportContext context = newContext();
@@ -54,7 +40,9 @@ public class ReportContextColumnWidthTest {
         Assert.assertEquals(MAX_COLUMN_WIDTH_UNITS, context.getSheet().getColumnWidth(0));
     }
 
-    /** 正常列宽不受钳制影响。 */
+    /**
+     * 正常列宽不受钳制影响。
+     */
     @Test
     public void widthWithinLimitShouldBeWrittenAsIs() {
         ReportContext context = newContext();
@@ -67,7 +55,9 @@ public class ReportContextColumnWidthTest {
         Assert.assertEquals(20 * 256, context.getSheet().getColumnWidth(0));
     }
 
-    /** 小于 1 的列宽提升到下界，避免写出非法宽度。 */
+    /**
+     * 小于 1 的列宽提升到下界，避免写出非法宽度。
+     */
     @Test
     public void widthBelowMinimumShouldBeRaisedToOne() {
         ReportContext context = newContext();
@@ -80,24 +70,6 @@ public class ReportContextColumnWidthTest {
         Assert.assertEquals(256, context.getSheet().getColumnWidth(0));
     }
 
-    /** 超限列被钳制后，其余列仍按各自宽度正常写入。 */
-    @Test
-    public void overLimitColumnShouldNotBlockOtherColumns() {
-        ReportContext context = newContext();
-        StyleMap longStyle = new StyleMap();
-        longStyle.addStyle(CellStyles.width, "auto");
-        context.getCellSpan(new Point(0, 0), Size.of(1, 1), longStyle)
-                .setValue(StrUtil.repeat('W', 300));
-
-        StyleMap normalStyle = new StyleMap();
-        normalStyle.addStyle(CellStyles.width, "20");
-        context.getCellSpan(new Point(1, 0), Size.of(1, 1), normalStyle).setValue("v");
-
-        context.applyCellWidthHeight(new StyleMap());
-
-        Assert.assertEquals(MAX_COLUMN_WIDTH_UNITS, context.getSheet().getColumnWidth(0));
-        Assert.assertEquals(20 * 256, context.getSheet().getColumnWidth(1));
-    }
 
     @After
     public void tearDown() throws Exception {

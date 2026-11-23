@@ -1,6 +1,5 @@
 package io.github.mengfly.excel.report.excel;
 
-import cn.hutool.core.io.IoUtil;
 import io.github.mengfly.excel.report.component.image.Image;
 import io.github.mengfly.excel.report.entity.Point;
 import io.github.mengfly.excel.report.entity.Size;
@@ -8,6 +7,7 @@ import io.github.mengfly.excel.report.style.CellStyles;
 import io.github.mengfly.excel.report.style.SheetStyles;
 import io.github.mengfly.excel.report.style.StyleChain;
 import io.github.mengfly.excel.report.style.StyleMap;
+import io.github.mengfly.excel.report.util.IoUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

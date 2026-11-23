@@ -1,9 +1,9 @@
 package io.github.mengfly.excel.report.template.expression.process;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.StrUtil;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
+import io.github.mengfly.excel.report.util.StringUtils;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +57,7 @@ public class ProcessControl {
             node.reportRenderError(context, controlExpression, e);
             return;
         }
-        final String expressionPart = StrUtil.isEmpty(controlExpression) ? "" : "；表达式：" + controlExpression;
+        final String expressionPart = StringUtils.isEmptyOrBlank(controlExpression) ? "" : "；表达式：" + controlExpression;
         log.warn("渲染组件失败，跳过该节点{}", expressionPart, e);
     }
 
@@ -69,7 +69,7 @@ public class ProcessControl {
 
 
     public static ProcessExpression getExpression(String tag, String expression, DataContext context) {
-        if (StrUtil.isEmpty(expression)) {
+        if (StringUtils.isEmptyOrBlank(expression)) {
             return new NoneExpression(context, expression);
         }
         if ("if".equals(tag)) {

@@ -4,7 +4,6 @@ import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
-import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.beans.PropertyDescriptor;
@@ -82,7 +81,7 @@ public class BeanUtil extends cn.hutool.core.bean.BeanUtil {
     }
 
     public static Object getBeanObj(Object bean, String attr) {
-        if (StrUtil.isEmpty(attr)) {
+        if (StringUtils.isEmptyOrBlank(attr)) {
             return bean;
         }
         final String[] split = attr.split("\\.");

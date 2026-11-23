@@ -1,9 +1,7 @@
 package io.github.mengfly.excel.report.template.validate;
 
-import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.HexUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import io.github.mengfly.excel.report.style.CellStyles;
@@ -11,6 +9,8 @@ import io.github.mengfly.excel.report.style.SheetStyles;
 import io.github.mengfly.excel.report.style.key.ColorStyleKey;
 import io.github.mengfly.excel.report.style.key.StyleKey;
 import io.github.mengfly.excel.report.template.validate.ValidationIssue.Level;
+import io.github.mengfly.excel.report.util.IoUtil;
+import io.github.mengfly.excel.report.util.StringUtils;
 import io.github.mengfly.excel.report.util.StyleUtil;
 import io.github.mengfly.excel.report.util.XmlUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -29,11 +29,7 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 模板校验器：把"能跑但静默失效"的模板写法找出来。
@@ -66,10 +62,14 @@ public final class TemplateValidator {
 
     private static final String XSD_RESOURCE = "/schema/excel-report-1.0.0.xsd";
 
-    /** 单个模板最多返回多少条 XSD 错误，避免严重写错的模板产生海量条目。 */
+    /**
+     * 单个模板最多返回多少条 XSD 错误，避免严重写错的模板产生海量条目。
+     */
     private static final int MAX_SCHEMA_ISSUES = 50;
 
-    /** 单条 XSD 消息的最大长度（XSD 的候选列表会非常长）。 */
+    /**
+     * 单条 XSD 消息的最大长度（XSD 的候选列表会非常长）。
+     */
     private static final int MAX_SCHEMA_MESSAGE = 300;
 
     /**
@@ -130,12 +130,12 @@ public final class TemplateValidator {
     /**
      * 校验模板：DOM 用于语义层，原始字节用于结构层（保留行号）。
      *
-     * @param document 模板文档，为 null 时只做不了任何校验
+     * @param document  模板文档，为 null 时只做不了任何校验
      * @param xmlSource 模板原始字节；为 null 时结构层退化为校验 DOM（行号为 -1）
      * @return 问题清单，空表示没发现问题
      */
     public static List<ValidationIssue> validate(Document document, byte[] xmlSource) {
-        List<ValidationIssue> issues = new ArrayList<ValidationIssue>();
+        List<ValidationIssue> issues = new ArrayList<>();
         if (document == null) {
             issues.add(new ValidationIssue(Level.ERROR, RULE_SCHEMA, "/", "模板文档为空"));
             return issues;
@@ -173,7 +173,7 @@ public final class TemplateValidator {
             return;
         }
 
-        final List<ValidationIssue> schemaIssues = new ArrayList<ValidationIssue>();
+        final List<ValidationIssue> schemaIssues = new ArrayList<>();
         Validator validator = schema.newValidator();
         validator.setErrorHandler(new ErrorHandler() {
             @Override
@@ -211,7 +211,7 @@ public final class TemplateValidator {
     }
 
     private static ValidationIssue schemaIssue(SAXParseException exception) {
-        String message = StrUtil.toString(exception.getMessage()).replace('\n', ' ').trim();
+        String message = String.valueOf(exception.getMessage()).replace('\n', ' ').trim();
         if (message.length() > MAX_SCHEMA_MESSAGE) {
             // XSD 的"应以 {…几十个名字…} 之一开头"会非常长，截断以免日志不可读
             message = message.substring(0, MAX_SCHEMA_MESSAGE) + "…";
@@ -253,9 +253,11 @@ public final class TemplateValidator {
 
     // ------------------------------------------------------------------ L2 语义层
 
-    /** 收集 {@code <style id>}，同时报告重复 id（XSD 的 xs:ID 也管，但无命名空间时这一层仍能发现）。 */
+    /**
+     * 收集 {@code <style id>}，同时报告重复 id（XSD 的 xs:ID 也管，但无命名空间时这一层仍能发现）。
+     */
     private static Map<String, String> collectStyleIds(Element element, List<ValidationIssue> issues) {
-        Map<String, String> styleIds = new HashMap<String, String>();
+        Map<String, String> styleIds = new HashMap<>();
         collectStyleIds(element, "/" + nodeName(element), styleIds, issues);
         return styleIds;
     }
@@ -321,7 +323,7 @@ public final class TemplateValidator {
                 continue;
             }
             String raw = element.getAttribute(attribute);
-            if (StrUtil.isBlank(raw)) {
+            if (StringUtils.isEmptyOrBlank(raw)) {
                 continue;
             }
             String where = path + "@" + attribute;
@@ -370,7 +372,7 @@ public final class TemplateValidator {
                         (cellStyle ? "单元格" : "Sheet") + "样式 key 未注册（运行期会被静默丢弃）: " + keyName));
                 continue;
             }
-            String value = StrUtil.toString(child.getTextContent()).trim();
+            String value = String.valueOf(child.getTextContent()).trim();
             if (key instanceof ColorStyleKey) {
                 checkColor(where, keyName, value, issues);
                 continue;
@@ -421,7 +423,7 @@ public final class TemplateValidator {
             return;
         }
         String expression = element.getAttribute("for");
-        if (StrUtil.isEmpty(expression) || expression.indexOf(':') > 0) {
+        if (StringUtils.isEmptyOrBlank(expression) || expression.indexOf(':') > 0) {
             return;
         }
         issues.add(new ValidationIssue(Level.ERROR, RULE_FOR_MISSING_BINDING, path + "@for",
@@ -430,13 +432,15 @@ public final class TemplateValidator {
 
     // ------------------------------------------------------------------ DOM 工具
 
-    /** 与运行期一致地取节点名（{@code ParserFactory}/{@code XmlUtil} 用的都是 getTagName）。 */
+    /**
+     * 与运行期一致地取节点名（{@code ParserFactory}/{@code XmlUtil} 用的都是 getTagName）。
+     */
     private static String nodeName(Node node) {
         return node.getNodeName();
     }
 
     private static List<Element> childElements(Element element) {
-        List<Element> children = new ArrayList<Element>();
+        List<Element> children = new ArrayList<>();
         for (Node node = element.getFirstChild(); node != null; node = node.getNextSibling()) {
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 children.add((Element) node);
@@ -454,7 +458,9 @@ public final class TemplateValidator {
         return null;
     }
 
-    /** 同名兄弟多于一个时补 {@code [i]}，让路径定位到具体节点。 */
+    /**
+     * 同名兄弟多于一个时补 {@code [i]}，让路径定位到具体节点。
+     */
     private static String childPath(Element parent, String parentPath, Element child) {
         String name = nodeName(child);
         int total = 0;

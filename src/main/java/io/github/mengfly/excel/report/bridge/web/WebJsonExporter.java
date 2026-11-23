@@ -1,7 +1,5 @@
 package io.github.mengfly.excel.report.bridge.web;
 
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.util.StrUtil;
 import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.bridge.BridgeExporter;
 import io.github.mengfly.excel.report.component.chart.ChartComponent;
@@ -33,6 +31,8 @@ import io.github.mengfly.excel.report.excel.ExportResult;
 import io.github.mengfly.excel.report.layout.Layout;
 import io.github.mengfly.excel.report.style.StyleMap;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
+import io.github.mengfly.excel.report.util.IoUtil;
+import io.github.mengfly.excel.report.util.StringUtils;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import java.io.InputStream;
@@ -406,7 +406,7 @@ public final class WebJsonExporter implements BridgeExporter<WebExcel> {
         final ContainerTreeNode node = container.templateNode();
         if (node != null) {
             final String tagName = node.getTagName();
-            if (StrUtil.isNotEmpty(tagName)) {
+            if (StringUtils.hasLength(tagName)) {
                 return tagName;
             }
         }
@@ -420,7 +420,7 @@ public final class WebJsonExporter implements BridgeExporter<WebExcel> {
         try (InputStream stream = image.openStream()) {
             final byte[] bytes = IoUtil.readBytes(stream);
             String imageType = image.getImageType();
-            if (StrUtil.isEmpty(imageType)) {
+            if (StringUtils.isEmptyOrBlank(imageType)) {
                 imageType = "png";
             }
             return "data:image/" + imageType.toLowerCase() + ";base64," + Base64.getEncoder().encodeToString(bytes);

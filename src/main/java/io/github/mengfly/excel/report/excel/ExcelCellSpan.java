@@ -1,7 +1,6 @@
 package io.github.mengfly.excel.report.excel;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.cell.CellUtil;
 import io.github.mengfly.excel.report.component.text.RichText;
 import io.github.mengfly.excel.report.entity.Point;
@@ -9,6 +8,7 @@ import io.github.mengfly.excel.report.entity.Size;
 import io.github.mengfly.excel.report.style.CellStyles;
 import io.github.mengfly.excel.report.style.StyleMap;
 import io.github.mengfly.excel.report.util.ExcelUtil;
+import io.github.mengfly.excel.report.util.StringUtils;
 import lombok.Setter;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.SheetUtil;
@@ -122,7 +122,7 @@ public class ExcelCellSpan {
                 for (int i = 0; i < size.width; i++) {
                     int col = point.getX() + i;
                     Double columnWidth;
-                    if (StrUtil.equalsAnyIgnoreCase("auto", widthStyle.get())) {
+                    if (StringUtils.equalsAnyIgnoreCase("auto", widthStyle.get())) {
                         columnWidth = SheetUtil.getColumnWidth(
                                 getSheet(), col, true, point.getY(), point.getY() + size.height - 1) + 4;
                     } else {

@@ -1,7 +1,5 @@
 package io.github.mengfly.excel.report.util;
 
-import cn.hutool.core.util.StrUtil;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,7 +13,7 @@ public class StyleUtil {
      * @return 样式
      */
     public static List<String> analysisStyle(String style) {
-        if (StrUtil.isEmpty(style)) {
+        if (StringUtils.isEmptyOrBlank(style)) {
             return Collections.emptyList();
         }
         List<String> styleTokens = new ArrayList<>();
@@ -50,7 +48,7 @@ public class StyleUtil {
 
     private static void addToken2List(List<String> styleTokens, StringBuilder token) {
         final String str = token.toString();
-        if (StrUtil.isEmpty(str) || StrUtil.isBlank(str)) {
+        if (StringUtils.isEmptyOrBlank(str)) {
             return;
         }
         styleTokens.add(str.trim());

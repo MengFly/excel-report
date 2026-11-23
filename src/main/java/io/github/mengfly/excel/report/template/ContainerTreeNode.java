@@ -1,6 +1,5 @@
 package io.github.mengfly.excel.report.template;
 
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import io.github.mengfly.excel.report.Container;
@@ -10,6 +9,7 @@ import io.github.mengfly.excel.report.style.key.StyleKey;
 import io.github.mengfly.excel.report.template.expression.process.ProcessControl;
 import io.github.mengfly.excel.report.template.parse.ParserFactory;
 import io.github.mengfly.excel.report.util.BeanUtil;
+import io.github.mengfly.excel.report.util.StringUtils;
 import io.github.mengfly.excel.report.util.StyleUtil;
 import io.github.mengfly.excel.report.util.XmlUtil;
 import lombok.Data;
@@ -72,7 +72,7 @@ public class ContainerTreeNode {
         if (!context.markRenderWarned(this)) {
             return;
         }
-        final String expressionPart = StrUtil.isEmpty(expression) ? "" : "；表达式：" + expression;
+        final String expressionPart = StringUtils.isEmptyOrBlank(expression) ? "" : "；表达式：" + expression;
         log.warn("渲染组件失败，跳过该节点：{}{}", nodePath(), expressionPart, e);
     }
 
@@ -102,7 +102,7 @@ public class ContainerTreeNode {
     public StyleMap getStyle(String styleAttr, DataContext context) {
 
         String attribute = getAttribute(styleAttr);
-        if (StrUtil.isEmpty(attribute)) {
+        if (StringUtils.isEmptyOrBlank(attribute)) {
             return new StyleMap();
         }
         StyleMap map = new StyleMap();

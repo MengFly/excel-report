@@ -1,8 +1,6 @@
 package io.github.mengfly.excel.report.template;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.util.StrUtil;
 import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.exception.ExcelReportException;
 import io.github.mengfly.excel.report.style.CellStyles;
@@ -11,6 +9,8 @@ import io.github.mengfly.excel.report.style.StyleMap;
 import io.github.mengfly.excel.report.style.key.StyleKey;
 import io.github.mengfly.excel.report.template.validate.TemplateValidator;
 import io.github.mengfly.excel.report.template.validate.ValidationIssue;
+import io.github.mengfly.excel.report.util.IoUtil;
+import io.github.mengfly.excel.report.util.StringUtils;
 import io.github.mengfly.excel.report.util.XmlUtil;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -132,7 +132,7 @@ public class ReportTemplate {
         if (styles != null) {
             for (Element styleElement : XmlUtil.getElements(styles, "style")) {
                 final String id = styleElement.getAttribute("id");
-                if (StrUtil.isEmpty(id)) {
+                if (StringUtils.isEmptyOrBlank(id)) {
                     continue;
                 }
                 final List<Element> styleKeyElements = XmlUtil.getElements(styleElement, null);

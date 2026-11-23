@@ -3,7 +3,6 @@ package io.github.mengfly.excel.report.template.parse.chart;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import io.github.mengfly.excel.report.component.chart.axis.ChartLabelAxis;
 import io.github.mengfly.excel.report.component.chart.data.resolver.AxisDataResolver;
 import io.github.mengfly.excel.report.component.chart.data.resolver.RelationAxisDataResolver;
@@ -12,6 +11,7 @@ import io.github.mengfly.excel.report.component.chart.type.ChartDataType;
 import io.github.mengfly.excel.report.template.ContainerTreeNode;
 import io.github.mengfly.excel.report.template.DataContext;
 import io.github.mengfly.excel.report.util.BeanUtil;
+import io.github.mengfly.excel.report.util.StringUtils;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public abstract class ChartDataTypeParser {
             return ((CellRangeAddress) address);
         }
 
-        final List<Integer> items = StrUtil.splitTrim(StrUtil.toString(address), ",")
+        final List<Integer> items = StringUtils.splitTrim(String.valueOf(address), ',')
                 .stream().map(s -> Convert.toInt(s, 0)).collect(Collectors.toList());
 
         return new CellRangeAddress(

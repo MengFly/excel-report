@@ -1,7 +1,7 @@
 package io.github.mengfly.excel.report.entity;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.StrUtil;
+import io.github.mengfly.excel.report.util.StringUtils;
 import lombok.Builder;
 import lombok.Data;
 
@@ -26,7 +26,7 @@ public class Border {
     }
 
     public static Border of(String str) {
-        if (StrUtil.isEmpty(str)) {
+        if (StringUtils.isEmptyOrBlank(str)) {
             return EMPTY;
         }
         final String[] split = str.split(",");

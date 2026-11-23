@@ -1,9 +1,9 @@
 package io.github.mengfly.excel.report.template.expression.process;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.StrUtil;
 import io.github.mengfly.excel.report.template.DataContext;
 import io.github.mengfly.excel.report.util.BeanUtil;
+import io.github.mengfly.excel.report.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
@@ -27,11 +27,11 @@ public class ForExpression extends ProcessExpression {
             final int firstIndex = expression.indexOf(':');
 
             if (firstIndex > 0) {
-                this.targetObjExpression = StrUtil.trim(expression.substring(firstIndex + 1));
+                this.targetObjExpression = StringUtils.trim(expression.substring(firstIndex + 1));
 
                 String args = expression.substring(0, firstIndex);
-                final List<String> argList = StrUtil.splitTrim(args, ',');
-                argList.removeIf(StrUtil::isEmpty);
+                final List<String> argList = StringUtils.splitTrim(args, ',');
+                argList.removeIf(StringUtils::isEmptyOrBlank);
                 arg1 = CollectionUtil.get(argList, 0);
                 arg2 = CollectionUtil.get(argList, 1);
 
@@ -47,7 +47,7 @@ public class ForExpression extends ProcessExpression {
 
     @Override
     public void process(Consumer<DataContext> dataConsumer) {
-        if ((arg1 == null && arg2 == null) || StrUtil.isEmpty(targetObjExpression)) {
+        if ((arg1 == null && arg2 == null) || StringUtils.isEmptyOrBlank(targetObjExpression)) {
             dataConsumer.accept(context);
             return;
         }

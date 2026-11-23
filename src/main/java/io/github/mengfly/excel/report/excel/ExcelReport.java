@@ -1,12 +1,12 @@
 package io.github.mengfly.excel.report.excel;
 
-import cn.hutool.core.util.StrUtil;
 import io.github.mengfly.excel.report.Container;
 import io.github.mengfly.excel.report.style.CellStyles;
 import io.github.mengfly.excel.report.style.SheetStyles;
 import io.github.mengfly.excel.report.style.StyleMap;
 import io.github.mengfly.excel.report.template.DataContext;
 import io.github.mengfly.excel.report.template.ReportTemplate;
+import io.github.mengfly.excel.report.util.StringUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -112,7 +112,7 @@ public class ExcelReport {
          * 于是同一基名的计数器永远停在 1 ⇒ 第 3 个同名 Sheet、或第 2 个匿名 Sheet 会抛
          * IllegalArgumentException: The workbook already contains a sheet named 'X'。
          */
-        final String baseName = StrUtil.isEmpty(name) ? DEFAULT_SHEET_NAME : name;
+        final String baseName = StringUtils.isEmptyOrBlank(name) ? DEFAULT_SHEET_NAME : name;
 
         final Integer used = sheetNameSequence.get(baseName);
         int seq = used == null ? 0 : used;

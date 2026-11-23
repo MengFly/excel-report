@@ -2,14 +2,13 @@ package io.github.mengfly.excel.report.util;
 
 import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.HexUtil;
-import cn.hutool.core.util.StrUtil;
 import org.apache.poi.xddf.usermodel.PresetColor;
 import org.apache.poi.xddf.usermodel.XDDFColor;
 
 public class XDDFColorHelper {
 
     public static XDDFColor createColor(String color, PresetColor defaultColor) {
-        if (StrUtil.isEmpty(color)) {
+        if (StringUtils.isEmptyOrBlank(color)) {
             return XDDFColor.from(defaultColor);
         }
         if (color.startsWith("#")) {
